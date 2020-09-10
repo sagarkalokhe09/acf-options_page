@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import { Card, Row, Col, Dropdown, Button } from "react-bootstrap";
 import { ReactComponent as FilterRight } from "bootstrap-icons/icons/filter-right.svg";
 import { DropdownToggle } from "../components/dropdown";

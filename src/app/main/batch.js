@@ -1,8 +1,19 @@
 import React from "react";
 import { Card, Row, Col, Form, InputGroup, FormControl } from "react-bootstrap";
+import { ElementUtil } from "@dhruv-techapps/core-common";
+
+const Batch = ({ batch, selected, setConfigs }) => {
+  const onChange = (e) => {
+    const { name, value } = ElementUtil.getNameValue(e.currentTarget);
+    setConfigs(configs => configs.map((config, index) => {
+      if (index === selected) {
+        return { ...configs[selected], batch: { ...configs[selected].batch, [name]: value } };
+      }
+      return config;
+    }));
+  };
 
 
-const Batch = ({ batch, setConfigs }) => {
   return <Card className="mb-3">
     <Card.Header as="h5">
       <Row>
@@ -15,12 +26,15 @@ const Batch = ({ batch, setConfigs }) => {
               type="switch"
               id="batch-refresh"
               label="Refresh"
+              name="refresh"
+              checked={batch.refresh}
+              onChange={onChange}
             />
           </Form>
         </Col>
       </Row>
     </Card.Header>
-    <Card.Body>
+    {!batch.refresh && <Card.Body>
       <Row>
         <Col md="6" sm="12">
           <InputGroup className="mb-3">
@@ -30,6 +44,10 @@ const Batch = ({ batch, setConfigs }) => {
             <FormControl
               placeholder="0"
               aria-label="0"
+              name="repeat"
+              value={batch.repeat || ''}
+              data-type="number"
+              onChange={onChange}
               aria-describedby="batch-repeat"
             />
           </InputGroup>
@@ -42,6 +60,10 @@ const Batch = ({ batch, setConfigs }) => {
             <FormControl
               placeholder="0"
               aria-label="0"
+              onChange={onChange}
+              data-type="number"
+              value={batch.repeatInterval  || ''}
+              name="repeatInterval"
               aria-describedby="batch-repeat-interval"
             />
             <InputGroup.Append>
@@ -50,8 +72,7 @@ const Batch = ({ batch, setConfigs }) => {
           </InputGroup>
         </Col>
       </Row>
-
-    </Card.Body>
-  </Card>
-}
+    </Card.Body>}
+  </Card>;
+};
 export default Batch;
