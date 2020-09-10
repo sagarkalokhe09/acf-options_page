@@ -12,6 +12,7 @@ const Config = ({ configs, selected, setConfigs }) => {
 
   const onChange = (e) => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget);
+    console.log(name,value)
     setConfigs(configs => configs.map((config, index) => {
       if (index === selected) {
         return { ...configs[selected], [name]: value };
