@@ -1,43 +1,46 @@
-import React from "react";
-import Batch from "./batch";
-import Action from "./action";
-import { DropdownToggle } from "../components/dropdown";
-import { ElementUtil } from "@dhruv-techapps/core-common";
-import { Card, Form, Row, Col, Dropdown, InputGroup, FormControl } from "react-bootstrap";
-import { ReactComponent as ThreeDotsVertical } from "bootstrap-icons/icons/three-dots-vertical.svg";
+import React from 'react'
+import PropTypes from 'prop-types'
 
-const Config = ({ configs, selected, setConfigs }) => {
+import Batch from './batch'
+import Action from './action'
 
-  const config = configs[selected];
+import { Card, Form, Row, Col, Dropdown, InputGroup, FormControl } from 'react-bootstrap'
+import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg'
+
+import { DropdownToggle } from '../components/dropdown'
+import { ElementUtil } from '@dhruv-techapps/core-common'
+
+const Config = ({ configs, selected, toastRef, setConfigs }) => {
+  const config = configs[selected]
 
   const onChange = (e) => {
-    const { name, value } = ElementUtil.getNameValue(e.currentTarget);
-    console.log(name,value)
+    const { name, value } = ElementUtil.getNameValue(e.currentTarget)
+    console.log(name, value)
     setConfigs(configs => configs.map((config, index) => {
       if (index === selected) {
-        return { ...configs[selected], [name]: value };
+        return { ...configs[selected], [name]: value }
       }
-      return config;
-    }));
-  };
+      return config
+    }))
+  }
 
   return <>
     <Form>
-      <Card className="mb-3">
-        <Card.Header as="h5">
+      <Card className='mb-3'>
+        <Card.Header as='h5'>
           <Row>
-            <Col className="d-flex align-items-center">
-              <a target="_blank" rel="noopener noreferrer" href="https://getautoclicker.com/docs/configuration">Configuration</a>
+            <Col className='d-flex align-items-center'>
+              <a target='_blank' rel='noopener noreferrer' href='https://getautoclicker.com/docs/configuration'>Configuration</a>
             </Col>
-            <Col md="auto" className="d-flex align-items-center">
-              <Form.Check type="switch" name="enable" id="config-enable" label="Enable" checked={config.enable} onChange={onChange} />
-              <Dropdown className="ml-3" alignRight={true}>
+            <Col md='auto' className='d-flex align-items-center'>
+              <Form.Check type='switch' name='enable' id='config-enable' label='Enable' checked={config.enable} onChange={onChange} />
+              <Dropdown className='ml-3' alignRight>
                 <Dropdown.Toggle as={DropdownToggle}>
-                  <ThreeDotsVertical width="24" height="24" />
+                  <ThreeDotsVertical width='24' height='24' />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item href="#/action-1">Export</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">Import</Dropdown.Item>
+                  <Dropdown.Item href='#/action-1'>Export</Dropdown.Item>
+                  <Dropdown.Item href='#/action-2'>Import</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </Col>
@@ -45,36 +48,36 @@ const Config = ({ configs, selected, setConfigs }) => {
         </Card.Header>
         {config.enable && <Card.Body>
           <Row>
-            <Col md="5" sm="12">
-              <InputGroup className="mb-3">
+            <Col md='5' sm='12'>
+              <InputGroup className='mb-3'>
                 <InputGroup.Prepend>
-                  <InputGroup.Text id="config-name">Name</InputGroup.Text>
+                  <InputGroup.Text id='config-name'>Name</InputGroup.Text>
                 </InputGroup.Prepend>
-                <FormControl value={config.name || ''} name="name" onChange={onChange} placeholder="getautoclicker.com" aria-label="getautoclicker.com" aria-describedby="config-name" />
+                <FormControl value={config.name || ''} name='name' onChange={onChange} placeholder='getautoclicker.com' aria-label='getautoclicker.com' aria-describedby='config-name' />
               </InputGroup>
             </Col>
-            <Col md="7" sm="12">
-              <InputGroup className="mb-3">
+            <Col md='7' sm='12'>
+              <InputGroup className='mb-3'>
                 <InputGroup.Prepend>
-                  <InputGroup.Text id="config-url">URL</InputGroup.Text>
+                  <InputGroup.Text id='config-url'>URL</InputGroup.Text>
                 </InputGroup.Prepend>
-                <FormControl value={config.url || ''} name="url" onChange={onChange} placeholder="https://getautoclicker.com/" aria-label="https://getautoclicker.com/" aria-describedby="config-url" />
+                <FormControl value={config.url || ''} name='url' onChange={onChange} placeholder='https://getautoclicker.com/' aria-label='https://getautoclicker.com/' aria-describedby='config-url' />
               </InputGroup>
             </Col>
-            <Col md="5" sm="12">
-              <InputGroup className="mb-3">
+            <Col md='5' sm='12'>
+              <InputGroup className='mb-3'>
                 <InputGroup.Prepend>
-                  <InputGroup.Text id="config-init-wait">Init Wait</InputGroup.Text>
+                  <InputGroup.Text id='config-init-wait'>Init Wait</InputGroup.Text>
                 </InputGroup.Prepend>
-                <FormControl value={config.initWait || ''} data-type="number" name="initWait" onChange={onChange} placeholder="0" aria-label="0" aria-describedby="config-init-wait" />
+                <FormControl value={config.initWait || ''} data-type='number' name='initWait' onChange={onChange} placeholder='0' aria-label='0' aria-describedby='config-init-wait' />
               </InputGroup>
             </Col>
-            <Col md="7" sm="12">
-              <InputGroup className="mb-3">
+            <Col md='7' sm='12'>
+              <InputGroup className='mb-3'>
                 <InputGroup.Prepend>
-                  <InputGroup.Text id="config-start-time">Start Time</InputGroup.Text>
+                  <InputGroup.Text id='config-start-time'>Start Time</InputGroup.Text>
                 </InputGroup.Prepend>
-                <FormControl value={config.startTime || ''} name="startTime" onChange={onChange} placeholder="hh:mm:ss" aria-label="hh:mm:ss" aria-describedby="config-start-time" />
+                <FormControl value={config.startTime || ''} name='startTime' onChange={onChange} placeholder='hh:mm:ss' aria-label='hh:mm:ss' aria-describedby='config-start-time' />
               </InputGroup>
             </Col>
           </Row>
@@ -84,9 +87,22 @@ const Config = ({ configs, selected, setConfigs }) => {
     {config.enable &&
       <>
         <Batch batch={config.batch} selected={selected} setConfigs={setConfigs} />
-        <Action actions={config.actions} setConfigs={setConfigs} />
-      </>
-    }
-  </>;
-};
-export default Config;
+        <Action actions={config.actions} selected={selected} toastRef={toastRef} setConfigs={setConfigs} />
+      </>}
+  </>
+}
+Config.propTypes = {
+  selected: PropTypes.number.isRequired,
+  setConfigs: PropTypes.func.isRequired,
+  configs: PropTypes.arrayOf(PropTypes.shape({
+    enable: PropTypes.bool.isRequired,
+    name: PropTypes.string,
+    url: PropTypes.string,
+    initWait: PropTypes.number,
+    startTime: PropTypes.string,
+    batch: Batch.propTypes.batch,
+    actions: Action.propTypes.actions
+  }).isRequired).isRequired,
+  toastRef: Action.propTypes.toastRef
+}
+export default Config

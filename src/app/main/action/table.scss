@@ -1,4 +1,10 @@
 #actions {
+  th,td{
+    padding: 0.25rem;
+  }
+  td:last-child{
+    vertical-align: middle;
+  }
   input {
     border: 0;
     width: 100%;

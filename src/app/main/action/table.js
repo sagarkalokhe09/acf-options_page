@@ -1,110 +1,106 @@
-import React from "react";
-import "./table.scss";
-import { useTable } from "react-table";
-import { Table } from "react-bootstrap";
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import { ReactComponent as XCircle } from "bootstrap-icons/icons/x-circle.svg";
-import { ReactComponent as CodeSlash } from "bootstrap-icons/icons/code-slash.svg";
+import './table.scss'
 
-const ActionTable = ({ actions, updateMyData }) => {
+import { useTable } from 'react-table'
+import { Table } from 'react-bootstrap'
 
-  const data = React.useMemo(() => actions, [actions]);
+import { ReactComponent as XCircle } from 'bootstrap-icons/icons/x-circle.svg'
+import { ReactComponent as CodeSlash } from 'bootstrap-icons/icons/code-slash.svg'
 
-  // Create an editable cell renderer
-  const EditableCell = ({ value: initialValue, row: { index }, column: { id }, updateMyData }) => {
-    // We need to keep and update the state of the cell normally
-    const [value, setValue] = React.useState(initialValue);
+import { EditableCell } from './editable-cell'
 
-    const onChange = (e) => {
-      setValue(e.target.value);
-    };
-
-    // We'll only update the external data when the input is blurred
-    const onBlur = () => {
-      updateMyData(index, id, value);
-    };
-
-    // If the initialValue is changed external, sync it up with our state
-    React.useEffect(() => {
-      setValue(initialValue);
-    }, [initialValue]);
-
-    return <input value={value} className="form-control" onChange={onChange} onBlur={onBlur} />;
-  };
+const ActionTable = ({ actions, updateAction, hiddenColumns }) => {
+  const data = React.useMemo(() => actions, [actions])
 
   // Set our editable cell renderer as the default Cell renderer
   const defaultColumn = {
-    Cell: EditableCell,
-  };
-
+    Cell: EditableCell
+  }
 
   const columns = React.useMemo(() => [
     {
       Header: 'Init Wait',
-      style: { width: "90px" },
-      accessor: 'initWait', // accessor is the "key" in the data
+      style: { width: '90px' },
+      accessor: 'initWait' // accessor is the "key" in the data
     }, {
       Header: 'Name',
-      style: { width: "90px" },
-      accessor: 'name',
+      style: { width: '90px' },
+      accessor: 'name'
     }, {
       Header: 'Element',
-      accessor: 'element',
+      accessor: 'element'
     }, {
       Header: 'Value',
-      accessor: 'value',
+      accessor: 'value'
     }, {
       Header: 'Repeat',
-      style: { width: "90px" },
-      accessor: 'repeat',
+      style: { width: '90px' },
+      accessor: 'repeat'
     }, {
       Header: 'R-Interval',
-      style: { width: "100px" },
-      accessor: 'repeatInterval',
+      style: { width: '100px' },
+      accessor: 'repeatInterval'
     }
-  ], []);
+  ], [])
 
-  const tableInstance = useTable({ columns, data, defaultColumn, updateMyData });
+  const initialState = { hiddenColumns: ['name'] }
+
+  const tableInstance = useTable({ columns, data, defaultColumn, initialState, updateAction })
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
-    prepareRow,
-  } = tableInstance;
+    prepareRow
+  } = tableInstance
 
-  return <Table hover {...getTableProps()} id="actions">
-    <thead>
-      {headerGroups.map(headerGroup => (
-        <tr {...headerGroup.getHeaderGroupProps()}>
-          {headerGroup.headers.map(column => (
-            <th {...column.getHeaderProps([{ style: column.style }])}>
-              {column.render('Header')}
-            </th>
-          ))}
-          <th style={{ width: "80px" }}></th>
-        </tr>
-      ))}
-    </thead>
-    <tbody {...getTableBodyProps()}>
-      {rows.map(row => {
-        prepareRow(row);
-        return (<tr {...row.getRowProps()}>
-          {row.cells.map(cell => (
-            <td {...cell.getCellProps()}>
-              {cell.render('Cell')}
+  return <>
+    <Table hover {...getTableProps()} id='actions'>
+      <thead>
+        {headerGroups.map((headerGroup, index) => (
+          <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+            {headerGroup.headers.map((column, index) => (
+              <th {...column.getHeaderProps([{ style: column.style }])} key={index}>
+                {column.render('Header')}
+              </th>
+            ))}
+            <th style={{ width: '80px' }} />
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row, index) => {
+          prepareRow(row)
+          return (<tr {...row.getRowProps()} key={index}>
+            {row.cells.map((cell, index) => (
+              <td {...cell.getCellProps()} key={index}>
+                {cell.render('Cell')}
+              </td>
+            ))}
+            <td align='center'>
+              <CodeSlash className='text-primary mr-3' width='20' height='20' onClick={() => { console.log(row.id) }} />
+              <XCircle className='text-danger' width='20' height='20' onClick={() => { console.log(row.id) }} />
             </td>
-          ))}
-          <td align="center">
-            <CodeSlash className="text-primary mr-3" width="20" height="20" onClick={() => { console.log(row.id); }} />
-            <XCircle className="text-danger" width="20" height="20" onClick={() => { console.log(row.id); }} />
-          </td>
-        </tr>
-        );
-      })}
-    </tbody>
-  </Table>;
-};
+          </tr>)
+        })}
+      </tbody>
+    </Table>
+  </>
+}
 
-export default ActionTable;
+ActionTable.propTypes = {
+  actions: PropTypes.arrayOf(PropTypes.shape({
+    element: PropTypes.string.isRequired,
+    initWait: PropTypes.number,
+    name: PropTypes.string,
+    value: PropTypes.string,
+    repeat: PropTypes.number,
+    repeatInterval: PropTypes.number
+  }).isRequired).isRequired,
+  updateAction: PropTypes.func.isRequired,
+  hiddenColumns: PropTypes.object
+}
+export default ActionTable
