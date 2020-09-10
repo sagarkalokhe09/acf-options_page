@@ -10,12 +10,13 @@ import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three
 import { DropdownToggle } from '../components/dropdown'
 import { ElementUtil } from '@dhruv-techapps/core-common'
 
-const Config = ({ configs, selected, toastRef, setConfigs }) => {
-  const config = configs[selected]
+const Config = ({ config, selected, toastRef, setConfigs }) => {
+
+
+  console.log('Config')
 
   const onChange = (e) => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
-    console.log(name, value)
     setConfigs(configs => configs.map((config, index) => {
       if (index === selected) {
         return { ...configs[selected], [name]: value }
@@ -91,18 +92,19 @@ const Config = ({ configs, selected, toastRef, setConfigs }) => {
       </>}
   </>
 }
+
 Config.propTypes = {
   selected: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
-  configs: PropTypes.arrayOf(PropTypes.shape({
+  config: PropTypes.shape({
     enable: PropTypes.bool.isRequired,
     name: PropTypes.string,
     url: PropTypes.string,
     initWait: PropTypes.number,
     startTime: PropTypes.string,
-    batch: Batch.propTypes.batch,
-    actions: Action.propTypes.actions
-  }).isRequired).isRequired,
-  toastRef: Action.propTypes.toastRef
+    batch: Batch.type.propTypes.batch,
+    actions: Action.type.propTypes.actions
+  }).isRequired,
+  toastRef: Action.type.propTypes.toastRef
 }
-export default Config
+export default React.memo(Config)

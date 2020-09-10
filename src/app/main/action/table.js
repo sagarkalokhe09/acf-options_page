@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 import './table.scss'
@@ -11,7 +11,10 @@ import { ReactComponent as CodeSlash } from 'bootstrap-icons/icons/code-slash.sv
 
 import { EditableCell } from './editable-cell'
 
-const ActionTable = ({ actions, updateAction, hiddenColumns }) => {
+const ActionTable = ({ actions, updateAction, removeAction, hiddenColumns }) => {
+
+  console.log('ActionTable', JSON.stringify(actions), hiddenColumns)
+
   const data = React.useMemo(() => actions, [actions])
 
   // Set our editable cell renderer as the default Cell renderer
@@ -23,7 +26,8 @@ const ActionTable = ({ actions, updateAction, hiddenColumns }) => {
     {
       Header: 'Init Wait',
       style: { width: '90px' },
-      accessor: 'initWait' // accessor is the "key" in the data
+      accessor: 'initWait',
+      dataType: 'number'
     }, {
       Header: 'Name',
       style: { width: '90px' },
@@ -37,25 +41,26 @@ const ActionTable = ({ actions, updateAction, hiddenColumns }) => {
     }, {
       Header: 'Repeat',
       style: { width: '90px' },
-      accessor: 'repeat'
+      accessor: 'repeat',
+      dataType: 'number'
     }, {
       Header: 'R-Interval',
       style: { width: '100px' },
-      accessor: 'repeatInterval'
+      accessor: 'repeatInterval',
+      dataType: 'number'
     }
   ], [])
 
-  const initialState = { hiddenColumns: ['name'] }
+  const initialState = { hiddenColumns }
 
   const tableInstance = useTable({ columns, data, defaultColumn, initialState, updateAction })
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow
-  } = tableInstance
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, setHiddenColumns } = tableInstance
+
+
+  useCallback(() => {
+    setHiddenColumns(hiddenColumns)
+  }, [hiddenColumns, setHiddenColumns])
 
   return <>
     <Table hover {...getTableProps()} id='actions'>
@@ -82,7 +87,7 @@ const ActionTable = ({ actions, updateAction, hiddenColumns }) => {
             ))}
             <td align='center'>
               <CodeSlash className='text-primary mr-3' width='20' height='20' onClick={() => { console.log(row.id) }} />
-              <XCircle className='text-danger' width='20' height='20' onClick={() => { console.log(row.id) }} />
+              <XCircle className='text-danger' width='20' height='20' onClick={() => { removeAction(row.id) }} />
             </td>
           </tr>)
         })}
@@ -101,6 +106,7 @@ ActionTable.propTypes = {
     repeatInterval: PropTypes.number
   }).isRequired).isRequired,
   updateAction: PropTypes.func.isRequired,
-  hiddenColumns: PropTypes.object
+  removeAction: PropTypes.func.isRequired,
+  hiddenColumns: PropTypes.arrayOf(PropTypes.string)
 }
 export default ActionTable

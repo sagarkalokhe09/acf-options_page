@@ -4,9 +4,14 @@ import { ElementUtil } from '@dhruv-techapps/core-common'
 import PropTypes from 'prop-types'
 
 const Batch = ({ batch, selected, setConfigs }) => {
+
+
+  console.log('Batch')
+
   const onChange = (e) => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
     setConfigs(configs => configs.map((config, index) => {
+      console.log('batch')
       if (index === selected) {
         return { ...configs[selected], batch: { ...configs[selected].batch, [name]: value } }
       }
@@ -82,7 +87,7 @@ Batch.propTypes = {
     repeat: PropTypes.number,
     repeatInterval: PropTypes.number
   }),
-  selected: PropTypes.bool.isRequired,
+  selected: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired
 }
-export default Batch
+export default React.memo(Batch)

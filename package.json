@@ -42,8 +42,6 @@
   "devDependencies": {
     "@neutrinojs/jest": "^9.4.0",
     "@neutrinojs/standardjs": "^9.4.0",
-    "eslint": "^7.8.1",
-    "jest": "^26.4.2",
     "neutrino": "^9.4.0",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2"

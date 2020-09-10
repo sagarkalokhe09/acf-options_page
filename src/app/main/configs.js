@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import Config from './config'
 
 import { Row, Col, Button, Form, Dropdown } from 'react-bootstrap'
@@ -12,26 +12,26 @@ import { DropdownToggle } from '../components/dropdown'
 import { getConfigName } from '../util/helper'
 
 const Configs = ({ toastRef }) => {
-  const [configs, setConfigs] = useState([defaultConfig])
+  const [configs, setConfigs] = useState([{ ...defaultConfig }])
   const [selected, setSelected] = useState(0)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setConfigs(LocalStorage.getItem(LocalStorageKey.CONFIGS, [defaultConfig]))
+    setConfigs(LocalStorage.getItem(LocalStorageKey.CONFIGS, [{ ...defaultConfig }]))
     setLoading(false)
   }, [])
 
-  useEffect(() => {
+  useCallback(() => {
     LocalStorage.setItem(LocalStorageKey.CONFIGS, configs)
   }, [configs])
 
   const onChange = (e) => {
-    setSelected(ElementUtil.getValue(e.currentTarget, { selected: selected }))
+    setSelected(ElementUtil.getValue(e.currentTarget))
   }
 
   const addConfig = () => {
     const name = getConfigName(undefined, configs.length)
-    setConfigs([...configs, Object.assign({}, defaultConfig, { name })])
+    setConfigs([...configs, { ...defaultConfig, name }])
     toastRef.current.push({
       body: `New configuration added successfully ${name}`,
       header: <strong className='mr-auto'>Configuration</strong>,
@@ -68,7 +68,7 @@ const Configs = ({ toastRef }) => {
           <Col>
             <Form>
               <Form.Group controlId='selected' className='mb-0'>
-                <Form.Control as='select' custom onChange={onChange}>
+                <Form.Control as='select' custom onChange={onChange} data-type="number">
                   {configs.map((config, index) => <option key={index} value={index}>{config.name}</option>)}
                 </Form.Control>
               </Form.Group>
@@ -89,11 +89,11 @@ const Configs = ({ toastRef }) => {
             </Dropdown>
           </Col>
         </Row>
-        <Config configs={configs} selected={selected} toastRef={toastRef} setConfigs={setConfigs} />
+        <Config config={configs[selected]} selected={selected} toastRef={toastRef} setConfigs={setConfigs} />
       </>}
   </>
 }
 Configs.propTypes = {
-  toastRef: Config.propTypes.toastRef
+  toastRef: Config.type.propTypes.toastRef
 }
 export default Configs
