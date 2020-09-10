@@ -1,5 +1,9 @@
 @import "~bootstrap/scss/bootstrap";
 
-.dropdown-toggle::after{
+.dropdown-toggle::after {
   content: "";
+}
+
+main {
+  position: relative;
 }

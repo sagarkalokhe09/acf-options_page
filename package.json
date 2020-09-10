@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@dhruv-techapps/acf-common": "^0.0.3",
-    "@dhruv-techapps/core-common": "^1.0.3",
-    "@dhruv-techapps/core-components": "^1.0.7",
+    "@dhruv-techapps/acf-common": "^1.0.1",
+    "@dhruv-techapps/core-common": "^1.1.0",
+    "@dhruv-techapps/core-components": "^1.0.10",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -39,6 +39,7 @@
     ]
   },
   "devDependencies": {
-    "node-sass": "^4.14.1"
+    "node-sass": "^4.14.1",
+    "prop-types": "^15.7.2"
   }
 }

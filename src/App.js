@@ -1,18 +1,23 @@
-import React, { createRef } from 'react';
+import React, { useRef } from 'react';
 import './App.scss';
 import Header from "./app/header";
 import Footer from './app/footer';
 import Configs from './app/main/configs';
-import ToastHandler from './app/components/toast-handler';
+import ToastHandler from './app/components/ToastHandler';
+import { Container } from 'react-bootstrap';
 
 function App() {
+  const toastRef = useRef();
 
-  const toastRef = createRef();
   return <>
     <Header />
-    <Configs />
+      <main>
+        <Container>
+          <Configs toastRef={toastRef} />
+        </Container>
+        <ToastHandler ref={toastRef} />
+      </main>
     <Footer />
-    <ToastHandler ref={toastRef} />
   </>;
 }
 
