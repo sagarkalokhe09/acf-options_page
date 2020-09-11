@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ElementUtil } from "@dhruv-techapps/core-common"
+import { ElementUtil } from '@dhruv-techapps/core-common'
 
 // Create an editable cell renderer
 export const EditableCell = ({ value: initialValue, row: { index }, column: { id, dataType }, updateAction }) => {
@@ -21,7 +21,7 @@ export const EditableCell = ({ value: initialValue, row: { index }, column: { id
     setValue(initialValue)
   }, [initialValue])
 
-  return <input value={value || ''} data-type={dataType} name={id} className='form-control' onChange={onChange} onBlur={onBlur} />
+  return <input value={value} data-type={dataType} name={id} className='form-control' onChange={onChange} onBlur={onBlur} />
 }
 
 EditableCell.propTypes = {
@@ -33,7 +33,8 @@ EditableCell.propTypes = {
     index: PropTypes.number.isRequired
   }),
   column: PropTypes.shape({
-    id: PropTypes.string.isRequired
+    id: PropTypes.string.isRequired,
+    dataType: PropTypes.string
   }),
   updateAction: PropTypes.func.isRequired
 }

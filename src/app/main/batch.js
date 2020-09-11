@@ -3,17 +3,14 @@ import { Card, Row, Col, Form, InputGroup, FormControl } from 'react-bootstrap'
 import { ElementUtil } from '@dhruv-techapps/core-common'
 import PropTypes from 'prop-types'
 
-const Batch = ({ batch, selected, setConfigs }) => {
-
-
+const Batch = ({ batch, configIndex, setConfigs }) => {
   console.log('Batch')
-
   const onChange = (e) => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
     setConfigs(configs => configs.map((config, index) => {
-      console.log('batch')
-      if (index === selected) {
-        return { ...configs[selected], batch: { ...configs[selected].batch, [name]: value } }
+      if (index === configIndex) {
+        config.batch = { ...config.batch, [name]: value }
+        return config
       }
       return config
     }))
@@ -50,7 +47,7 @@ const Batch = ({ batch, selected, setConfigs }) => {
               placeholder='0'
               aria-label='0'
               name='repeat'
-              value={batch.repeat || ''}
+              value={batch.repeat}
               data-type='number'
               onChange={onChange}
               aria-describedby='batch-repeat'
@@ -67,7 +64,7 @@ const Batch = ({ batch, selected, setConfigs }) => {
               aria-label='0'
               onChange={onChange}
               data-type='number'
-              value={batch.repeatInterval || ''}
+              value={batch.repeatInterval}
               name='repeatInterval'
               aria-describedby='batch-repeat-interval'
             />
@@ -87,7 +84,7 @@ Batch.propTypes = {
     repeat: PropTypes.number,
     repeatInterval: PropTypes.number
   }),
-  selected: PropTypes.number.isRequired,
+  configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired
 }
 export default React.memo(Batch)

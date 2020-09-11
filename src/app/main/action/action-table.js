@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react'
+import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 
-import './table.scss'
+import './action-table.scss'
 
 import { useTable } from 'react-table'
 import { Table } from 'react-bootstrap'
@@ -10,13 +10,12 @@ import { ReactComponent as XCircle } from 'bootstrap-icons/icons/x-circle.svg'
 import { ReactComponent as CodeSlash } from 'bootstrap-icons/icons/code-slash.svg'
 
 import { EditableCell } from './editable-cell'
+import AddonModal from './addon'
 
-const ActionTable = ({ actions, updateAction, removeAction, hiddenColumns }) => {
-
-  console.log('ActionTable', JSON.stringify(actions), hiddenColumns)
-
+const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenColumns, addonRef }) => {
+  console.log('ActionTable', hiddenColumns)
   const data = React.useMemo(() => actions, [actions])
-
+  const didMountRef = useRef(true)
   // Set our editable cell renderer as the default Cell renderer
   const defaultColumn = {
     Cell: EditableCell
@@ -53,14 +52,32 @@ const ActionTable = ({ actions, updateAction, removeAction, hiddenColumns }) => 
 
   const initialState = { hiddenColumns }
 
+  const updateAction = (rowIndex, columnId, value) => {
+    setConfigs(configs => configs.map((config, index) => {
+      if (index === configIndex) {
+        config.actions = [...config.actions]
+        config.actions[rowIndex][columnId] = value
+        return config
+      }
+      return config
+    }))
+  }
+
   const tableInstance = useTable({ columns, data, defaultColumn, initialState, updateAction })
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, setHiddenColumns } = tableInstance
 
-
-  useCallback(() => {
+  useEffect(() => {
+    if (didMountRef.current) {
+      didMountRef.current = false
+      return
+    }
     setHiddenColumns(hiddenColumns)
   }, [hiddenColumns, setHiddenColumns])
+
+  const showAddon = (row) => {
+    addonRef.current.showAddon(row.id, row.original.addon)
+  }
 
   return <>
     <Table hover {...getTableProps()} id='actions'>
@@ -86,8 +103,8 @@ const ActionTable = ({ actions, updateAction, removeAction, hiddenColumns }) => 
               </td>
             ))}
             <td align='center'>
-              <CodeSlash className='text-primary mr-3' width='20' height='20' onClick={() => { console.log(row.id) }} />
-              <XCircle className='text-danger' width='20' height='20' onClick={() => { removeAction(row.id) }} />
+              <CodeSlash className='text-primary mr-3' width='20' height='20' onClick={() => showAddon(row)} />
+              <XCircle className={actions.length === 1 ? 'text-muted' : 'text-danger'} width='20' height='20' onClick={() => { removeAction(row.id) }} disabled={actions.length === 1} />
             </td>
           </tr>)
         })}
@@ -103,10 +120,17 @@ ActionTable.propTypes = {
     name: PropTypes.string,
     value: PropTypes.string,
     repeat: PropTypes.number,
-    repeatInterval: PropTypes.number
+    repeatInterval: PropTypes.number,
+    addon: AddonModal.type.propTypes.addon
   }).isRequired).isRequired,
-  updateAction: PropTypes.func.isRequired,
+  addonRef: PropTypes.shape({
+    current: PropTypes.shape({
+      showAddon: PropTypes.func
+    })
+  }),
+  configIndex: PropTypes.number.isRequired,
+  setConfigs: PropTypes.func.isRequired,
   removeAction: PropTypes.func.isRequired,
   hiddenColumns: PropTypes.arrayOf(PropTypes.string)
 }
-export default ActionTable
+export default React.memo(ActionTable)

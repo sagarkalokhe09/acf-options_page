@@ -1,31 +1,30 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Card, Row, Col, Dropdown, Button } from 'react-bootstrap'
 import { ReactComponent as FilterRight } from 'bootstrap-icons/icons/filter-right.svg'
 import { DropdownToggle } from '../components/dropdown'
-import { LocalStorage } from "@dhruv-techapps/core-common"
-import ActionTable from './action/table.js'
+import { LocalStorage } from '@dhruv-techapps/core-common'
+import { defaultAction } from '@dhruv-techapps/acf-common'
+import ActionTable from './action/action-table.js'
 import PropTypes from 'prop-types'
 
+const HIDDEN_COLUMN_KEY = 'hiddenColumns'
+const defaultHiddenColumns = ['name', 'initWait', 'repeat', 'repeatInterval']
 
-const HIDDEN_COLUMN_KEY = 'hiddenColumns';
-const defaultHiddenColumns = ['name', 'initWait', 'repeat', 'repeatInterval'];
-
-const Action = ({ actions, selected, setConfigs, toastRef }) => {
+const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
+  console.log('Action')
   const [hiddenColumns, setHiddenColumns] = useState(LocalStorage.getItem(HIDDEN_COLUMN_KEY, defaultHiddenColumns))
-
-  console.log('Action', JSON.stringify(actions), selected, JSON.stringify(toastRef), hiddenColumns)
-
+  const didMountRef = useRef(true)
   const addAction = () => {
-    console.log('action add')
     setConfigs(configs => {
-      console.log(configs)
       return configs.map((config, index) => {
-        console.log(config, index, selected)
-
+        if (index === configIndex) {
+          config.actions = [...config.actions]
+          config.actions.push({ ...defaultAction })
+          return config
+        }
         return config
       })
     })
-    console.log('action added')
     toastRef.current.push({
       body: 'New action added successfully !',
       header: <strong className='mr-auto'>Action</strong>,
@@ -39,27 +38,20 @@ const Action = ({ actions, selected, setConfigs, toastRef }) => {
     setHiddenColumns(hiddenColumns => index !== -1 ? hiddenColumns.filter((_column, _index) => _index !== index) : [...hiddenColumns, column])
   }
 
-  useCallback(() => {
+  useEffect(() => {
+    if (didMountRef.current) {
+      didMountRef.current = false
+      return
+    }
     LocalStorage.setItem(HIDDEN_COLUMN_KEY, hiddenColumns)
   }, [hiddenColumns])
 
-  const updateAction = (rowIndex, columnId, value) => {
-    setConfigs(configs => configs.map((config, index) => {
-      if (index === selected) {
-        let _config = { ...config };
-        _config.actions[rowIndex][columnId] = value;
-        return _config;
-      }
-      return config
-    }))
-  }
-
   const removeAction = (rowIndex) => {
     setConfigs(configs => configs.map((config, index) => {
-      if (index === selected) {
-        let _config = { ...config };
-        _config.actions.splice(rowIndex, 1);
-        return _config;
+      if (index === configIndex) {
+        config.actions = [...config.actions]
+        config.actions.splice(rowIndex, 1)
+        return config
       }
       return config
     }))
@@ -88,14 +80,15 @@ const Action = ({ actions, selected, setConfigs, toastRef }) => {
       </Row>
     </Card.Header>
     <Card.Body>
-      <ActionTable actions={actions} updateAction={updateAction} removeAction={removeAction} hiddenColumns={hiddenColumns} />
+      <ActionTable actions={actions} configIndex={configIndex} setConfigs={setConfigs} removeAction={removeAction} hiddenColumns={hiddenColumns} addonRef={addonRef} />
     </Card.Body>
   </Card>
 }
 Action.propTypes = {
-  actions: ActionTable.propTypes.actions,
-  selected: PropTypes.number.isRequired,
+  actions: ActionTable.type.propTypes.actions,
+  configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
+  addonRef: ActionTable.type.propTypes.addonRef,
   toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired
 }
 export default React.memo(Action)

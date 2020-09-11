@@ -1,5 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+
 import Config from './config'
+import Batch from './batch'
+import Action from './action'
+import AddonModal from './action/addon'
 
 import { Row, Col, Button, Form, Dropdown } from 'react-bootstrap'
 import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg'
@@ -12,16 +16,24 @@ import { DropdownToggle } from '../components/dropdown'
 import { getConfigName } from '../util/helper'
 
 const Configs = ({ toastRef }) => {
+  console.log('Configs')
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
   const [selected, setSelected] = useState(0)
   const [loading, setLoading] = useState(true)
+  const config = configs[selected]
+  const didMountRef = useRef(true)
+  const addonRef = useRef()
 
   useEffect(() => {
     setConfigs(LocalStorage.getItem(LocalStorageKey.CONFIGS, [{ ...defaultConfig }]))
     setLoading(false)
   }, [])
 
-  useCallback(() => {
+  useEffect(() => {
+    if (didMountRef.current) {
+      didMountRef.current = false
+      return
+    }
     LocalStorage.setItem(LocalStorageKey.CONFIGS, configs)
   }, [configs])
 
@@ -68,7 +80,7 @@ const Configs = ({ toastRef }) => {
           <Col>
             <Form>
               <Form.Group controlId='selected' className='mb-0'>
-                <Form.Control as='select' custom onChange={onChange} data-type="number">
+                <Form.Control as='select' custom onChange={onChange} data-type='number'>
                   {configs.map((config, index) => <option key={index} value={index}>{config.name}</option>)}
                 </Form.Control>
               </Form.Group>
@@ -89,11 +101,16 @@ const Configs = ({ toastRef }) => {
             </Dropdown>
           </Col>
         </Row>
-        <Config config={configs[selected]} selected={selected} toastRef={toastRef} setConfigs={setConfigs} />
+        <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} />
+        {config.enable && <>
+          <Batch batch={config.batch} configIndex={selected} setConfigs={setConfigs} />
+          <Action actions={config.actions} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} addonRef={addonRef} />
+          <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
+        </>}
       </>}
   </>
 }
 Configs.propTypes = {
-  toastRef: Config.type.propTypes.toastRef
+  toastRef: Action.type.propTypes.toastRef
 }
 export default Configs

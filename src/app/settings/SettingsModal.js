@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Modal, Form, Card, InputGroup, FormControl, Container, Row, Col } from 'react-bootstrap'
 import { defaultSetting, LoadTypeModel, RetryOptionModel, LocalStorageKey } from '@dhruv-techapps/acf-common'
@@ -8,19 +8,27 @@ import { Loading } from '@dhruv-techapps/core-components'
 const SettingsModal = ({ show, handleClose }) => {
   const [settings, setSettings] = useState(defaultSetting)
   const [loading, setLoading] = useState(true)
+  const didMountRef = useRef(true)
 
   useEffect(() => {
     setSettings(LocalStorage.getItem(LocalStorageKey.SETTINGS, defaultSetting))
     setLoading(false)
   }, [])
 
+  useEffect(() => {
+    if (didMountRef.current) {
+      didMountRef.current = false
+      return
+    }
+    LocalStorage.setItem(LocalStorageKey.SETTINGS, settings)
+  }, [settings])
+
   const onChange = (e) => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
     setSettings({ ...settings, [name]: value })
-    LocalStorage.setItem(LocalStorageKey.SETTINGS, { ...settings, [name]: value })
   }
 
-  return <Modal show={show} onHide={handleClose} size='lg' animation={false}>
+  return <Modal show={show} onHide={handleClose} size='lg'>
     <Modal.Header closeButton>
       <Modal.Title>Settings</Modal.Title>
     </Modal.Header>
