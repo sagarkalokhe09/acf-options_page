@@ -11,7 +11,6 @@ const HIDDEN_COLUMN_KEY = 'hiddenColumns'
 const defaultHiddenColumns = ['name', 'initWait', 'repeat', 'repeatInterval']
 
 const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
-  console.log('Action')
   const [hiddenColumns, setHiddenColumns] = useState(LocalStorage.getItem(HIDDEN_COLUMN_KEY, defaultHiddenColumns))
   const didMountRef = useRef(true)
   const addAction = () => {
@@ -85,10 +84,10 @@ const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
   </Card>
 }
 Action.propTypes = {
-  actions: ActionTable.type.propTypes.actions,
+  actions: ActionTable.propTypes.actions,
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
-  addonRef: ActionTable.type.propTypes.addonRef,
+  addonRef: ActionTable.propTypes.addonRef,
   toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired
 }
 export default React.memo(Action)

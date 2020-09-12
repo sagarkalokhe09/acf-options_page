@@ -5,8 +5,6 @@ import PropTypes from 'prop-types'
 import BatchBody from './batch-body'
 
 const Batch = ({ batch, configIndex, setConfigs }) => {
-  console.log('Batch')
-
   const onChange = (e) => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
     setConfigs(configs => configs.map((config, index) => {

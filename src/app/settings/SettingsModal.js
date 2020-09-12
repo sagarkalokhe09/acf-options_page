@@ -1,31 +1,37 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Form, Card, InputGroup, FormControl, Container, Row, Col } from 'react-bootstrap'
+import { Modal, Form, Card, InputGroup, FormControl, Container, Row, Col, Button } from 'react-bootstrap'
 import { defaultSetting, LoadTypeModel, RetryOptionModel, LocalStorageKey } from '@dhruv-techapps/acf-common'
-import { ElementUtil, LocalStorage } from '@dhruv-techapps/core-common'
+import { LocalStorage } from '@dhruv-techapps/core-common'
 import { Loading } from '@dhruv-techapps/core-components'
+import { useForm } from 'react-hook-form'
+import { REGEX_NUM, REGEX_SEC } from '../util/regex'
+
+const NUMBER_FIELDS = ['retry', 'retryInterval']
 
 const SettingsModal = ({ show, handleClose }) => {
-  const [settings, setSettings] = useState(defaultSetting)
+  const { register, handleSubmit, errors, reset, formState: { isDirty, isValid } } = useForm({
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
+    defaultValues: defaultSetting,
+    shouldFocusError: true
+  })
+
   const [loading, setLoading] = useState(true)
-  const didMountRef = useRef(true)
 
   useEffect(() => {
-    setSettings(LocalStorage.getItem(LocalStorageKey.SETTINGS, defaultSetting))
+    reset(LocalStorage.getItem(LocalStorageKey.SETTINGS, defaultSetting))
     setLoading(false)
-  }, [])
+  }, [reset])
 
-  useEffect(() => {
-    if (didMountRef.current) {
-      didMountRef.current = false
-      return
+  const onSubmit = data => {
+    for (const field in data) {
+      if (NUMBER_FIELDS.indexOf(field) !== -1) {
+        data[field] = Number(data[field])
+      }
     }
-    LocalStorage.setItem(LocalStorageKey.SETTINGS, settings)
-  }, [settings])
-
-  const onChange = (e) => {
-    const { name, value } = ElementUtil.getNameValue(e.currentTarget)
-    setSettings({ ...settings, [name]: value })
+    reset(data)
+    LocalStorage.setItem(LocalStorageKey.SETTINGS, data)
   }
 
   return <Modal show={show} onHide={handleClose} size='lg'>
@@ -34,11 +40,11 @@ const SettingsModal = ({ show, handleClose }) => {
     </Modal.Header>
     <Modal.Body>
       {loading ? <Loading className='d-flex justify-content-center m-5' />
-        : <Form>
+        : <>
           <Card className='mb-2'>
             <Card.Body>
               <Card.Subtitle>
-                <Form.Check id='checkiFrames' name='checkiFrames' checked={settings.checkiFrames} onChange={onChange} label='Check IFrames' />
+                <Form.Check id='checkiFrames' name='checkiFrames' ref={register} label='Check IFrames' />
               </Card.Subtitle>
               <Card.Text className='text-muted'>
                 <small>Check this box if you want to check xPath within iFrames also</small>
@@ -48,7 +54,7 @@ const SettingsModal = ({ show, handleClose }) => {
           <Card className='mb-2'>
             <Card.Body>
               <Card.Subtitle>
-                <Form.Check id='notifications' name='notifications' checked={settings.notifications} onChange={onChange} label='Show Notification' />
+                <Form.Check id='notifications' name='notifications' ref={register} label='Show Notification' />
               </Card.Subtitle>
               <Card.Text className='text-muted'>
                 <small>This is very important feature of extension which tells you if any error occur in extension while executing or if any XPath provided is not found or wrong. Select this option while configuring and uncheck once you have finished configuring.</small>
@@ -58,8 +64,8 @@ const SettingsModal = ({ show, handleClose }) => {
           <Card className='mb-2'>
             <Card.Body>
               <Card.Subtitle>
-                Extension load <Form.Check inline type='radio' name='loadType' id='loadTypeWindow' value={LoadTypeModel.WINDOW} checked={settings.loadType === LoadTypeModel.WINDOW} onChange={onChange} label='Window' />
-                <Form.Check inline type='radio' name='loadType' id='loadTypeDocument' value={LoadTypeModel.DOCUMENT} checked={settings.loadType === LoadTypeModel.DOCUMENT} onChange={onChange} label='Document' />
+                Extension load <Form.Check inline type='radio' name='loadType' id='loadTypeWindow' value={LoadTypeModel.WINDOW} ref={register} label='Window' />
+                <Form.Check inline type='radio' name='loadType' id='loadTypeDocument' value={LoadTypeModel.DOCUMENT} ref={register} label='Document' />
               </Card.Subtitle>
               <small>
                 <ul className='mb-0 mt-2'>
@@ -70,43 +76,55 @@ const SettingsModal = ({ show, handleClose }) => {
             </Card.Body>
           </Card>
           <Card className='mb-2 py-3'>
-            <Container>
-              <Row>
-                <Col md={6} sm={12} className='mb-2 mb-md-0'>
-                  <InputGroup>
-                    <InputGroup.Prepend>
-                      <InputGroup.Text id='retry'>Retry</InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <FormControl placeholder='5' aria-label='5' id='retry' name='retry' data-type='number' aria-describedby='retry' onChange={onChange} value={settings.retry} />
-                  </InputGroup>
-                </Col>
-                <Col md={6} sm={12}>
-                  <InputGroup>
-                    <InputGroup.Prepend>
-                      <InputGroup.Text id='retry-interval'>Retry Interval</InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <FormControl placeholder='1' aria-label='1' id='retryInterval' name='retryInterval' data-type='number' aria-describedby='retry-interval' onChange={onChange} value={settings.retryInterval} />
-                    <InputGroup.Append>
-                      <InputGroup.Text id='retry-interval'>sec</InputGroup.Text>
-                    </InputGroup.Append>
-                  </InputGroup>
-                </Col>
-                <Col xs={12}>
-                  <h6 className='my-2 text-secondary font-weight-light'><small>* Below are action which can be performed if xpath is not found by extension after retry</small></h6>
-                </Col>
-                <Col md={4} sm={12}>
-                  <Form.Check type='radio' name='retryOption' id='retryOptionStop' value={RetryOptionModel.STOP} checked={RetryOptionModel.STOP === settings.retryOption} onChange={onChange} label='Stop' />
-                </Col>
-                <Col md={4} sm={12}>
-                  <Form.Check type='radio' name='retryOption' id='retryOptionSkip' value={RetryOptionModel.SKIP} checked={RetryOptionModel.SKIP === settings.retryOption} onChange={onChange} label='Skip Not Found' />
-                </Col>
-                <Col md={4} sm={12}>
-                  <Form.Check type='radio' name='retryOption' id='retryOptionReload' value={RetryOptionModel.RELOAD} checked={RetryOptionModel.RELOAD === settings.retryOption} onChange={onChange} label='Retry Refresh' />
-                </Col>
-              </Row>
-            </Container>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              <Container>
+                <Row>
+                  <Col md={6} sm={12} className='mb-2 mb-md-0'>
+                    <InputGroup>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text id='retry'>Retry</InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <FormControl
+                        placeholder='5' aria-label='5' id='retry' name='retry' aria-describedby='retry'
+                        ref={register({ pattern: REGEX_NUM })}
+                        isInvalid={errors.retry}
+                      />
+                      <Form.Control.Feedback type='invalid'>{errors.retry && 'Only valid numbers are allowed'}</Form.Control.Feedback>
+                    </InputGroup>
+                  </Col>
+                  <Col md={6} sm={12}>
+                    <InputGroup>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text id='retry-interval'>Retry Interval&nbsp;<small className='text-info'>(sec)</small></InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <FormControl
+                        placeholder='1' aria-label='1' id='retryInterval' name='retryInterval' aria-describedby='retry-interval'
+                        ref={register({ pattern: REGEX_SEC })}
+                        isInvalid={errors.retryInterval}
+                      />
+                      <Form.Control.Feedback type='invalid'>{errors.retryInterval && 'Only valid numbers are allowed'}</Form.Control.Feedback>
+                    </InputGroup>
+                  </Col>
+                  <Col xs={12}>
+                    <h6 className='my-2 text-secondary font-weight-light'><small>* Below are action which can be performed if xpath is not found by extension after retry</small></h6>
+                  </Col>
+                  <Col md={4} sm={12}>
+                    <Form.Check type='radio' name='retryOption' id='retryOptionStop' value={RetryOptionModel.STOP} ref={register} label='Stop' />
+                  </Col>
+                  <Col md={4} sm={12}>
+                    <Form.Check type='radio' name='retryOption' id='retryOptionSkip' value={RetryOptionModel.SKIP} ref={register} label='Skip Not Found' />
+                  </Col>
+                  <Col md={4} sm={12}>
+                    <Form.Check type='radio' name='retryOption' id='retryOptionReload' value={RetryOptionModel.RELOAD} ref={register} label='Retry Refresh' />
+                  </Col>
+                </Row>
+                {isDirty && <div className='d-flex justify-content-end mt-2'>
+                  <Button type='submit' disabled={!isValid}>Save</Button>
+                </div>}
+              </Container>
+            </Form>
           </Card>
-        </Form>}
+        </>}
     </Modal.Body>
   </Modal>
 }

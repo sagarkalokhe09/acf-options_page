@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Card, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { REGEX_NUM, REGEX_SEC } from '../../util/regex'
 const NUMBER_FIELDS = ['repeat', 'repeatInterval']
 const BatchBody = ({ batch, configIndex, setConfigs }) => {
-  console.log('BatchBody')
-  const { register, handleSubmit, errors, reset, formState: { isDirty } } = useForm({
+  const { register, handleSubmit, errors, reset, formState: { isDirty, isValid } } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
     defaultValues: batch,
     shouldFocusError: true
   })
+
+  useEffect(() => {
+    reset(batch)
+  }, [batch, reset])
 
   const onSubmit = data => {
     for (const field in data) {
@@ -66,7 +69,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
         </Col>
       </Row>
       {isDirty && <div className='d-flex justify-content-end mt-2'>
-        <Button type='submit'>Save</Button>
+        <Button type='submit' disabled={!isValid}>Save</Button>
       </div>}
     </Card.Body>
   </Form>

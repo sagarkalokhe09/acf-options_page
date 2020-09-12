@@ -10,8 +10,6 @@ import { DropdownToggle } from './../../components/dropdown'
 import { ElementUtil } from '@dhruv-techapps/core-common'
 import ConfigBody from './config-body'
 const Config = ({ config, configIndex, setConfigs }) => {
-  console.log('Config')
-
   const onChange = (e) => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
     setConfigs(configs => configs.map((config, index) => {

@@ -16,7 +16,6 @@ import { DropdownToggle } from '../components/dropdown'
 import { getConfigName } from '../util/helper'
 
 const Configs = ({ toastRef }) => {
-  console.log('Configs')
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
   const [selected, setSelected] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -53,7 +52,6 @@ const Configs = ({ toastRef }) => {
 
   const removeConfig = () => {
     const name = configs[selected].name
-    console.log(configs.filter((_config, index) => index !== selected))
     setLoading(true)
     setConfigs(configs.filter((_config, index) => index !== selected))
     setSelected(selected => configs.length === 2 ? 0 : selected === 0 ? selected : selected - 1)
@@ -80,7 +78,7 @@ const Configs = ({ toastRef }) => {
           <Col>
             <Form>
               <Form.Group controlId='selected' className='mb-0'>
-                <Form.Control as='select' custom onChange={onChange} data-type='number'>
+                <Form.Control as='select' custom onChange={onChange} value={selected} data-type='number'>
                   {configs.map((config, index) => <option key={index} value={index}>{config.name}</option>)}
                 </Form.Control>
               </Form.Group>

@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import './action-table.scss'
 
 import { useTable } from 'react-table'
-import { Form, Table } from 'react-bootstrap'
+import { Button, Form, Table } from 'react-bootstrap'
 
 import { ReactComponent as XCircle } from 'bootstrap-icons/icons/x-circle.svg'
 import { ReactComponent as CodeSlash } from 'bootstrap-icons/icons/code-slash.svg'
@@ -14,8 +14,17 @@ import AddonModal from './addon'
 import { REGEX_NUM, REGEX_SEC } from '../../util/regex'
 
 const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenColumns, addonRef }) => {
-  console.log('ActionTable', hiddenColumns)
-  const data = React.useMemo(() => actions, [actions])
+  const [data, setData] = useState(actions)
+
+  useEffect(() => {
+    if (didMountRef.current) {
+      didMountRef.current = false
+      return
+    }
+    setData(actions)
+  }, [actions])
+
+  const didUpdateRef = useRef(false)
   const didMountRef = useRef(true)
   // Set our editable cell renderer as the default Cell renderer
   const defaultColumn = {
@@ -58,14 +67,25 @@ const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenCol
   const initialState = { hiddenColumns }
 
   const updateAction = (rowIndex, columnId, value) => {
+    setData(actions => actions.map((action, index) => {
+      if (index === rowIndex) {
+        return { ...action, [columnId]: value }
+      }
+      return action
+    }))
+    didUpdateRef.current = true
+  }
+
+  const saveActions = (e) => {
+    e.preventDefault()
     setConfigs(configs => configs.map((config, index) => {
       if (index === configIndex) {
-        config.actions = [...config.actions]
-        config.actions[rowIndex][columnId] = value
+        config.actions = [...data]
         return config
       }
       return config
     }))
+    didUpdateRef.current = false
   }
 
   const tableInstance = useTable({ columns, data, defaultColumn, initialState, updateAction })
@@ -84,7 +104,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenCol
     addonRef.current.showAddon(row.id, row.original.addon)
   }
 
-  return <Form>
+  return <Form onSubmit={saveActions}>
     <Table hover {...getTableProps()} id='actions'>
       <thead>
         {headerGroups.map((headerGroup, index) => (
@@ -115,6 +135,9 @@ const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenCol
         })}
       </tbody>
     </Table>
+    {didUpdateRef.current && <div className='d-flex justify-content-end mt-2'>
+      <Button type='submit'>Save</Button>
+    </div>}
   </Form>
 }
 
@@ -138,4 +161,4 @@ ActionTable.propTypes = {
   removeAction: PropTypes.func.isRequired,
   hiddenColumns: PropTypes.arrayOf(PropTypes.string)
 }
-export default React.memo(ActionTable)
+export default ActionTable

@@ -6,8 +6,6 @@ import { AddonCondition, defaultAddon } from '@dhruv-techapps/acf-common'
 import { useForm } from 'react-hook-form'
 
 const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
-  console.log('AddonModal')
-
   const { register, handleSubmit, errors, reset, formState: { isDirty } } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',

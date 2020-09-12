@@ -1,17 +1,25 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Card, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { REGEX_SEC, REGEX_START_TIME } from '../../util/regex'
 const NUMBER_FIELDS = ['initWait']
 const ConfigBody = ({ config, configIndex, setConfigs }) => {
-  console.log('ConfigBody')
-  const { register, handleSubmit, errors, reset, formState: { isDirty } } = useForm({
+  const didMountRef = useRef(true)
+  const { register, handleSubmit, errors, reset, formState: { isDirty, isValid } } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
     defaultValues: config,
     shouldFocusError: true
   })
+
+  useEffect(() => {
+    if (didMountRef.current) {
+      didMountRef.current = false
+      return
+    }
+    reset(config)
+  }, [config, reset])
 
   const onSubmit = data => {
     for (const field in data) {
@@ -79,7 +87,7 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
         </Col>
       </Row>
       {isDirty && <div className='d-flex justify-content-end mt-2'>
-        <Button type='submit'>Save</Button>
+        <Button type='submit' disabled={!isValid}>Save</Button>
       </div>}
     </Card.Body>
   </Form>
