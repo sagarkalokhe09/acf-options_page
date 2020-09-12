@@ -1,27 +1,36 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
-import { ElementUtil } from '@dhruv-techapps/core-common'
+import { Form } from 'react-bootstrap'
 
 // Create an editable cell renderer
-export const EditableCell = ({ value: initialValue, row: { index }, column: { id, dataType }, updateAction }) => {
+export const EditableCell = ({ value, row: { index }, column: { id, required, pattern, dataType }, updateAction }) => {
   // We need to keep and update the state of the cell normally
-  const [value, setValue] = React.useState(initialValue)
 
+  const [invalid, setInvalid] = React.useState(false)
+  const input = useRef()
   const onChange = (e) => {
-    setValue(ElementUtil.getValue(e.target))
+    setInvalid(false)
+    const { value } = e.currentTarget
+    if (value) {
+      if (pattern && !pattern.test(value)) {
+        setInvalid(true)
+      }
+    } else if (required) {
+      setInvalid(true)
+    }
   }
 
   // We'll only update the external data when the input is blurred
-  const onBlur = () => {
-    updateAction(index, id, value)
+  const onBlur = (e) => {
+    if (invalid) {
+      input.current.focus()
+    } else {
+      const { value } = e.currentTarget
+      updateAction(index, id, dataType === 'number' ? Number(value) : value)
+    }
   }
 
-  // If the initialValue is changed external, sync it up with our state
-  React.useEffect(() => {
-    setValue(initialValue)
-  }, [initialValue])
-
-  return <input value={value} data-type={dataType} name={id} className='form-control' onChange={onChange} onBlur={onBlur} />
+  return <Form.Control ref={input} defaultValue={value} name={id} onChange={onChange} onBlur={onBlur} isInvalid={invalid} />
 }
 
 EditableCell.propTypes = {
@@ -34,6 +43,8 @@ EditableCell.propTypes = {
   }),
   column: PropTypes.shape({
     id: PropTypes.string.isRequired,
+    required: PropTypes.bool,
+    pattern: PropTypes.instanceOf(RegExp),
     dataType: PropTypes.string
   }),
   updateAction: PropTypes.func.isRequired

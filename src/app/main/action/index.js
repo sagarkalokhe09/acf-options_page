@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Card, Row, Col, Dropdown, Button } from 'react-bootstrap'
 import { ReactComponent as FilterRight } from 'bootstrap-icons/icons/filter-right.svg'
-import { DropdownToggle } from '../components/dropdown'
+import { DropdownToggle } from '../../components/dropdown'
 import { LocalStorage } from '@dhruv-techapps/core-common'
 import { defaultAction } from '@dhruv-techapps/acf-common'
-import ActionTable from './action/action-table.js'
+import ActionTable from './action-table.js'
 import PropTypes from 'prop-types'
 
 const HIDDEN_COLUMN_KEY = 'hiddenColumns'

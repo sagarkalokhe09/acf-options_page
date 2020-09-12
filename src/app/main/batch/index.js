@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Row, Col, Form } from 'react-bootstrap'
 import { ElementUtil } from '@dhruv-techapps/core-common'
 import PropTypes from 'prop-types'
-import BatchBody from './batch/batch-body'
+import BatchBody from './batch-body'
 
 const Batch = ({ batch, configIndex, setConfigs }) => {
   console.log('Batch')

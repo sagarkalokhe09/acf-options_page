@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Button, Card, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
+import { REGEX_NUM, REGEX_SEC } from '../../util/regex'
 const NUMBER_FIELDS = ['repeat', 'repeatInterval']
 const BatchBody = ({ batch, configIndex, setConfigs }) => {
   console.log('BatchBody')
@@ -38,7 +39,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
             </InputGroup.Prepend>
             <FormControl
               name='repeat'
-              ref={register({ pattern: /^[0-9]+$/ })}
+              ref={register({ pattern: REGEX_NUM })}
               isInvalid={!!errors.repeat}
               placeholder='0'
               aria-label='0'
@@ -54,7 +55,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
             </InputGroup.Prepend>
             <FormControl
               name='repeatInterval'
-              ref={register({ pattern: /^[0-9]+\.?[0-9]+$/ })}
+              ref={register({ pattern: REGEX_SEC })}
               isInvalid={!!errors.repeatInterval}
               placeholder='0'
               aria-label='0'

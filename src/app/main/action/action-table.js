@@ -4,13 +4,14 @@ import PropTypes from 'prop-types'
 import './action-table.scss'
 
 import { useTable } from 'react-table'
-import { Table } from 'react-bootstrap'
+import { Form, Table } from 'react-bootstrap'
 
 import { ReactComponent as XCircle } from 'bootstrap-icons/icons/x-circle.svg'
 import { ReactComponent as CodeSlash } from 'bootstrap-icons/icons/code-slash.svg'
 
 import { EditableCell } from './editable-cell'
 import AddonModal from './addon'
+import { REGEX_NUM, REGEX_SEC } from '../../util/regex'
 
 const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenColumns, addonRef }) => {
   console.log('ActionTable', hiddenColumns)
@@ -26,14 +27,16 @@ const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenCol
       Header: 'Init Wait',
       style: { width: '90px' },
       accessor: 'initWait',
-      dataType: 'number'
+      dataType: 'number',
+      pattern: REGEX_SEC
     }, {
       Header: 'Name',
       style: { width: '90px' },
       accessor: 'name'
     }, {
       Header: 'Element',
-      accessor: 'element'
+      accessor: 'element',
+      required: true
     }, {
       Header: 'Value',
       accessor: 'value'
@@ -41,12 +44,14 @@ const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenCol
       Header: 'Repeat',
       style: { width: '90px' },
       accessor: 'repeat',
-      dataType: 'number'
+      dataType: 'number',
+      pattern: REGEX_NUM
     }, {
       Header: 'R-Interval',
       style: { width: '100px' },
       accessor: 'repeatInterval',
-      dataType: 'number'
+      dataType: 'number',
+      pattern: REGEX_SEC
     }
   ], [])
 
@@ -79,7 +84,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenCol
     addonRef.current.showAddon(row.id, row.original.addon)
   }
 
-  return <>
+  return <Form>
     <Table hover {...getTableProps()} id='actions'>
       <thead>
         {headerGroups.map((headerGroup, index) => (
@@ -110,7 +115,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenCol
         })}
       </tbody>
     </Table>
-  </>
+  </Form>
 }
 
 ActionTable.propTypes = {

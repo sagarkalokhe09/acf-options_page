@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Button, Card, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
+import { REGEX_SEC, REGEX_START_TIME } from '../../util/regex'
 const NUMBER_FIELDS = ['initWait']
 const ConfigBody = ({ config, configIndex, setConfigs }) => {
   console.log('ConfigBody')
@@ -57,7 +58,7 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
               <InputGroup.Text id='config-init-wait'>Init Wait&nbsp;<small className='text-info'>(sec)</small></InputGroup.Text>
             </InputGroup.Prepend>
             <FormControl
-              ref={register({ pattern: /^[0-9]+\.?[0-9]+$/ })}
+              ref={register({ pattern: REGEX_SEC })}
               isInvalid={!!errors.initWait} name='initWait' placeholder='0' aria-label='0' aria-describedby='config-init-wait'
             />
             <Form.Control.Feedback type='invalid'>{errors.initWait && 'Only valid numbers are allowed'}</Form.Control.Feedback>
@@ -69,7 +70,7 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
               <InputGroup.Text id='config-start-time'>Start Time&nbsp;<small className='text-info'>(24 hrs)</small></InputGroup.Text>
             </InputGroup.Prepend>
             <FormControl
-              ref={register({ pattern: /^[0-9]{2}:[0-9]{2}:[0-9]{2}$/ })}
+              ref={register({ pattern: REGEX_START_TIME })}
               isInvalid={!!errors.startTime}
               name='startTime' placeholder='hh:mm:ss' aria-label='hh:mm:ss' aria-describedby='config-start-time'
             />

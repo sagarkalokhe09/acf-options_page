@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './config.scss'
-import Batch from './batch'
-import Action from './action'
+import Batch from '../batch'
+import Action from '../action'
 
 import { Card, Form, Row, Col, Dropdown } from 'react-bootstrap'
 import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg'
-import { DropdownToggle } from '../components/dropdown'
+import { DropdownToggle } from './../../components/dropdown'
 import { ElementUtil } from '@dhruv-techapps/core-common'
-import ConfigBody from './config/config-body'
+import ConfigBody from './config-body'
 const Config = ({ config, configIndex, setConfigs }) => {
   console.log('Config')
 
