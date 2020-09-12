@@ -25,7 +25,7 @@ const Configs = ({ toastRef }) => {
   const addonRef = useRef()
 
   useEffect(() => {
-    setConfigs(LocalStorage.getItem(LocalStorageKey.CONFIGS, [{ ...defaultConfig }]))
+    setConfigs(LocalStorage.getItem(LocalStorageKey.CONFIGS, [{ ...defaultConfig, name: 'getautoclicker.com' }]))
     setLoading(false)
   }, [])
 

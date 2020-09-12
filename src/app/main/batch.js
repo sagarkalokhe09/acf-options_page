@@ -1,10 +1,12 @@
 import React from 'react'
-import { Card, Row, Col, Form, InputGroup, FormControl } from 'react-bootstrap'
+import { Card, Row, Col, Form } from 'react-bootstrap'
 import { ElementUtil } from '@dhruv-techapps/core-common'
 import PropTypes from 'prop-types'
+import BatchBody from './batch/batch-body'
 
 const Batch = ({ batch, configIndex, setConfigs }) => {
   console.log('Batch')
+
   const onChange = (e) => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
     setConfigs(configs => configs.map((config, index) => {
@@ -23,58 +25,18 @@ const Batch = ({ batch, configIndex, setConfigs }) => {
           <a target='_blank' rel='noopener noreferrer' href='https://getautoclicker.com/docs/batch'>Batch</a>
         </Col>
         <Col md='auto'>
-          <Form>
-            <Form.Check
-              type='switch'
-              id='batch-refresh'
-              label='Refresh'
-              name='refresh'
-              checked={batch.refresh}
-              onChange={onChange}
-            />
-          </Form>
+          <Form.Check
+            type='switch'
+            id='batch-refresh'
+            label='Refresh'
+            name='refresh'
+            checked={batch.refresh}
+            onChange={onChange}
+          />
         </Col>
       </Row>
     </Card.Header>
-    {!batch.refresh && <Card.Body>
-      <Row>
-        <Col md='6' sm='12'>
-          <InputGroup className='mb-3'>
-            <InputGroup.Prepend>
-              <InputGroup.Text id='batch-repeat'>repeat</InputGroup.Text>
-            </InputGroup.Prepend>
-            <FormControl
-              placeholder='0'
-              aria-label='0'
-              name='repeat'
-              value={batch.repeat}
-              data-type='number'
-              onChange={onChange}
-              aria-describedby='batch-repeat'
-            />
-          </InputGroup>
-        </Col>
-        <Col md='6' sm='12'>
-          <InputGroup className='mb-3'>
-            <InputGroup.Prepend>
-              <InputGroup.Text id='batch-repeat-interval'>R-Interval</InputGroup.Text>
-            </InputGroup.Prepend>
-            <FormControl
-              placeholder='0'
-              aria-label='0'
-              onChange={onChange}
-              data-type='number'
-              value={batch.repeatInterval}
-              name='repeatInterval'
-              aria-describedby='batch-repeat-interval'
-            />
-            <InputGroup.Append>
-              <InputGroup.Text id='batch-repeat-interval'>sec</InputGroup.Text>
-            </InputGroup.Append>
-          </InputGroup>
-        </Col>
-      </Row>
-    </Card.Body>}
+    {!batch.refresh && <BatchBody batch={batch} configIndex={configIndex} setConfigs={setConfigs} />}
   </Card>
 }
 
