@@ -45,17 +45,6 @@ const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
     LocalStorage.setItem(HIDDEN_COLUMN_KEY, hiddenColumns)
   }, [hiddenColumns])
 
-  const removeAction = (rowIndex) => {
-    setConfigs(configs => configs.map((config, index) => {
-      if (index === configIndex) {
-        config.actions = [...config.actions]
-        config.actions.splice(rowIndex, 1)
-        return config
-      }
-      return config
-    }))
-  }
-
   return <Card>
     <Card.Header as='h5'>
       <Row>
@@ -79,7 +68,7 @@ const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
       </Row>
     </Card.Header>
     <Card.Body>
-      <ActionTable actions={actions} configIndex={configIndex} setConfigs={setConfigs} removeAction={removeAction} hiddenColumns={hiddenColumns} addonRef={addonRef} />
+      <ActionTable actions={actions} configIndex={configIndex} setConfigs={setConfigs} hiddenColumns={hiddenColumns} addonRef={addonRef} />
     </Card.Body>
   </Card>
 }

@@ -12,9 +12,11 @@ import { ReactComponent as CodeSlash } from 'bootstrap-icons/icons/code-slash.sv
 import { EditableCell } from './editable-cell'
 import AddonModal from './addon'
 import { REGEX_NUM, REGEX_SEC } from '../../util/regex'
+import ConfirmModel from '../../components/ConfirmModal'
 
-const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenColumns, addonRef }) => {
+const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef }) => {
   const [data, setData] = useState(actions)
+  const confirmRef = useRef()
 
   useEffect(() => {
     if (didMountRef.current) {
@@ -76,6 +78,11 @@ const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenCol
     didUpdateRef.current = true
   }
 
+  const removeAction = (rowIndex) => {
+    setData(actions => actions.filter((_action, index) => index !== rowIndex))
+    didUpdateRef.current = true
+  }
+
   const saveActions = (e) => {
     e.preventDefault()
     setConfigs(configs => configs.map((config, index) => {
@@ -86,6 +93,15 @@ const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenCol
       return config
     }))
     didUpdateRef.current = false
+  }
+
+  const removeActionConfirm = (rowIndex) => {
+    const name = `#${+rowIndex + 1} - ${data[rowIndex].name || data[rowIndex].element || 'row'}`
+    confirmRef.current.confirm({
+      title: 'Remove Action',
+      message: <p>Are you sure to remove <span className='badge badge-danger'>{name}</span> Action?</p>,
+      confirmFunc: removeAction.bind(null, Number(rowIndex))
+    })
   }
 
   const tableInstance = useTable({ columns, data, defaultColumn, initialState, updateAction })
@@ -129,7 +145,9 @@ const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenCol
             ))}
             <td align='center'>
               <CodeSlash className='text-primary mr-3' width='20' height='20' onClick={() => showAddon(row)} />
-              <XCircle className={actions.length === 1 ? 'text-muted' : 'text-danger'} width='20' height='20' onClick={() => { removeAction(row.id) }} disabled={actions.length === 1} />
+              <Button variant='link' className='p-0' onClick={() => { removeActionConfirm(row.id) }} disabled={data.length === 1}>
+                <XCircle className={data.length === 1 ? 'text-muted' : 'text-danger'} width='20' height='20' />
+              </Button>
             </td>
           </tr>)
         })}
@@ -138,6 +156,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, removeAction, hiddenCol
     {didUpdateRef.current && <div className='d-flex justify-content-end mt-2'>
       <Button type='submit'>Save</Button>
     </div>}
+    <ConfirmModel ref={confirmRef} />
   </Form>
 }
 
@@ -158,7 +177,6 @@ ActionTable.propTypes = {
   }),
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
-  removeAction: PropTypes.func.isRequired,
   hiddenColumns: PropTypes.arrayOf(PropTypes.string)
 }
 export default ActionTable

@@ -9,7 +9,7 @@ const Header = () => {
     setShowSettings(false)
   }
 
-  return <Navbar expand='lg' sticky='top'>
+  return <Navbar expand='lg' sticky='top' bg='light'>
     <Navbar.Brand href='#home'>
       <img
         src='./logo64.png'
@@ -22,7 +22,7 @@ const Header = () => {
     <Navbar.Toggle aria-controls='basic-navbar-nav' />
     <Navbar.Collapse id='basic-navbar-nav'>
       <Nav className='mr-auto'>
-        <Nav.Link href='#home' active>Home</Nav.Link>
+        <Nav.Link href='#' active>Home</Nav.Link>
         <Nav.Link href='https://getautoclicker.com/docs/getting-started' target='_blank'>Documentaion</Nav.Link>
         <Nav.Link href='https://getautoclicker.com/blog' target='_blank'>Blog</Nav.Link>
         <Nav.Link href='https://getautoclicker.com/examples/dhruv-techapps.github.io' target='_blank'>Examples</Nav.Link>

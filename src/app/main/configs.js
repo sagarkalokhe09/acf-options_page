@@ -14,6 +14,7 @@ import { Loading } from '@dhruv-techapps/core-components'
 
 import { DropdownToggle } from '../components/dropdown'
 import { getConfigName } from '../util/helper'
+import ConfirmModal from '../components/ConfirmModal'
 
 const Configs = ({ toastRef }) => {
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
@@ -22,6 +23,7 @@ const Configs = ({ toastRef }) => {
   const config = configs[selected]
   const didMountRef = useRef(true)
   const addonRef = useRef()
+  const confirmRef = useRef()
 
   useEffect(() => {
     setConfigs(LocalStorage.getItem(LocalStorageKey.CONFIGS, [{ ...defaultConfig, name: 'getautoclicker.com' }]))
@@ -63,6 +65,15 @@ const Configs = ({ toastRef }) => {
     })
   }
 
+  const removeConfigConfirm = () => {
+    const name = configs[selected].name
+    confirmRef.current.confirm({
+      title: 'Remove Configuration',
+      message: <p>Are you sure to remove <span className='badge badge-danger'>{name}</span> Configuration?</p>,
+      confirmFunc: removeConfig
+    })
+  }
+
   const exportAll = () => {
     console.log('export All')
   }
@@ -94,12 +105,13 @@ const Configs = ({ toastRef }) => {
                 <Dropdown.Item onClick={exportAll}>Export All</Dropdown.Item>
                 <Dropdown.Item onClick={importAll}>Import All</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={removeConfig} className={configs.length === 1 ? 'text-muted' : 'text-danger'} disabled={configs.length === 1}>Remove Configuration</Dropdown.Item>
+                <Dropdown.Item onClick={removeConfigConfirm} className={configs.length === 1 ? 'text-muted' : 'text-danger'} disabled={configs.length === 1}>Remove Configuration</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </Col>
         </Row>
         <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} />
+        <ConfirmModal ref={confirmRef} />
         {config.enable && <>
           <Batch batch={config.batch} configIndex={selected} setConfigs={setConfigs} />
           <Action actions={config.actions} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} addonRef={addonRef} />
