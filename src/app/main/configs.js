@@ -137,8 +137,8 @@ const Configs = ({ toastRef }) => {
               </Dropdown.Menu>
             </Dropdown>
             <div className="custom-file d-none">
-              <input type="file" className="custom-file-input" ref={importFiled} accept=".json" id="import-configuration" onChange={importAll} />
-              <label className="custom-file-label" htmlFor="import-configuration" style={{ fontSize: 1 + 'rem', fontWeight: 400 }}>Import All</label>
+              <input type="file" className="custom-file-input" ref={importFiled} accept=".json" id="import-configurations" onChange={importAll} />
+              <label className="custom-file-label" htmlFor="import-configurations" style={{ fontSize: 1 + 'rem', fontWeight: 400 }}>Import All</label>
             </div>
           </Col>
         </Row>

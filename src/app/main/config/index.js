@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createRef } from 'react'
 import PropTypes from 'prop-types'
 import './config.scss'
 import Batch from '../batch'
@@ -7,9 +7,11 @@ import Action from '../action'
 import { Card, Form, Row, Col, Dropdown } from 'react-bootstrap'
 import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg'
 import { DropdownToggle } from './../../components/dropdown'
-import { ElementUtil } from '@dhruv-techapps/core-common'
+import { ExportService, ImportService, ElementUtil } from '@dhruv-techapps/core-common'
+import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import ConfigBody from './config-body'
-const Config = ({ config, configIndex, setConfigs }) => {
+const Config = ({ config, configIndex, toastRef, setConfigs }) => {
+  const importFiled = createRef()
   const onChange = (e) => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
     setConfigs(configs => configs.map((config, index) => {
@@ -21,11 +23,33 @@ const Config = ({ config, configIndex, setConfigs }) => {
   }
 
   const exportConfig = () => {
-    console.log('export')
+    ExportService.export(config.name, config).catch(error => {
+      toastRef.current.push({
+        body: JSON.stringify(error),
+        header: <strong className='mr-auto'>Export Error</strong>,
+        bodyClass: 'text-danger'
+      })
+    })
   }
 
-  const importConfig = () => {
-    console.log('import')
+  const importConfig = (e) => {
+    var files = e.currentTarget.files
+    if (files.length <= 0) {
+      return false
+    }
+    var fr = new FileReader()
+    fr.onload = function (e) {
+      try {
+        ImportService.import(JSON.parse(e.target.result), LOCAL_STORAGE_KEY.CONFIGS)
+      } catch (error) {
+        toastRef.current.push({
+          body: JSON.stringify(error),
+          header: <strong className='mr-auto'>Import Error</strong>,
+          bodyClass: 'text-danger'
+        })
+      }
+    }
+    fr.readAsText(files.item(0))
   }
 
   return <Card className='mb-3'>
@@ -42,9 +66,13 @@ const Config = ({ config, configIndex, setConfigs }) => {
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item href='#/action-1' onClick={exportConfig}>Export</Dropdown.Item>
-              <Dropdown.Item href='#/action-2' onClick={importConfig}>Import</Dropdown.Item>
+              <Dropdown.Item href='#/action-2' onClick={_ => importFiled.current.click()}>Import</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
+          <div className="custom-file d-none">
+            <input type="file" className="custom-file-input" ref={importFiled} accept=".json" id="import-configuration" onChange={importConfig} />
+            <label className="custom-file-label" htmlFor="import-configuration" style={{ fontSize: 1 + 'rem', fontWeight: 400 }}>Import</label>
+          </div>
         </Col>
       </Row>
     </Card.Header>
@@ -55,6 +83,7 @@ const Config = ({ config, configIndex, setConfigs }) => {
 Config.propTypes = {
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
+  toastRef: Action.type.propTypes.toastRef,
   config: PropTypes.shape({
     enable: PropTypes.bool.isRequired,
     name: PropTypes.string,
