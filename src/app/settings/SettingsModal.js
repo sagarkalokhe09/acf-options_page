@@ -21,11 +21,9 @@ const SettingsModal = ({ show, handleClose }) => {
   const [error, setError] = useState()
 
   useEffect(() => {
-    StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS, defaultSetting).then(settings => {
-      reset(settings)
-    }).catch(setError).finally(_ => {
-      setLoading(false)
-    })
+    StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS, defaultSetting).then(_settings => {
+      reset(_settings)
+    }).catch(setError).finally(_ => setLoading(false))
   }, [reset])
 
   const onSubmit = data => {
@@ -36,9 +34,7 @@ const SettingsModal = ({ show, handleClose }) => {
     }
     StorageService.setItem(LOCAL_STORAGE_KEY.SETTINGS, data).then(_ => {
       reset(data)
-    }).catch(setError).finally(_ => {
-      setLoading(false)
-    })
+    }).catch(setError).finally(_ => setLoading(false))
   }
 
   return <Modal show={show} onHide={handleClose} size='lg'>
@@ -47,7 +43,7 @@ const SettingsModal = ({ show, handleClose }) => {
     </Modal.Header>
     <Modal.Body>
       {loading ? <Loading className='d-flex justify-content-center m-5' />
-        : error ? <Alert variant='danger'><Alert.Heading>Error</Alert.Heading>{error}</Alert> : <>
+        : error ? <Alert variant='danger'><Alert.Heading>Error</Alert.Heading>{JSON.stringify(error)}</Alert> : <>
           <Card className='mb-2'>
             <Card.Body>
               <Card.Subtitle>
