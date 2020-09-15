@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Modal, Form, Card, InputGroup, FormControl, Container, Row, Col, Button } from 'react-bootstrap'
-import { defaultSetting, LoadTypeModel, RetryOptionModel, LocalStorageKey } from '@dhruv-techapps/acf-common'
+import { defaultSetting, LOAD_TYPES, RETRY_OPTIONS, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { LocalStorage } from '@dhruv-techapps/core-common'
 import { Loading } from '@dhruv-techapps/core-components'
 import { useForm } from 'react-hook-form'
 import { REGEX_NUM, REGEX_SEC } from '../util/regex'
+
+import { StorageService } from './../services'
 
 const NUMBER_FIELDS = ['retry', 'retryInterval']
 
@@ -20,7 +22,9 @@ const SettingsModal = ({ show, handleClose }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    reset(LocalStorage.getItem(LocalStorageKey.SETTINGS, defaultSetting))
+    console.log(process.env.REACT_APP_CHROME_EXTENSION_ID)
+    StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS, defaultSetting)
+    reset(LocalStorage.getItem(LOCAL_STORAGE_KEY.SETTINGS, defaultSetting))
     setLoading(false)
   }, [reset])
 
@@ -31,7 +35,7 @@ const SettingsModal = ({ show, handleClose }) => {
       }
     }
     reset(data)
-    LocalStorage.setItem(LocalStorageKey.SETTINGS, data)
+    LocalStorage.setItem(LOCAL_STORAGE_KEY.SETTINGS, data)
   }
 
   return <Modal show={show} onHide={handleClose} size='lg'>
@@ -64,8 +68,8 @@ const SettingsModal = ({ show, handleClose }) => {
           <Card className='mb-2'>
             <Card.Body>
               <Card.Subtitle>
-                Extension load <Form.Check inline type='radio' name='loadType' id='loadTypeWindow' value={LoadTypeModel.WINDOW} ref={register} label='Window' />
-                <Form.Check inline type='radio' name='loadType' id='loadTypeDocument' value={LoadTypeModel.DOCUMENT} ref={register} label='Document' />
+                Extension load <Form.Check inline type='radio' name='loadType' id='loadTypeWindow' value={LOAD_TYPES.WINDOW} ref={register} label='Window' />
+                <Form.Check inline type='radio' name='loadType' id='loadTypeDocument' value={LOAD_TYPES.DOCUMENT} ref={register} label='Document' />
               </Card.Subtitle>
               <small>
                 <ul className='mb-0 mt-2'>
@@ -109,13 +113,13 @@ const SettingsModal = ({ show, handleClose }) => {
                     <h6 className='my-2 text-secondary font-weight-light'><small>* Below are action which can be performed if xpath is not found by extension after retry</small></h6>
                   </Col>
                   <Col md={4} sm={12}>
-                    <Form.Check type='radio' name='retryOption' id='retryOptionStop' value={RetryOptionModel.STOP} ref={register} label='Stop' />
+                    <Form.Check type='radio' name='retryOption' id='retryOptionStop' value={RETRY_OPTIONS.STOP} ref={register} label='Stop' />
                   </Col>
                   <Col md={4} sm={12}>
-                    <Form.Check type='radio' name='retryOption' id='retryOptionSkip' value={RetryOptionModel.SKIP} ref={register} label='Skip Not Found' />
+                    <Form.Check type='radio' name='retryOption' id='retryOptionSkip' value={RETRY_OPTIONS.SKIP} ref={register} label='Skip Not Found' />
                   </Col>
                   <Col md={4} sm={12}>
-                    <Form.Check type='radio' name='retryOption' id='retryOptionReload' value={RetryOptionModel.RELOAD} ref={register} label='Retry Refresh' />
+                    <Form.Check type='radio' name='retryOption' id='retryOptionReload' value={RETRY_OPTIONS.RELOAD} ref={register} label='Retry Refresh' />
                   </Col>
                 </Row>
                 {isDirty && <div className='d-flex justify-content-end mt-2'>

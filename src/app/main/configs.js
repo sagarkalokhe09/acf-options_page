@@ -8,7 +8,7 @@ import AddonModal from './action/addon'
 import { Row, Col, Button, Form, Dropdown } from 'react-bootstrap'
 import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg'
 
-import { defaultConfig, LocalStorageKey } from '@dhruv-techapps/acf-common'
+import { defaultConfig, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { LocalStorage, ElementUtil } from '@dhruv-techapps/core-common'
 import { Loading } from '@dhruv-techapps/core-components'
 
@@ -26,7 +26,7 @@ const Configs = ({ toastRef }) => {
   const confirmRef = useRef()
 
   useEffect(() => {
-    setConfigs(LocalStorage.getItem(LocalStorageKey.CONFIGS, [{ ...defaultConfig, name: 'getautoclicker.com' }]))
+    setConfigs(LocalStorage.getItem(LOCAL_STORAGE_KEY.CONFIGS, [{ ...defaultConfig, name: 'getautoclicker.com' }]))
     setLoading(false)
   }, [])
 
@@ -35,7 +35,7 @@ const Configs = ({ toastRef }) => {
       didMountRef.current = false
       return
     }
-    LocalStorage.setItem(LocalStorageKey.CONFIGS, configs)
+    LocalStorage.setItem(LOCAL_STORAGE_KEY.CONFIGS, configs)
   }, [configs])
 
   const onChange = (e) => {

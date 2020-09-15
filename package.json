@@ -2,9 +2,10 @@
   "name": "acf-options_page",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
-    "@dhruv-techapps/acf-common": "^1.0.2",
-    "@dhruv-techapps/core-common": "^1.1.0",
+    "@dhruv-techapps/acf-common": "^1.0.4",
+    "@dhruv-techapps/core-common": "^1.1.15",
     "@dhruv-techapps/core-components": "^1.0.10",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -41,9 +42,12 @@
     ]
   },
   "devDependencies": {
-    "@neutrinojs/jest": "^9.4.0",
-    "@neutrinojs/standardjs": "^9.4.0",
-    "neutrino": "^9.4.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-standard": "^4.0.1",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2"
   }

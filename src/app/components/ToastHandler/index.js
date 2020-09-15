@@ -29,5 +29,5 @@ const ToastHandler = forwardRef((props, ref) => {
     })}
   </div>
 })
-
+ToastHandler.displayName = 'ToastHandler'
 export default ToastHandler

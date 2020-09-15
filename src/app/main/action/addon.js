@@ -2,7 +2,7 @@ import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
 import { Modal, Form, Container, Row, Col, Button } from 'react-bootstrap'
-import { AddonCondition, defaultAddon } from '@dhruv-techapps/acf-common'
+import { ADDON_CONDITIONS, defaultAddon } from '@dhruv-techapps/acf-common'
 import { useForm } from 'react-hook-form'
 
 const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
@@ -58,7 +58,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
               <Form.Group controlId='addon-condition' className='mb-0'>
                 <Form.Label>Condition</Form.Label>
                 <Form.Control as='select' custom ref={register({ required: true })} isInvalid={!!errors.condition} name='condition'>
-                  {Object.entries(AddonCondition).map((condition, index) => <option key={index} value={condition[1]}>{condition[0]}</option>)}
+                  {Object.entries(ADDON_CONDITIONS).map((condition, index) => <option key={index} value={condition[1]}>{condition[0]}</option>)}
                 </Form.Control>
                 <Form.Control.Feedback type='invalid'>{errors.condition && 'Condition is required'}</Form.Control.Feedback>
               </Form.Group>

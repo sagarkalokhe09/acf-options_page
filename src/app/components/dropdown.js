@@ -10,6 +10,7 @@ export const DropdownToggle = React.forwardRef(({ children, onClick }, ref) => {
 
   return <button type='button' className='btn p-1' data-toggle='dropdown' ref={ref} onClick={DropdownToggleOnclick}>{children}</button>
 })
+DropdownToggle.displayName = 'ParDropdownToggleagraph'
 DropdownToggle.propTypes = {
   children: PropTypes.element.isRequired,
   onClick: PropTypes.func.isRequired
