@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Form, Card, InputGroup, FormControl, Container, Row, Col, Button } from 'react-bootstrap'
+import { Modal, Form, Card, InputGroup, FormControl, Container, Row, Col, Button, Alert } from 'react-bootstrap'
 import { defaultSetting, LOAD_TYPES, RETRY_OPTIONS, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
-import { LocalStorage } from '@dhruv-techapps/core-common'
+import { StorageService } from '@dhruv-techapps/core-common'
 import { Loading } from '@dhruv-techapps/core-components'
 import { useForm } from 'react-hook-form'
 import { REGEX_NUM, REGEX_SEC } from '../util/regex'
-
-import { StorageService } from './../services'
 
 const NUMBER_FIELDS = ['retry', 'retryInterval']
 
@@ -20,12 +18,14 @@ const SettingsModal = ({ show, handleClose }) => {
   })
 
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState()
 
   useEffect(() => {
-    console.log(process.env.REACT_APP_CHROME_EXTENSION_ID)
-    StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS, defaultSetting)
-    reset(LocalStorage.getItem(LOCAL_STORAGE_KEY.SETTINGS, defaultSetting))
-    setLoading(false)
+    StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS, defaultSetting).then(settings => {
+      reset(settings)
+    }).catch(setError).finally(_ => {
+      setLoading(false)
+    })
   }, [reset])
 
   const onSubmit = data => {
@@ -34,8 +34,11 @@ const SettingsModal = ({ show, handleClose }) => {
         data[field] = Number(data[field])
       }
     }
-    reset(data)
-    LocalStorage.setItem(LOCAL_STORAGE_KEY.SETTINGS, data)
+    StorageService.setItem(LOCAL_STORAGE_KEY.SETTINGS, data).then(_ => {
+      reset(data)
+    }).catch(setError).finally(_ => {
+      setLoading(false)
+    })
   }
 
   return <Modal show={show} onHide={handleClose} size='lg'>
@@ -44,7 +47,7 @@ const SettingsModal = ({ show, handleClose }) => {
     </Modal.Header>
     <Modal.Body>
       {loading ? <Loading className='d-flex justify-content-center m-5' />
-        : <>
+        : error ? <Alert variant='danger'><Alert.Heading>Error</Alert.Heading>{error}</Alert> : <>
           <Card className='mb-2'>
             <Card.Body>
               <Card.Subtitle>

@@ -4,6 +4,8 @@ import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
+window.react_env = process.env
+
 ReactDOM.render(
   <App />,
   document.getElementById('root')
