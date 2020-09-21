@@ -16,6 +16,7 @@ import ConfirmModel from '../../components/ConfirmModal'
 
 const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef, didUpdateRef, toastRef }) => {
   const [data, setData] = useState(actions)
+  const [error, setError] = useState()
   const confirmRef = useRef()
 
   useEffect(() => {
@@ -84,19 +85,38 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
 
   const saveActions = (e) => {
     e.preventDefault()
-    setConfigs(configs => configs.map((config, index) => {
-      if (index === configIndex) {
-        config.actions = [...data]
+    setError()
+    if (_validateActions()) {
+      setConfigs(configs => configs.map((config, index) => {
+        if (index === configIndex) {
+          config.actions = [...data]
+          return config
+        }
         return config
+      }))
+      didUpdateRef.current = false
+      toastRef.current.push({
+        body: 'Actions saved successfully !',
+        header: <strong className='mr-auto'>Actions</strong>,
+        bodyClass: 'text-success'
+      })
+    } else {
+      setError('Actions element cant be empty')
+    }
+  }
+
+  const _validateActions = () => {
+    let isValid = true
+    data.forEach(action => {
+      if (!action.element) {
+        if (!action.errors) {
+          action.errors = []
+        }
+        action.errors.push('element')
+        isValid = false
       }
-      return config
-    }))
-    didUpdateRef.current = false
-    toastRef.current.push({
-      body: 'Actions saved successfully !',
-      header: <strong className='mr-auto'>Actions</strong>,
-      bodyClass: 'text-success'
     })
+    return isValid
   }
 
   const removeActionConfirm = (rowIndex) => {
@@ -131,7 +151,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
           <tr {...headerGroup.getHeaderGroupProps()} key={index}>
             {headerGroup.headers.map((column, index) => (
               <th {...column.getHeaderProps([{ style: column.style }])} key={index}>
-                {column.render('Header')}
+                {column.render('Header')} {column.required && <small className="text-danger">*</small>}
               </th>
             ))}
             <th style={{ width: '80px' }} />
@@ -157,7 +177,8 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
         })}
       </tbody>
     </Table>
-    {didUpdateRef.current && <div className='d-flex justify-content-end mt-2'>
+    {didUpdateRef.current && <div className='d-flex justify-content-end align-items-center mt-2'>
+      <span className="text-danger mr-3">{error}</span>
       <Button type='submit'>Save</Button>
     </div>}
     <ConfirmModel ref={confirmRef} />
