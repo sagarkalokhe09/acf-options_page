@@ -14,7 +14,7 @@ import AddonModal from './addon'
 import { REGEX_NUM, REGEX_SEC } from '../../util/regex'
 import ConfirmModel from '../../components/ConfirmModal'
 
-const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef }) => {
+const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef, didUpdateRef, toastRef }) => {
   const [data, setData] = useState(actions)
   const confirmRef = useRef()
 
@@ -26,7 +26,6 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
     setData(actions)
   }, [actions])
 
-  const didUpdateRef = useRef(false)
   const didMountRef = useRef(true)
   // Set our editable cell renderer as the default Cell renderer
   const defaultColumn = {
@@ -93,6 +92,11 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
       return config
     }))
     didUpdateRef.current = false
+    toastRef.current.push({
+      body: 'Actions saved successfully !',
+      header: <strong className='mr-auto'>Actions</strong>,
+      bodyClass: 'text-success'
+    })
   }
 
   const removeActionConfirm = (rowIndex) => {
@@ -170,11 +174,13 @@ ActionTable.propTypes = {
     repeatInterval: PropTypes.number,
     addon: AddonModal.type.propTypes.addon
   }).isRequired).isRequired,
-  addonRef: PropTypes.shape({
+  didUpdateRef: PropTypes.shape({
     current: PropTypes.shape({
       showAddon: PropTypes.func
     })
   }),
+  toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired,
+  addonRef: PropTypes.shape({ current: PropTypes.bool }),
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
   hiddenColumns: PropTypes.arrayOf(PropTypes.string)

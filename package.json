@@ -4,8 +4,8 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@dhruv-techapps/acf-common": "^1.0.4",
-    "@dhruv-techapps/core-common": "^1.1.22",
+    "@dhruv-techapps/acf-common": "^1.0.5",
+    "@dhruv-techapps/core-common": "^1.1.29",
     "@dhruv-techapps/core-components": "^1.0.10",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -15,9 +15,9 @@
     "react": "^16.13.1",
     "react-bootstrap": "^1.3.0",
     "react-dom": "^16.13.1",
-    "react-hook-form": "^6.8.2",
+    "react-hook-form": "^6.8.3",
     "react-scripts": "3.4.3",
-    "react-table": "^7.5.0"
+    "react-table": "^7.5.1"
   },
   "scripts": {
     "start": "react-scripts start",

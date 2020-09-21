@@ -13,6 +13,7 @@ const defaultHiddenColumns = ['name', 'initWait', 'repeat', 'repeatInterval']
 const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
   const [hiddenColumns, setHiddenColumns] = useState(LocalStorage.getItem(HIDDEN_COLUMN_KEY, defaultHiddenColumns))
   const didMountRef = useRef(true)
+  const didUpdateRef = useRef(false)
   const addAction = () => {
     setConfigs(configs => {
       return configs.map((config, index) => {
@@ -24,11 +25,7 @@ const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
         return config
       })
     })
-    toastRef.current.push({
-      body: 'New action added successfully !',
-      header: <strong className='mr-auto'>Action</strong>,
-      bodyClass: 'text-success'
-    })
+    didUpdateRef.current = true
   }
 
   const onColumnChange = (e) => {
@@ -68,7 +65,7 @@ const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
       </Row>
     </Card.Header>
     <Card.Body>
-      <ActionTable actions={actions} configIndex={configIndex} setConfigs={setConfigs} hiddenColumns={hiddenColumns} addonRef={addonRef} />
+      <ActionTable didUpdateRef={didUpdateRef} toastRef={toastRef} actions={actions} configIndex={configIndex} setConfigs={setConfigs} hiddenColumns={hiddenColumns} addonRef={addonRef} />
     </Card.Body>
   </Card>
 }
@@ -77,6 +74,6 @@ Action.propTypes = {
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
   addonRef: ActionTable.propTypes.addonRef,
-  toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired
+  toastRef: ActionTable.propTypes.toastRef
 }
 export default React.memo(Action)

@@ -9,7 +9,7 @@ const Header = () => {
     setShowSettings(false)
   }
 
-  return <Navbar expand='lg' sticky='top' bg='light'>
+  return <Navbar expand='lg' variant="light" bg="light" sticky='top' className="border-bottom">
     <Navbar.Brand href='#home'>
       <img
         src='./logo64.png'
@@ -21,13 +21,14 @@ const Header = () => {
     </Navbar.Brand>
     <Navbar.Toggle aria-controls='basic-navbar-nav' />
     <Navbar.Collapse id='basic-navbar-nav'>
-      <Nav className='mr-auto'>
-        <Nav.Link href='#' active>Home</Nav.Link>
-        <Nav.Link href='https://getautoclicker.com/docs/getting-started' target='_blank'>Documentaion</Nav.Link>
-        <Nav.Link href='https://getautoclicker.com/blog' target='_blank'>Blog</Nav.Link>
-        <Nav.Link href='https://getautoclicker.com/examples/dhruv-techapps.github.io' target='_blank'>Examples</Nav.Link>
+      <Nav className="mr-auto">
       </Nav>
       <Form inline>
+        <Nav className="mr-2">
+          <Nav.Link href='https://getautoclicker.com/docs/getting-started' target='_blank'>Documentaion</Nav.Link>
+          <Nav.Link href='https://getautoclicker.com/blog' target='_blank'>Blog</Nav.Link>
+          <Nav.Link href='https://getautoclicker.com/examples/dhruv-techapps.github.io' target='_blank'>Examples</Nav.Link>
+        </Nav>
         <GearFill width='24' height='24' onClick={() => setShowSettings(true)} />
         <SettingsModal show={showSettings} handleClose={handleClose} />
       </Form>
