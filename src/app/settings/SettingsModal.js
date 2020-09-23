@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Form, Card, InputGroup, FormControl, Container, Row, Col, Button, Alert } from 'react-bootstrap'
+import { Modal, Form, Card, InputGroup, FormControl, Row, Col, Button, Alert } from 'react-bootstrap'
 import { defaultSetting, LOAD_TYPES, RETRY_OPTIONS, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { StorageService } from '@dhruv-techapps/core-common'
 import { Loading } from '@dhruv-techapps/core-components'
@@ -78,9 +78,9 @@ const SettingsModal = ({ show, handleClose }) => {
               </small>
             </Card.Body>
           </Card>
-          <Card className='mb-2 py-3'>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-              <Container>
+          <Card className='mb-2'>
+            <Card.Body>
+              <Form onSubmit={handleSubmit(onSubmit)}>
                 <Row>
                   <Col md={6} sm={12} className='mb-2 mb-md-0'>
                     <InputGroup>
@@ -124,8 +124,8 @@ const SettingsModal = ({ show, handleClose }) => {
                 {isDirty && <div className='d-flex justify-content-end mt-2'>
                   <Button type='submit' disabled={!isValid}>Save</Button>
                 </div>}
-              </Container>
-            </Form>
+              </Form>
+            </Card.Body>
           </Card>
         </>}
     </Modal.Body>

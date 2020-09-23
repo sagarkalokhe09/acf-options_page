@@ -5,7 +5,7 @@ import Batch from './batch'
 import Action from './action'
 import AddonModal from './action/addon'
 
-import { Row, Col, Button, Form, Dropdown, Alert } from 'react-bootstrap'
+import { Row, Col, Button, Form, Dropdown, Alert, Card } from 'react-bootstrap'
 import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg'
 
 import { defaultConfig, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
@@ -113,35 +113,39 @@ const Configs = ({ toastRef }) => {
   return <>
     {loading ? <Loading className='d-flex justify-content-center m-5' />
       : error ? <Alert variant='danger'><Alert.Heading>Error</Alert.Heading>{JSON.stringify(error)}</Alert> : <>
-        <Row className='mb-3'>
-          <Col>
-            <Form>
-              <Form.Group controlId='selected' className='mb-0'>
-                <Form.Control as='select' custom onChange={onChange} value={selected} data-type='number'>
-                  {configs.map((config, index) => <option key={index} value={index}>{config.name}</option>)}
-                </Form.Control>
-              </Form.Group>
-            </Form>
-          </Col>
-          <Col md='auto' className='d-flex align-items-center'>
-            <Button type='button' variant='success' onClick={addConfig}>Add Configuration</Button>
-            <Dropdown className='ml-3 mr-3' alignRight>
-              <Dropdown.Toggle as={DropdownToggle} id='dropdown-basic'>
-                <ThreeDotsVertical width='24' height='24' />
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={exportAll}>Export All</Dropdown.Item>
-                <Dropdown.Item onClick={_ => importFiled.current.click()}>Import All</Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item onClick={removeConfigConfirm} className={configs.length === 1 ? 'text-muted' : 'text-danger'} disabled={configs.length === 1}>Remove Configuration</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-            <div className="custom-file d-none">
-              <input type="file" className="custom-file-input" ref={importFiled} accept=".json" id="import-configurations" onChange={importAll} />
-              <label className="custom-file-label" htmlFor="import-configurations" style={{ fontSize: 1 + 'rem', fontWeight: 400 }}>Import All</label>
-            </div>
-          </Col>
-        </Row>
+        <Card className='mb-3'>
+          <Card.Body>
+            <Row >
+              <Col>
+                <Form>
+                  <Form.Group controlId='selected' className='mb-0'>
+                    <Form.Control as='select' custom onChange={onChange} value={selected} data-type='number'>
+                      {configs.map((config, index) => <option key={index} value={index}>{config.name}</option>)}
+                    </Form.Control>
+                  </Form.Group>
+                </Form>
+              </Col>
+              <Col md='auto' className='d-flex align-items-center'>
+                <Button type='button' variant='success' onClick={addConfig}>Add Configuration</Button>
+                <Dropdown className='ml-3' alignRight>
+                  <Dropdown.Toggle as={DropdownToggle} id='dropdown-basic'>
+                    <ThreeDotsVertical width='24' height='24' />
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={exportAll}>Export All</Dropdown.Item>
+                    <Dropdown.Item onClick={_ => importFiled.current.click()}>Import All</Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item onClick={removeConfigConfirm} className={configs.length === 1 ? 'text-muted' : 'text-danger'} disabled={configs.length === 1}>Remove Configuration</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+                <div className="custom-file d-none">
+                  <input type="file" className="custom-file-input" ref={importFiled} accept=".json" id="import-configurations" onChange={importAll} />
+                  <label className="custom-file-label" htmlFor="import-configurations" style={{ fontSize: 1 + 'rem', fontWeight: 400 }}>Import All</label>
+                </div>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
         <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} />
         <ConfirmModal ref={confirmRef} />
         {config.enable && <>

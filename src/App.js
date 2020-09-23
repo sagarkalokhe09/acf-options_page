@@ -15,16 +15,14 @@ function App () {
     NotificationsService.notify({ title: 'Load', message: 'page loaded successfully' })
   }, [])
 
-  return <>
+  return <Container>
     <Header />
     <main>
-      <Container>
-        <Configs toastRef={toastRef} />
-      </Container>
-      <ToastHandler ref={toastRef} />
+      <Configs toastRef={toastRef} />
     </main>
     <Footer />
-  </>
+    <ToastHandler ref={toastRef} />
+  </Container>
 }
 
 export default App

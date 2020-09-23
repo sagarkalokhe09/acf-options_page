@@ -13,6 +13,8 @@ import { EditableCell } from './editable-cell'
 import AddonModal from './addon'
 import { REGEX_NUM, REGEX_SEC } from '../../util/regex'
 import ConfirmModel from '../../components/ConfirmModal'
+import { ElementFinderPopover } from '../../popover/element-finder.popover'
+import { ValuePopover } from '../../popover/value.popover'
 
 const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef, didUpdateRef, toastRef }) => {
   const [data, setData] = useState(actions)
@@ -45,7 +47,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
       style: { width: '90px' },
       accessor: 'name'
     }, {
-      Header: 'Element',
+      Header: 'Element Finder',
       accessor: 'element',
       required: true
     }, {
@@ -123,7 +125,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
     const name = `#${+rowIndex + 1} - ${data[rowIndex].name || data[rowIndex].element || 'row'}`
     confirmRef.current.confirm({
       title: 'Remove Action',
-      message: <p>Are you sure to remove <span className='badge badge-danger'>{name}</span> Action?</p>,
+      message: <p>Are you sure to remove <span className='codecode-danger'>{name}</span> Action?</p>,
       confirmFunc: removeAction.bind(null, Number(rowIndex))
     })
   }
@@ -145,13 +147,15 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
   }
 
   return <Form onSubmit={saveActions}>
-    <Table hover {...getTableProps()} id='actions'>
+    <Table hover {...getTableProps()} id='actions' borderless>
       <thead>
         {headerGroups.map((headerGroup, index) => (
           <tr {...headerGroup.getHeaderGroupProps()} key={index}>
             {headerGroup.headers.map((column, index) => (
               <th {...column.getHeaderProps([{ style: column.style }])} key={index}>
                 {column.render('Header')} {column.required && <small className="text-danger">*</small>}
+                {column.Header === 'Element Finder' && <ElementFinderPopover/>}
+                {column.Header === 'Value' && <ValuePopover/>}
               </th>
             ))}
             <th style={{ width: '80px' }} />
@@ -196,9 +200,7 @@ ActionTable.propTypes = {
     addon: AddonModal.type.propTypes.addon
   }).isRequired).isRequired,
   didUpdateRef: PropTypes.shape({
-    current: PropTypes.shape({
-      showAddon: PropTypes.func
-    })
+    current: PropTypes.bool
   }),
   toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired,
   addonRef: PropTypes.shape({ current: PropTypes.bool }),

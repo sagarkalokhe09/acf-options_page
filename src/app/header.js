@@ -1,23 +1,38 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navbar, Nav, Form } from 'react-bootstrap'
 import { ReactComponent as GearFill } from 'bootstrap-icons/icons/gear-fill.svg'
 import SettingsModal from './settings/SettingsModal'
 
 const Header = () => {
   const [showSettings, setShowSettings] = useState(false)
+  const [scroll, setScroll] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScroll(window.pageYOffset !== 0)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   const handleClose = () => {
     setShowSettings(false)
   }
 
-  return <Navbar expand='lg' variant="light" bg="light" sticky='top' className="border-bottom">
-    <Navbar.Brand href='#home'>
+  const className = `${scroll ? 'shadow' : ''}`
+  return <Navbar expand='lg' variant="light" sticky='top' className={className}>
+    <Navbar.Brand>
       <img
         src='./logo64.png'
         width='30'
         height='30'
-        className='d-inline-block align-top'
+        className='d-inline-block align-top mr-2'
         alt='Auto click Auto Fill logo'
       />
+      Auto Clicker - AutoFill
     </Navbar.Brand>
     <Navbar.Toggle aria-controls='basic-navbar-nav' />
     <Navbar.Collapse id='basic-navbar-nav'>

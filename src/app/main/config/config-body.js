@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Button, Card, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { REGEX_SEC, REGEX_START_TIME } from '../../util/regex'
+import { StartTimePopover } from '../../popover/start-time.popover'
 const NUMBER_FIELDS = ['initWait']
 const ConfigBody = ({ config, configIndex, setConfigs }) => {
   const didMountRef = useRef(true)
@@ -75,7 +76,7 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
         <Col md='7' sm='12'>
           <InputGroup>
             <InputGroup.Prepend>
-              <InputGroup.Text id='config-start-time'>Start Time&nbsp;<small className='text-info'>(24 hrs)</small></InputGroup.Text>
+              <InputGroup.Text id='config-start-time'>Start Time&nbsp;<StartTimePopover/></InputGroup.Text>
             </InputGroup.Prepend>
             <FormControl
               ref={register({ pattern: REGEX_START_TIME })}
