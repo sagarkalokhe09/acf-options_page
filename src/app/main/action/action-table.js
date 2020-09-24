@@ -48,7 +48,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
       accessor: 'name'
     }, {
       Header: 'Element Finder',
-      accessor: 'element',
+      accessor: 'elementFinder',
       required: true
     }, {
       Header: 'Value',
@@ -103,18 +103,18 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
         bodyClass: 'text-success'
       })
     } else {
-      setError('Actions element cant be empty')
+      setError('Actions elementFinder cant be empty')
     }
   }
 
   const _validateActions = () => {
     let isValid = true
     data.forEach(action => {
-      if (!action.element) {
+      if (!action.elementFinder) {
         if (!action.errors) {
           action.errors = []
         }
-        action.errors.push('element')
+        action.errors.push('elementFinder')
         isValid = false
       }
     })
@@ -122,7 +122,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
   }
 
   const removeActionConfirm = (rowIndex) => {
-    const name = `#${+rowIndex + 1} - ${data[rowIndex].name || data[rowIndex].element || 'row'}`
+    const name = `#${+rowIndex + 1} - ${data[rowIndex].name || data[rowIndex].elementFinder || 'row'}`
     confirmRef.current.confirm({
       title: 'Remove Action',
       message: <p>Are you sure to remove <span className='codecode-danger'>{name}</span> Action?</p>,
@@ -191,7 +191,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
 
 ActionTable.propTypes = {
   actions: PropTypes.arrayOf(PropTypes.shape({
-    element: PropTypes.string.isRequired,
+    elementFinder: PropTypes.string.isRequired,
     initWait: PropTypes.number,
     name: PropTypes.string,
     value: PropTypes.string,
