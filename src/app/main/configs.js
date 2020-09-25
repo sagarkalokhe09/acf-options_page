@@ -8,11 +8,11 @@ import AddonModal from './action/addon'
 import { Row, Col, Button, Form, Dropdown, Alert, Card } from 'react-bootstrap'
 import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg'
 
-import { defaultConfig, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
+import { defaultAction, defaultConfig, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { StorageService, ExportService, ElementUtil } from '@dhruv-techapps/core-common'
 import { Loading } from '@dhruv-techapps/core-components'
 
-import { DropdownToggle } from '../components/dropdown'
+import { DropdownToggle } from '../components/DropdownToggle'
 import { getConfigName } from '../util/helper'
 import ConfirmModal from '../components/ConfirmModal'
 
@@ -30,8 +30,45 @@ const Configs = ({ toastRef }) => {
   useEffect(() => {
     StorageService.getItem(LOCAL_STORAGE_KEY.CONFIGS, [{ ...defaultConfig, name: 'getautoclicker.com' }]).then(_configs => {
       setConfigs(_configs)
+      setSelected(checkQueryParams(_configs))
     }).catch(setError).finally(_ => setLoading(false))
   }, [])
+
+  const checkQueryParams = (configs) => {
+    const object = {}
+    let selectedConfigIndex = 0
+    if (window.location.search) {
+      const params = window.location.search.replace('?', '').split('&')
+      for (const index in params) {
+        const [name, value] = params[index].split('=')
+        object[name] = decodeURIComponent(value)
+      }
+      if (object.url) {
+        selectedConfigIndex = configs.findIndex(config => config.url === object.url)
+        if (selectedConfigIndex === -1 && object.elementFinder) {
+          const config = { ...defaultConfig, name: 'getautoclicker.com' }
+          config.url = object.url
+          config.actions[0].elementFinder = object.elementFinder
+          configs.push(config)
+          selectedConfigIndex = configs.length - 1
+        } else if (object.error) {
+          const XPathIndex = configs[selectedConfigIndex].actions.findIndex(action => action.elementFinder === object.elementFinder)
+          if (XPathIndex !== -1) {
+            configs[selectedConfigIndex].actions[XPathIndex].error = true
+          }
+        } else if (object.elementFinder) {
+          const XPathIndex = configs[selectedConfigIndex].actions.findIndex(action => action.elementFinder === object.elementFinder)
+          if (XPathIndex === -1) {
+            const action = { ...defaultAction }
+            action.elementFinder = object.elementFinder
+            configs[selectedConfigIndex].actions.push(action)
+          }
+        }
+        StorageService.setItem(LOCAL_STORAGE_KEY.CONFIGS, configs)
+      }
+    }
+    return selectedConfigIndex
+  }
 
   useEffect(() => {
     if (didMountRef.current) {

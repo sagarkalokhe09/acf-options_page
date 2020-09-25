@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Card, Row, Col, Dropdown, Button } from 'react-bootstrap'
 import { ReactComponent as FilterRight } from 'bootstrap-icons/icons/filter-right.svg'
-import { DropdownToggle } from '../../components/dropdown'
+import { DropdownToggle } from '../../components/DropdownToggle'
 import { LocalStorage } from '@dhruv-techapps/core-common'
 import { defaultAction } from '@dhruv-techapps/acf-common'
 import ActionTable from './action-table.js'

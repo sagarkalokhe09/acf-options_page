@@ -8,6 +8,8 @@ import { Button, Form, Table } from 'react-bootstrap'
 
 import { ReactComponent as XCircle } from 'bootstrap-icons/icons/x-circle.svg'
 import { ReactComponent as CodeSlash } from 'bootstrap-icons/icons/code-slash.svg'
+import { ReactComponent as CaretUp } from 'bootstrap-icons/icons/caret-up.svg'
+import { ReactComponent as CaretDown } from 'bootstrap-icons/icons/caret-down.svg'
 
 import { EditableCell } from './editable-cell'
 import AddonModal from './addon'
@@ -146,11 +148,36 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
     addonRef.current.showAddon(row.id, row.original.addon)
   }
 
+  const _arrayMove = (arr, oldIndex, newIndex) => {
+    if (newIndex >= arr.length) {
+      var k = newIndex - arr.length + 1
+      while (k--) {
+        arr.push(undefined)
+      }
+    }
+    arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0])
+    return arr // for testing
+  }
+
+  const moveUp = (e, rowId) => {
+    if (e.currentTarget.getAttribute('disabled') === null) {
+      setData(actions => [..._arrayMove(actions, +rowId, rowId - 1)])
+      didUpdateRef.current = true
+    }
+  }
+  const moveDown = (e, rowId) => {
+    if (e.currentTarget.getAttribute('disabled') === null) {
+      setData(actions => [..._arrayMove(actions, +rowId, +rowId + 1)])
+      didUpdateRef.current = true
+    }
+  }
+
   return <Form onSubmit={saveActions}>
     <Table hover {...getTableProps()} id='actions' borderless>
       <thead>
         {headerGroups.map((headerGroup, index) => (
           <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+            <th style={{ width: '30px' }} />
             {headerGroup.headers.map((column, index) => (
               <th {...column.getHeaderProps([{ style: column.style }])} key={index}>
                 {column.render('Header')} {column.required && <small className="text-danger">*</small>}
@@ -166,6 +193,12 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
         {rows.map((row, index) => {
           prepareRow(row)
           return (<tr {...row.getRowProps()} key={index}>
+            <td align='center'>
+              <div className='d-flex flex-column align-items-center'>
+                <CaretUp width='20' height='20' onClick={(e) => moveUp(e, row.id)} disabled={index === 0}/>
+                <CaretDown width='20' height='20' onClick={(e) => moveDown(e, row.id)} disabled={index === rows.length - 1}/>
+              </div>
+            </td>
             {row.cells.map((cell, index) => (
               <td {...cell.getCellProps()} key={index}>
                 {cell.render('Cell')}
@@ -174,7 +207,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
             <td align='center'>
               <CodeSlash className='text-primary mr-3' width='20' height='20' onClick={() => showAddon(row)} />
               <Button variant='link' className='p-0' onClick={() => { removeActionConfirm(row.id) }} disabled={data.length === 1}>
-                <XCircle className={data.length === 1 ? 'text-muted' : 'text-danger'} width='20' height='20' />
+                <XCircle className={'x-circle ' + (data.length === 1 ? 'text-muted' : 'text-danger')} width='20' height='20' />
               </Button>
             </td>
           </tr>)
@@ -203,7 +236,7 @@ ActionTable.propTypes = {
     current: PropTypes.bool
   }),
   toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired,
-  addonRef: PropTypes.shape({ current: PropTypes.bool }),
+  addonRef: PropTypes.shape({ current: PropTypes.shape({ showAddon: PropTypes.func.isRequired }) }).isRequired,
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
   hiddenColumns: PropTypes.arrayOf(PropTypes.string)

@@ -13,5 +13,12 @@ module.exports = {
   },
   parserOptions: {
     ecmaVersion: 2018, sourceType: 'module'
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        paths: ['src']
+      }
+    }
   }
 }

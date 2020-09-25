@@ -6,7 +6,7 @@ import Action from '../action'
 
 import { Card, Form, Row, Col, Dropdown } from 'react-bootstrap'
 import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg'
-import { DropdownToggle } from './../../components/dropdown'
+import { DropdownToggle } from '../../components/DropdownToggle'
 import { ExportService, ImportService, ElementUtil } from '@dhruv-techapps/core-common'
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import ConfigBody from './config-body'

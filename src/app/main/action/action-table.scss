@@ -1,12 +1,41 @@
 #actions {
-  th,td{
-    padding: 0.25rem;
-  }
-  td:last-child{
-    vertical-align: middle;
+  td svg {
+    visibility: hidden;
   }
   input {
-    border: 0;
+    border-color: transparent;
+    background-color: transparent;
     width: 100%;
+  }
+  tr:hover {
+    input {
+      border-color: #ced4da;
+      background-color: white;
+    }
+    svg {
+      visibility: visible;
+      background-size: 20px 20px;
+      &[class^="bi bi-caret-up"]:not([disabled]):hover {
+        background-image: url("~bootstrap-icons/icons/caret-up-fill.svg");
+      }
+      &[class^="bi bi-caret-down"]:not([disabled]):hover {
+        background-image: url("~bootstrap-icons/icons/caret-down-fill.svg");
+      }
+      &[class^="x-circle"] {
+        transition: transform 0.25s;
+        transform: rotate(0deg);
+        &:hover {
+          transform: rotate(90deg);
+        }
+      }
+    }
+  }
+
+  th,
+  td {
+    padding: 0.25rem;
+  }
+  td:last-child {
+    vertical-align: middle;
   }
 }

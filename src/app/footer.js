@@ -1,15 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Navbar, Nav } from 'react-bootstrap'
-import { ManifestService } from '@dhruv-techapps/core-common'
-const Footer = () => {
-  const [version, setVersion] = useState('2.0.0')
+import PropTypes from 'prop-types'
 
-  useEffect(() => {
-    ManifestService.getItem(['version']).then(_manifest => {
-      setVersion(_manifest.version)
-    })
-  }, [])
-
+const Footer = ({ version }) => {
   return <Navbar expand='lg' sticky='bottom'>
     <Nav className='mr-auto'>
       <Nav.Link href='mailto:dhruv.techapps@gmail.com' active>dhruv.techapps@gmail.com</Nav.Link>
@@ -18,5 +11,8 @@ const Footer = () => {
       <Nav.Link>v{version}</Nav.Link>
     </Nav>
   </Navbar>
+}
+Footer.propTypes = {
+  version: PropTypes.string.isRequired
 }
 export default Footer

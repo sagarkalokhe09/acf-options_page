@@ -27,8 +27,12 @@ body {
   line-height: 1.5;
   background-color: #edf2f9;
 }
-.navbar-light .navbar-brand {
-  color: #7952b3;
+.navbar-light {
+  .navbar-brand,
+  .navbar-brand:hover {
+    font-weight: 500;
+    color: #7952b3;
+  }
 }
 .sticky-top {
   font-weight: 600;
