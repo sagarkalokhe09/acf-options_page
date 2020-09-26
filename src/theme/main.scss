@@ -32,6 +32,12 @@ body {
   .navbar-brand:hover {
     font-weight: 500;
     color: #7952b3;
+    &.dev {
+      color: #dc3545;
+    }
+    &.beta {
+      color: #ffc107;
+    }
   }
 }
 .sticky-top {
