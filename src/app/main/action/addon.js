@@ -1,9 +1,11 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
-import { Modal, Form, Row, Col, Button, Alert, Card } from 'react-bootstrap'
+import { Modal, Form, Row, Col, Button, Alert, Card, InputGroup, FormControl } from 'react-bootstrap'
 import { ADDON_CONDITIONS, defaultAddon } from '@dhruv-techapps/acf-common'
 import { useForm } from 'react-hook-form'
+import { REGEX_NUM, REGEX_SEC } from '../../util/regex'
+import { ValueExtractorPopover } from '../../popover/value-extractor.popover'
 
 const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const { register, handleSubmit, errors, reset, formState: { isDirty } } = useForm({
@@ -20,7 +22,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
     setConfigs(configs => configs.map((config, index) => {
       if (index === configIndex) {
         config.actions[actionIndex.current].addon = { ...data }
-        return { ...config, ...data }
+        return { ...config }
       }
       return config
     }))
@@ -43,32 +45,78 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
         <Modal.Title>Addon</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Alert variant="info">Add condition to be checked before executing Action</Alert>
+        <Alert variant="info">Add condition will be checked before executing Action</Alert>
         <Card>
           <Card.Body>
-            <Row>
+            <Row className="mb-2">
               <Col>
-                <Form.Group controlId='addon-element' className="mb-0">
-                  <Form.Label>Element Finder <small className="text-danger">*</small></Form.Label>
-                  <Form.Control type='text' placeholder='Element' name='element' ref={register({ required: true })} isInvalid={!!errors.element} />
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text id='addon-element'>Element Finder <small className="text-danger">*</small></InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control type='text' placeholder='Element Finder' aria-label='Element Finder' aria-describedby='addon-element' name='elementFinder' ref={register({ required: true })} isInvalid={!!errors.element} />
                   <Form.Control.Feedback type='invalid'>{errors.element && 'Element is required'}</Form.Control.Feedback>
-                </Form.Group>
+                </InputGroup>
               </Col>
               <Col>
-                <Form.Group controlId='addon-condition' className='mb-0'>
-                  <Form.Label>Condition <small className="text-danger">*</small></Form.Label>
-                  <Form.Control as='select' custom ref={register({ required: true })} isInvalid={!!errors.condition} name='condition'>
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text id='addon-condition'>Condition <small className="text-danger">*</small></InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control as='select' aria-describedby='addon-condition' custom ref={register({ required: true })} isInvalid={!!errors.condition} name='condition'>
                     {Object.entries(ADDON_CONDITIONS).map((condition, index) => <option key={index} value={condition[1]}>{condition[0]}</option>)}
                   </Form.Control>
                   <Form.Control.Feedback type='invalid'>{errors.condition && 'Condition is required'}</Form.Control.Feedback>
-                </Form.Group>
+                </InputGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text id='addon-value'>Value <small className="text-danger">*</small></InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control type='text' placeholder='Value' aria-label='Value' aria-describedby='addon-value' ref={register({ required: true })} isInvalid={!!errors.value} name='value' />
+                  <Form.Control.Feedback type='invalid'>{errors.value && 'Value is required'}</Form.Control.Feedback>
+                </InputGroup>
               </Col>
               <Col>
-                <Form.Group controlId='addon-value' className="mb-0">
-                  <Form.Label>Value <small className="text-danger">*</small></Form.Label>
-                  <Form.Control type='text' placeholder='Value' ref={register({ required: true })} isInvalid={!!errors.value} name='value' />
-                  <Form.Control.Feedback type='invalid'>{errors.value && 'Value is required'}</Form.Control.Feedback>
-                </Form.Group>
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text id='addon-value-extractor'>Value Extractor&nbsp;<ValueExtractorPopover/></InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control type='text' placeholder='Value Extractor' aria-label='Value Extractor' name='valueExtractor' aria-describedby='addon-value-extractor' ref={register()} isInvalid={!!errors.valueExtractor} />
+                  <Form.Control.Feedback type='invalid'>{errors.valueExtractor && 'Not a valid regex'}</Form.Control.Feedback>
+                </InputGroup>
+              </Col>
+            </Row>
+            <hr/>
+            <Row>
+              <Col>
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text id='addon-retry'>Retry</InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <FormControl
+                    placeholder='0' aria-label='0' name='retry' aria-describedby='addon-retry'
+                    ref={register({ pattern: REGEX_NUM })}
+                    isInvalid={errors.retry}
+                  />
+                  <Form.Control.Feedback type='invalid'>{errors.retry && 'Only valid numbers are allowed'}</Form.Control.Feedback>
+                </InputGroup>
+              </Col>
+              <Col >
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text id='addon-retry-interval'>Retry Interval&nbsp;<small className='text-info'>(sec)</small></InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <FormControl
+                    placeholder='0' aria-label='0' id='addon-retryInterval' name='retryInterval' aria-describedby='retry-interval'
+                    ref={register({ pattern: REGEX_SEC })}
+                    isInvalid={errors.retryInterval}
+                  />
+                  <Form.Control.Feedback type='invalid'>{errors.retryInterval && 'Only valid numbers are allowed'}</Form.Control.Feedback>
+                </InputGroup>
               </Col>
             </Row>
           </Card.Body>
