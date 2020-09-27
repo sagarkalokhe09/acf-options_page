@@ -10,6 +10,7 @@ import { DropdownToggle } from '../../components/DropdownToggle'
 import { ExportService, ImportService, ElementUtil } from '@dhruv-techapps/core-common'
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import ConfigBody from './config-body'
+import { numberWithExponential } from '../../util/prop-types'
 const Config = ({ config, configIndex, toastRef, setConfigs }) => {
   const importFiled = createRef()
   const onChange = (e) => {
@@ -88,7 +89,7 @@ Config.propTypes = {
     enable: PropTypes.bool.isRequired,
     name: PropTypes.string,
     url: PropTypes.string,
-    initWait: PropTypes.number,
+    initWait: numberWithExponential,
     startTime: PropTypes.string,
     batch: Batch.type.propTypes.batch,
     actions: Action.type.propTypes.actions

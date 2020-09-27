@@ -13,10 +13,11 @@ import { ReactComponent as CaretDown } from 'bootstrap-icons/icons/caret-down.sv
 
 import { EditableCell } from './editable-cell'
 import AddonModal from './addon'
-import { REGEX_NUM, REGEX_SEC } from '../../util/regex'
+import { REGEX_NUM } from '../../util/regex'
 import ConfirmModel from '../../components/ConfirmModal'
 import { ElementFinderPopover } from '../../popover/element-finder.popover'
 import { ValuePopover } from '../../popover/value.popover'
+import { numberWithExponential } from '../../util/prop-types'
 
 const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef, didUpdateRef, toastRef }) => {
   const [data, setData] = useState(actions)
@@ -43,7 +44,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
       style: { width: '90px' },
       accessor: 'initWait',
       dataType: 'number',
-      pattern: REGEX_SEC
+      validate: value => !isNaN(value)
     }, {
       Header: 'Name',
       style: { width: '90px' },
@@ -66,7 +67,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
       style: { width: '100px' },
       accessor: 'repeatInterval',
       dataType: 'number',
-      pattern: REGEX_SEC
+      validate: value => !isNaN(value)
     }
   ], [])
 
@@ -229,7 +230,7 @@ ActionTable.propTypes = {
     name: PropTypes.string,
     value: PropTypes.string,
     repeat: PropTypes.number,
-    repeatInterval: PropTypes.number,
+    repeatInterval: numberWithExponential,
     addon: AddonModal.type.propTypes.addon
   }).isRequired).isRequired,
   didUpdateRef: PropTypes.shape({

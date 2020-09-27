@@ -23,6 +23,10 @@ export const ValuePopover = () => <OverlayTrigger trigger="click" placement="rig
           <td><code>ExecCommand::[&quot;cut&quot;,&quot;paste&quot;]</code></td>
         </tr>
         <tr>
+          <td><a href="https://getautoclicker.com/docs/action#location-command-examples" target="_blank" rel="noopener noreferrer">Location Command</a></td>
+          <td><code>LocationCommand::href::https://getautoclicker.com</code></td>
+        </tr>
+        <tr>
           <td>Plain text</td>
           <td><code>Hello World</code></td>
         </tr>

@@ -2,7 +2,9 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Card, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
-import { REGEX_NUM, REGEX_SEC } from '../../util/regex'
+import { REGEX_NUM } from '../../util/regex'
+import { numberWithExponential } from '../../util/prop-types'
+import { convertNumberField } from '../../util/validation'
 const NUMBER_FIELDS = ['repeat', 'repeatInterval']
 const BatchBody = ({ batch, configIndex, setConfigs }) => {
   const { register, handleSubmit, errors, reset, formState: { isDirty, isValid } } = useForm({
@@ -17,11 +19,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
   }, [batch, reset])
 
   const onSubmit = data => {
-    for (const field in data) {
-      if (NUMBER_FIELDS.indexOf(field) !== -1) {
-        data[field] = Number(data[field])
-      }
-    }
+    convertNumberField(data, NUMBER_FIELDS)
     reset(data)
     setConfigs(configs => configs.map((config, index) => {
       if (index === configIndex) {
@@ -58,7 +56,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
             </InputGroup.Prepend>
             <FormControl
               name='repeatInterval'
-              ref={register({ pattern: REGEX_SEC })}
+              ref={register({ validate: value => !isNaN(value) })}
               isInvalid={!!errors.repeatInterval}
               placeholder='0'
               aria-label='0'
@@ -77,7 +75,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
 BatchBody.propTypes = {
   batch: PropTypes.shape({
     repeat: PropTypes.number,
-    repeatInterval: PropTypes.number
+    repeatInterval: numberWithExponential
   }),
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired

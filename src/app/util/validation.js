@@ -1,23 +1,7 @@
-export const numberOnlyVal = (e, length) => {
-  const re = /[0-9]+/g
-  if (!re.test(e.key)) {
-    e.preventDefault()
-  }
-}
-
-export const floatOnlyVal = (e, length) => {
-  const re = /[0-9.]+/g
-  if (e.key === '.' && e.target.value.indexOf('.') !== -1) {
-    console.log('prevent')
-    e.preventDefault()
-  } else if (!re.test(e.key)) {
-    e.preventDefault()
-  }
-}
-
-export const nameValidate = e => {
-  const re = /[A-z\s]+/g
-  if (!re.test(e.key)) {
-    e.preventDefault()
+export const convertNumberField = (data, NUMBER_FIELDS) => {
+  for (const field in data) {
+    if (NUMBER_FIELDS.indexOf(field) !== -1 && data[field].indexOf('e') === -1) {
+      data[field] = Number(data[field])
+    }
   }
 }

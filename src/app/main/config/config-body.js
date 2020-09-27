@@ -2,8 +2,10 @@ import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Card, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
-import { REGEX_SEC, REGEX_START_TIME } from '../../util/regex'
+import { REGEX_START_TIME } from '../../util/regex'
 import { StartTimePopover } from '../../popover/start-time.popover'
+import { numberWithExponential } from '../../util/prop-types'
+import { convertNumberField } from '../../util/validation'
 const NUMBER_FIELDS = ['initWait']
 const ConfigBody = ({ config, configIndex, setConfigs }) => {
   const didMountRef = useRef(true)
@@ -23,11 +25,7 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
   }, [config, reset])
 
   const onSubmit = data => {
-    for (const field in data) {
-      if (NUMBER_FIELDS.indexOf(field) !== -1) {
-        data[field] = Number(data[field])
-      }
-    }
+    convertNumberField(data, NUMBER_FIELDS)
     reset(data)
     setConfigs(configs => configs.map((config, index) => {
       if (index === configIndex) {
@@ -67,7 +65,7 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
               <InputGroup.Text id='config-init-wait'>Init Wait&nbsp;<small className='text-info'>(sec)</small></InputGroup.Text>
             </InputGroup.Prepend>
             <FormControl
-              ref={register({ pattern: REGEX_SEC })}
+              ref={register({ validate: value => !isNaN(value) })}
               isInvalid={!!errors.initWait} name='initWait' placeholder='0' aria-label='0' aria-describedby='config-init-wait'
             />
             <Form.Control.Feedback type='invalid'>{errors.initWait && 'Only valid numbers are allowed'}</Form.Control.Feedback>
@@ -100,7 +98,7 @@ ConfigBody.propTypes = {
     enable: PropTypes.bool.isRequired,
     name: PropTypes.string,
     url: PropTypes.string,
-    initWait: PropTypes.number,
+    initWait: numberWithExponential,
     startTime: PropTypes.string
   }).isRequired
 }

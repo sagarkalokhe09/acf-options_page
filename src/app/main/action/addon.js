@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Modal, Form, Row, Col, Button, Alert, Card, InputGroup, FormControl } from 'react-bootstrap'
 import { ADDON_CONDITIONS, defaultAddon } from '@dhruv-techapps/acf-common'
 import { useForm } from 'react-hook-form'
-import { REGEX_NUM, REGEX_SEC } from '../../util/regex'
+import { REGEX_NUM } from '../../util/regex'
 import { ValueExtractorPopover } from '../../popover/value-extractor.popover'
 
 const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
@@ -112,7 +112,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                   </InputGroup.Prepend>
                   <FormControl
                     placeholder='0' aria-label='0' id='addon-retryInterval' name='retryInterval' aria-describedby='retry-interval'
-                    ref={register({ pattern: REGEX_SEC })}
+                    ref={register({ validate: value => !isNaN(value) })}
                     isInvalid={errors.retryInterval}
                   />
                   <Form.Control.Feedback type='invalid'>{errors.retryInterval && 'Only valid numbers are allowed'}</Form.Control.Feedback>

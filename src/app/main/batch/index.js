@@ -3,6 +3,7 @@ import { Card, Row, Col, Form } from 'react-bootstrap'
 import { ElementUtil } from '@dhruv-techapps/core-common'
 import PropTypes from 'prop-types'
 import BatchBody from './batch-body'
+import { numberWithExponential } from '../../util/prop-types'
 
 const Batch = ({ batch, configIndex, setConfigs }) => {
   const onChange = (e) => {
@@ -42,7 +43,7 @@ Batch.propTypes = {
   batch: PropTypes.shape({
     refresh: PropTypes.bool.isRequired,
     repeat: PropTypes.number,
-    repeatInterval: PropTypes.number
+    repeatInterval: numberWithExponential
   }),
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired

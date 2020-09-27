@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Form } from 'react-bootstrap'
 
 // Create an editable cell renderer
-export const EditableCell = ({ value: initialValue, row: { index }, column: { id, required, pattern, dataType }, updateAction }) => {
+export const EditableCell = ({ value: initialValue, row: { index }, column: { id, required, pattern, validate, dataType }, updateAction }) => {
   // We need to keep and update the state of the cell normally
 // We need to keep and update the state of the cell normally
   const [value, setValue] = React.useState(initialValue)
@@ -16,6 +16,9 @@ export const EditableCell = ({ value: initialValue, row: { index }, column: { id
       if (pattern && !pattern.test(value)) {
         setInvalid(true)
       }
+      if (validate && !validate(value)) {
+        setInvalid(true)
+      }
     } else if (required) {
       setInvalid(true)
     }
@@ -26,7 +29,7 @@ export const EditableCell = ({ value: initialValue, row: { index }, column: { id
   const onBlur = (e) => {
     const { value } = e.currentTarget
     if (!invalid) {
-      updateAction(index, id, dataType === 'number' ? Number(value) : value)
+      updateAction(index, id, dataType === 'number' && value.indexOf('e') === -1 ? Number(value) : value)
     }
   }
 
@@ -50,6 +53,7 @@ EditableCell.propTypes = {
     id: PropTypes.string.isRequired,
     required: PropTypes.bool,
     pattern: PropTypes.instanceOf(RegExp),
+    validate: PropTypes.func,
     dataType: PropTypes.string
   }),
   updateAction: PropTypes.func.isRequired

@@ -2,36 +2,34 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Modal, Form, Card, InputGroup, FormControl, Row, Col, Button, Alert } from 'react-bootstrap'
 import { defaultSetting, LOAD_TYPES, RETRY_OPTIONS, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
+import { ReactComponent as VolumeUp } from 'bootstrap-icons/icons/volume-up.svg'
+import { ReactComponent as VolumeMute } from 'bootstrap-icons/icons/volume-mute.svg'
 import { StorageService } from '@dhruv-techapps/core-common'
 import { Loading } from '@dhruv-techapps/core-components'
 import { useForm } from 'react-hook-form'
-import { REGEX_NUM, REGEX_SEC } from '../util/regex'
+import { REGEX_NUM } from '../util/regex'
+import { convertNumberField } from '../util/validation'
 
 const NUMBER_FIELDS = ['retry', 'retryInterval']
 
 const SettingsModal = ({ show, handleClose }) => {
-  const { register, handleSubmit, errors, reset, formState: { isDirty, isValid } } = useForm({
+  const { register, handleSubmit, errors, reset, watch, formState: { isDirty, isValid } } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
     defaultValues: defaultSetting,
     shouldFocusError: true
   })
+  const notificationSound = watch('notifications.sound')
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState()
 
   useEffect(() => {
-    StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS, defaultSetting).then(_settings => {
-      reset(_settings)
-    }).catch(setError).finally(_ => setLoading(false))
+    StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS, defaultSetting).then(reset).catch(setError).finally(_ => setLoading(false))
   }, [reset])
 
   const onSubmit = data => {
-    for (const field in data) {
-      if (NUMBER_FIELDS.indexOf(field) !== -1) {
-        data[field] = Number(data[field])
-      }
-    }
+    convertNumberField(data, NUMBER_FIELDS)
     StorageService.setItem(LOCAL_STORAGE_KEY.SETTINGS, data).then(_ => {
       reset(data)
     }).catch(setError).finally(_ => setLoading(false))
@@ -46,36 +44,36 @@ const SettingsModal = ({ show, handleClose }) => {
         : error ? <Alert variant='danger'><Alert.Heading>Error</Alert.Heading>{JSON.stringify(error)}</Alert> : <>
           <Card className='mb-2'>
             <Card.Body>
-              <Card.Subtitle>
+              <Card.Text>
                 <Form.Check id='checkiFrames' name='checkiFrames' ref={register} label='Check IFrames' />
-              </Card.Subtitle>
-              <Card.Text className='text-muted'>
-                <small>Check this box if you want to check xPath within iFrames also</small>
+                <small className='text-muted'>Check this box if you want to check xPath within iFrames also</small>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+          <Card className='mb-2'>
+            <Card.Header>Show Notification</Card.Header>
+            <Card.Body>
+              <Card.Text>
+                <Form.Check id='notifications.onError' name='notifications.onError' ref={register} label={<span>on <span className="text-danger">Error</span> occured</span>}/>
+                <Form.Check id='notifications.onAction' name='notifications.onAction' ref={register} label={<span>on <span className="text-success">Action</span> completion</span>} />
+                <Form.Check id='notifications.onBatch' name='notifications.onBatch' ref={register} label={<span>on <span className="text-success">Batch</span> completion</span>} />
+                <Form.Check id='notifications.onConfig' name='notifications.onConfig' ref={register} label={<span>on <span className="text-success">Config</span> completion</span>} />
+                <Form.Check id='notifications.sound' name='notifications.sound' ref={register} label={<span>Notification Sound {notificationSound ? <VolumeUp/> : <VolumeMute/>} </span>} />
               </Card.Text>
             </Card.Body>
           </Card>
           <Card className='mb-2'>
             <Card.Body>
-              <Card.Subtitle>
-                <Form.Check id='notifications' name='notifications' ref={register} label='Show Notification' />
-              </Card.Subtitle>
-              <Card.Text className='text-muted'>
-                <small>This is very important feature of extension which tells you if any error occur in extension while executing or if any XPath provided is not found or wrong. Select this option while configuring and uncheck once you have finished configuring.</small>
-              </Card.Text>
-            </Card.Body>
-          </Card>
-          <Card className='mb-2'>
-            <Card.Body>
-              <Card.Subtitle>
+              <Card.Text>
                 Extension load <Form.Check inline type='radio' name='loadType' id='loadTypeWindow' value={LOAD_TYPES.WINDOW} ref={register} label='Window' />
                 <Form.Check inline type='radio' name='loadType' id='loadTypeDocument' value={LOAD_TYPES.DOCUMENT} ref={register} label='Document' />
-              </Card.Subtitle>
-              <small>
-                <ul className='mb-0 mt-2'>
-                  <li><span className='text-primary'>Window</span> (default) browser loads extension once all its content is loaded</li>
-                  <li><span className='text-primary'>Document</span> browser loads extension before scripts and images are loaded (faster)(unsafe)</li>
-                </ul>
-              </small>
+                <small>
+                  <ul className='mb-0 mt-2'>
+                    <li><span className='text-primary'>Window</span> (default) browser loads extension once all its content is loaded</li>
+                    <li><span className='text-primary'>Document</span> browser loads extension before scripts and images are loaded (faster)(unsafe)</li>
+                  </ul>
+                </small>
+              </Card.Text>
             </Card.Body>
           </Card>
           <Card className='mb-2'>
@@ -102,7 +100,7 @@ const SettingsModal = ({ show, handleClose }) => {
                       </InputGroup.Prepend>
                       <FormControl
                         placeholder='1' aria-label='1' id='retryInterval' name='retryInterval' aria-describedby='retry-interval'
-                        ref={register({ pattern: REGEX_SEC })}
+                        ref={register({ validate: value => !isNaN(value) })}
                         isInvalid={errors.retryInterval}
                       />
                       <Form.Control.Feedback type='invalid'>{errors.retryInterval && 'Only valid numbers are allowed'}</Form.Control.Feedback>
