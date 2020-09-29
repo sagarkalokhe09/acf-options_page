@@ -3,7 +3,6 @@ import { Card, Row, Col, Dropdown, Button } from 'react-bootstrap'
 import { ReactComponent as FilterRight } from 'bootstrap-icons/icons/filter-right.svg'
 import { DropdownToggle } from '../../components/DropdownToggle'
 import { LocalStorage } from '@dhruv-techapps/core-common'
-import { defaultAction } from '@dhruv-techapps/acf-common'
 import ActionTable from './action-table.js'
 import PropTypes from 'prop-types'
 
@@ -12,21 +11,8 @@ const defaultHiddenColumns = ['name', 'initWait', 'repeat', 'repeatInterval']
 
 const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
   const [hiddenColumns, setHiddenColumns] = useState(LocalStorage.getItem(HIDDEN_COLUMN_KEY, defaultHiddenColumns))
+  const actionTableRef = useRef()
   const didMountRef = useRef(true)
-  const didUpdateRef = useRef(false)
-  const addAction = () => {
-    setConfigs(configs => {
-      return configs.map((config, index) => {
-        if (index === configIndex) {
-          config.actions = [...config.actions]
-          config.actions.push({ ...defaultAction })
-          return config
-        }
-        return config
-      })
-    })
-    didUpdateRef.current = true
-  }
 
   const onColumnChange = (e) => {
     const column = e.currentTarget.getAttribute('data-column')
@@ -49,7 +35,7 @@ const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
           <a target='_blank' rel='noopener noreferrer' href='https://getautoclicker.com/docs/action'>Action</a>
         </Col>
         <Col md='auto' className='d-flex align-items-center'>
-          <Button variant='success' onClick={addAction}>Add Action</Button>
+          <Button variant='success' onClick={() => { actionTableRef.current.addAction() }}>Add Action</Button>
           <Dropdown alignRight className='ml-2'>
             <Dropdown.Toggle as={DropdownToggle}>
               <FilterRight width='28' height='28' />
@@ -65,7 +51,7 @@ const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
       </Row>
     </Card.Header>
     <Card.Body>
-      <ActionTable didUpdateRef={didUpdateRef} toastRef={toastRef} actions={actions} configIndex={configIndex} setConfigs={setConfigs} hiddenColumns={hiddenColumns} addonRef={addonRef} />
+      <ActionTable ref={actionTableRef} toastRef={toastRef} actions={actions} configIndex={configIndex} setConfigs={setConfigs} hiddenColumns={hiddenColumns} addonRef={addonRef} />
     </Card.Body>
   </Card>
 }

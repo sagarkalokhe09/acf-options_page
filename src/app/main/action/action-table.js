@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import './action-table.scss'
@@ -18,11 +18,21 @@ import ConfirmModel from '../../components/ConfirmModal'
 import { ElementFinderPopover } from '../../popover/element-finder.popover'
 import { ValuePopover } from '../../popover/value.popover'
 import { numberWithExponential } from '../../util/prop-types'
+import { defaultAction } from '@dhruv-techapps/acf-common'
 
-const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef, didUpdateRef, toastRef }) => {
+const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, toastRef }, ref) => {
   const [data, setData] = useState(actions)
   const [error, setError] = useState()
   const confirmRef = useRef()
+  const didMountRef = useRef(true)
+  const didUpdateRef = useRef(false)
+
+  useImperativeHandle(ref, () => ({
+    addAction () {
+      setData([...data, { ...defaultAction, focus: true }])
+      didUpdateRef.current = true
+    }
+  }))
 
   useEffect(() => {
     if (didMountRef.current) {
@@ -32,7 +42,6 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
     setData(actions)
   }, [actions])
 
-  const didMountRef = useRef(true)
   // Set our editable cell renderer as the default Cell renderer
   const defaultColumn = {
     Cell: EditableCell
@@ -101,23 +110,20 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
       }))
       didUpdateRef.current = false
       toastRef.current.push({
-        body: 'Actions saved successfully !',
-        header: <strong className='mr-auto'>Actions</strong>,
-        bodyClass: 'text-success'
+        body: <p><span className="badge badge-success">actions</span> saved successfully !</p>,
+        header: <strong className='mr-auto'>Actions</strong>
       })
     } else {
-      setError('Actions elementFinder cant be empty')
+      setError('Element Finder cant be empty')
     }
   }
 
   const _validateActions = () => {
     let isValid = true
-    data.forEach(action => {
+    data.forEach((action, index) => {
+      document.querySelector(`#actions tr:nth-child(${index + 1}) td:nth-child(4) input`).classList.remove('is-invalid')
       if (!action.elementFinder) {
-        if (!action.errors) {
-          action.errors = []
-        }
-        action.errors.push('elementFinder')
+        document.querySelector(`#actions tr:nth-child(${index + 1}) td:nth-child(4) input`).classList.add('is-invalid')
         isValid = false
       }
     })
@@ -172,7 +178,6 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
       didUpdateRef.current = true
     }
   }
-
   return <Form onSubmit={saveActions}>
     <Table hover {...getTableProps()} id='actions' borderless>
       <thead>
@@ -221,7 +226,7 @@ const ActionTable = ({ actions, configIndex, setConfigs, hiddenColumns, addonRef
     </div>}
     <ConfirmModel ref={confirmRef} />
   </Form>
-}
+})
 
 ActionTable.propTypes = {
   actions: PropTypes.arrayOf(PropTypes.shape({

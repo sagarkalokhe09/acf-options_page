@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 import { Form } from 'react-bootstrap'
 
 // Create an editable cell renderer
-export const EditableCell = ({ value: initialValue, row: { index }, column: { id, required, pattern, validate, dataType }, updateAction }) => {
+export const EditableCell = ({ value: initialValue, data, row: { index }, column: { id, required, pattern, validate, dataType }, updateAction }) => {
   // We need to keep and update the state of the cell normally
 // We need to keep and update the state of the cell normally
   const [value, setValue] = React.useState(initialValue)
-  const [invalid, setInvalid] = React.useState(false)
+  const [invalid, setInvalid] = React.useState(data[index].error === id)
   const input = useRef()
   const onChange = (e) => {
+    input.current.classList.remove('is-valid')
     setInvalid(false)
     const { value } = e.currentTarget
     if (value) {
@@ -28,9 +29,7 @@ export const EditableCell = ({ value: initialValue, row: { index }, column: { id
   // We'll only update the external data when the input is blurred
   const onBlur = (e) => {
     const { value } = e.currentTarget
-    if (!invalid) {
-      updateAction(index, id, dataType === 'number' && value.indexOf('e') === -1 ? Number(value) : value)
-    }
+    updateAction(index, id, dataType === 'number' && value.indexOf('e') === -1 ? Number(value) : value)
   }
 
   // If the initialValue is changed external, sync it up with our state
@@ -42,6 +41,7 @@ export const EditableCell = ({ value: initialValue, row: { index }, column: { id
 }
 
 EditableCell.propTypes = {
+  data: PropTypes.array,
   value: PropTypes.PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number

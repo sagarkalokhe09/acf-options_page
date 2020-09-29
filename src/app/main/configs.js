@@ -28,9 +28,9 @@ const Configs = ({ toastRef }) => {
   const importFiled = createRef()
 
   useEffect(() => {
-    StorageService.getItem(LOCAL_STORAGE_KEY.CONFIGS, [{ ...defaultConfig, name: 'getautoclicker.com' }]).then(_configs => {
-      setConfigs(_configs)
+    StorageService.getItem(LOCAL_STORAGE_KEY.CONFIGS, [{ ...defaultConfig, name: '' }]).then(_configs => {
       setSelected(checkQueryParams(_configs))
+      setConfigs(_configs)
     }).catch(setError).finally(_ => setLoading(false))
   }, [])
 
@@ -54,7 +54,7 @@ const Configs = ({ toastRef }) => {
         } else if (object.error) {
           const XPathIndex = configs[selectedConfigIndex].actions.findIndex(action => action.elementFinder === object.elementFinder)
           if (XPathIndex !== -1) {
-            configs[selectedConfigIndex].actions[XPathIndex].error = true
+            configs[selectedConfigIndex].actions[XPathIndex].error = 'elementFinder'
           }
         } else if (object.elementFinder) {
           const XPathIndex = configs[selectedConfigIndex].actions.findIndex(action => action.elementFinder === object.elementFinder)
@@ -64,7 +64,6 @@ const Configs = ({ toastRef }) => {
             configs[selectedConfigIndex].actions.push(action)
           }
         }
-        StorageService.setItem(LOCAL_STORAGE_KEY.CONFIGS, configs)
       }
     }
     return selectedConfigIndex
@@ -86,9 +85,8 @@ const Configs = ({ toastRef }) => {
     const name = getConfigName(undefined, configs.length)
     setConfigs([...configs, { ...defaultConfig, name }])
     toastRef.current.push({
-      body: `New configuration added successfully ${name}`,
-      header: <strong className='mr-auto'>Configuration</strong>,
-      bodyClass: 'text-success'
+      body: <p><span className='badge badge-success'>{name}</span> added successfully </p>,
+      header: <strong className='mr-auto'>Configuration</strong>
     })
   }
 
@@ -99,14 +97,13 @@ const Configs = ({ toastRef }) => {
     setSelected(selected => configs.length === 2 ? 0 : selected === 0 ? selected : selected - 1)
     setLoading(false)
     toastRef.current.push({
-      body: `${name} configuration removed successfully`,
-      header: <strong className='mr-auto'>Configuration</strong>,
-      bodyClass: 'text-danger'
+      body: <p><span className='badge badge-danger'>{name}</span> removed successfully</p>,
+      header: <strong className='mr-auto'>Configuration</strong>
     })
   }
 
   const removeConfigConfirm = () => {
-    const name = configs[selected].name
+    const name = configs[selected].name || configs[selected].url || `configuration-${selected}`
     confirmRef.current.confirm({
       title: 'Remove Configuration',
       message: <p>Are you sure to remove <span className='badge badge-danger'>{name}</span> Configuration?</p>,

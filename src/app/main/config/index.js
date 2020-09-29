@@ -24,7 +24,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
   }
 
   const exportConfig = () => {
-    ExportService.export(config.name, config).catch(error => {
+    ExportService.export(config.name || config.url || `configuration-${configIndex}`, config).catch(error => {
       toastRef.current.push({
         body: JSON.stringify(error),
         header: <strong className='mr-auto'>Export Error</strong>,
@@ -41,7 +41,15 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
     var fr = new FileReader()
     fr.onload = function (e) {
       try {
-        ImportService.import(JSON.parse(e.target.result), LOCAL_STORAGE_KEY.CONFIGS)
+        const _config = JSON.parse(e.target.result)
+        const _name = _config.name || _config.url || 'configuration'
+        ImportService.import(_config, LOCAL_STORAGE_KEY.CONFIGS)
+        toastRef.current.push({
+          body: <p><span className="badge badge-success">{_name}</span> imported successfully!</p>,
+          header: <strong className='mr-auto'>Configuration</strong>,
+          delay: 2000,
+          onClose: () => { window.location.reload() }
+        })
       } catch (error) {
         toastRef.current.push({
           body: JSON.stringify(error),

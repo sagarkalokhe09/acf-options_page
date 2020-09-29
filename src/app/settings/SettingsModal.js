@@ -44,36 +44,30 @@ const SettingsModal = ({ show, handleClose }) => {
         : error ? <Alert variant='danger'><Alert.Heading>Error</Alert.Heading>{JSON.stringify(error)}</Alert> : <>
           <Card className='mb-2'>
             <Card.Body>
-              <Card.Text>
-                <Form.Check id='checkiFrames' name='checkiFrames' ref={register} label='Check IFrames' />
-                <small className='text-muted'>Check this box if you want to check xPath within iFrames also</small>
-              </Card.Text>
+              <Form.Check id='checkiFrames' name='checkiFrames' ref={register} label='Check IFrames' />
+              <small className='text-muted'>Check this box if you want to check xPath within iFrames also</small>
             </Card.Body>
           </Card>
           <Card className='mb-2'>
             <Card.Header>Show Notification</Card.Header>
             <Card.Body>
-              <Card.Text>
-                <Form.Check id='notifications.onError' name='notifications.onError' ref={register} label={<span>on <span className="text-danger">Error</span> occured</span>}/>
-                <Form.Check id='notifications.onAction' name='notifications.onAction' ref={register} label={<span>on <span className="text-success">Action</span> completion</span>} />
-                <Form.Check id='notifications.onBatch' name='notifications.onBatch' ref={register} label={<span>on <span className="text-success">Batch</span> completion</span>} />
-                <Form.Check id='notifications.onConfig' name='notifications.onConfig' ref={register} label={<span>on <span className="text-success">Config</span> completion</span>} />
-                <Form.Check id='notifications.sound' name='notifications.sound' ref={register} label={<span>Notification Sound {notificationSound ? <VolumeUp/> : <VolumeMute/>} </span>} />
-              </Card.Text>
+              <Form.Check id='notifications.onError' name='notifications.onError' ref={register} label={<span>on <span className="text-danger">Error</span> occured</span>}/>
+              <Form.Check id='notifications.onAction' name='notifications.onAction' ref={register} label={<span>on <span className="text-success">Action</span> completion</span>} />
+              <Form.Check id='notifications.onBatch' name='notifications.onBatch' ref={register} label={<span>on <span className="text-success">Batch</span> completion</span>} />
+              <Form.Check id='notifications.onConfig' name='notifications.onConfig' ref={register} label={<span>on <span className="text-success">Config</span> completion</span>} />
+              <Form.Check id='notifications.sound' name='notifications.sound' ref={register} label={<span>Notification Sound {notificationSound ? <VolumeUp/> : <VolumeMute/>} </span>} />
             </Card.Body>
           </Card>
           <Card className='mb-2'>
             <Card.Body>
-              <Card.Text>
                 Extension load <Form.Check inline type='radio' name='loadType' id='loadTypeWindow' value={LOAD_TYPES.WINDOW} ref={register} label='Window' />
-                <Form.Check inline type='radio' name='loadType' id='loadTypeDocument' value={LOAD_TYPES.DOCUMENT} ref={register} label='Document' />
-                <small>
-                  <ul className='mb-0 mt-2'>
-                    <li><span className='text-primary'>Window</span> (default) browser loads extension once all its content is loaded</li>
-                    <li><span className='text-primary'>Document</span> browser loads extension before scripts and images are loaded (faster)(unsafe)</li>
-                  </ul>
-                </small>
-              </Card.Text>
+              <Form.Check inline type='radio' name='loadType' id='loadTypeDocument' value={LOAD_TYPES.DOCUMENT} ref={register} label='Document' />
+              <small>
+                <ul className='mb-0 mt-2'>
+                  <li><span className='text-primary'>Window</span> (default) browser loads extension once all its content is loaded</li>
+                  <li><span className='text-primary'>Document</span> browser loads extension before scripts and images are loaded (faster)(unsafe)</li>
+                </ul>
+              </small>
             </Card.Body>
           </Card>
           <Card className='mb-2'>

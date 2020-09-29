@@ -1,7 +1,7 @@
 /* eslint no-void: 0 */
 
 export const getConfigName = (url, index) => {
-  let name = `new-${index}`
+  let name = `configuration-${index}`
   if (url && url.match('://.*') !== null) {
     name = url.split('/')[2]
   } else if (url) {

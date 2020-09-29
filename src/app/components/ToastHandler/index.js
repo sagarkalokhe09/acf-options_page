@@ -21,8 +21,8 @@ const ToastHandler = forwardRef((props, ref) => {
   }))
 
   return <div className='toast-handler'>
-    {list.map(({ body, header, bodyClass, headerClass, delay = 5000, autohide = true, show = true }, index) => {
-      return <Toast key={index} onClose={() => close(index)} show={show} delay={delay} autohide={autohide}>
+    {list.map(({ body, header, bodyClass, headerClass, delay = 5000, autohide = true, show = true, onClose }, index) => {
+      return <Toast key={index} onClose={() => { close(index); onClose && onClose(index) }} show={show} delay={delay} autohide={autohide}>
         <Toast.Header className={headerClass}>{header}</Toast.Header>
         <Toast.Body className={bodyClass}>{body}</Toast.Body>
       </Toast>
