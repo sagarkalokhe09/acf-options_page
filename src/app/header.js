@@ -27,7 +27,7 @@ const Header = ({ name }) => {
   return <Navbar expand='lg' variant="light" sticky='top' className={className}>
     <Navbar.Brand className={`${name.match(/DEV/i) ? 'dev' : name.match(/BETA/i) ? 'beta' : ''}`}>
       <img
-        src='./logo64.png'
+        src='./icon32.png'
         width='30'
         height='30'
         className='d-inline-block align-top mr-2'
