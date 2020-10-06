@@ -13,6 +13,9 @@ ReactDOM.render(<App />, document.getElementById('root'))
 if (process.env.NODE_ENV !== 'development') {
   disableContextMenu()
 }
+window.onerror = function (message) {
+  GAService.error({ name: 'OptionsPageError', stack: message })
+}
 
 console.error = (function () {
   const { error } = console

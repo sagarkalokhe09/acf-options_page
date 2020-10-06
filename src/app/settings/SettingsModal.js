@@ -51,11 +51,17 @@ const SettingsModal = ({ show, handleClose }) => {
           <Card className='mb-2'>
             <Card.Header>Show Notification</Card.Header>
             <Card.Body>
-              <Form.Check id='notifications.onError' name='notifications.onError' ref={register} label={<span>on <span className="text-danger">Error</span> occured</span>}/>
-              <Form.Check id='notifications.onAction' name='notifications.onAction' ref={register} label={<span>on <span className="text-success">Action</span> completion</span>} />
-              <Form.Check id='notifications.onBatch' name='notifications.onBatch' ref={register} label={<span>on <span className="text-success">Batch</span> completion</span>} />
-              <Form.Check id='notifications.onConfig' name='notifications.onConfig' ref={register} label={<span>on <span className="text-success">Config</span> completion</span>} />
-              <Form.Check id='notifications.sound' name='notifications.sound' ref={register} label={<span>Notification Sound {notificationSound ? <VolumeUp/> : <VolumeMute/>} </span>} />
+              <Row>
+                <Col>
+                  <Form.Check id='notifications.onError' name='notifications.onError' ref={register} label={<span>on <span className="text-danger">Error</span> occured</span>}/>
+                  <Form.Check id='notifications.onAction' name='notifications.onAction' ref={register} label={<span>on <span className="text-success">Action</span> completion</span>} />
+                  <Form.Check id='notifications.onBatch' name='notifications.onBatch' ref={register} label={<span>on <span className="text-success">Batch</span> completion</span>} />
+                  <Form.Check id='notifications.onConfig' name='notifications.onConfig' ref={register} label={<span>on <span className="text-success">Config</span> completion</span>} />
+                </Col>
+                <Col className="d-flex align-items-center">
+                  <Form.Check id='notifications.sound' name='notifications.sound' ref={register} label={<span>Notification Sound {notificationSound ? <VolumeUp/> : <VolumeMute/>} </span>} />
+                </Col>
+              </Row>
             </Card.Body>
           </Card>
           <Card className='mb-2'>

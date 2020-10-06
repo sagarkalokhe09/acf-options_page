@@ -6,6 +6,9 @@ import { ADDON_CONDITIONS, defaultAddon } from '@dhruv-techapps/acf-common'
 import { useForm } from 'react-hook-form'
 import { REGEX_NUM } from '../../util/regex'
 import { ValueExtractorPopover } from '../../popover/value-extractor.popover'
+import { convertNumberField } from '../../util/validation'
+
+const NUMBER_FIELDS = ['retry', 'retryInterval']
 
 const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const { register, handleSubmit, errors, reset, formState: { isDirty } } = useForm({
@@ -18,6 +21,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const actionIndex = useRef(-1)
 
   const onSubmit = data => {
+    convertNumberField(data, NUMBER_FIELDS)
     reset(data)
     setConfigs(configs => configs.map((config, index) => {
       if (index === configIndex) {

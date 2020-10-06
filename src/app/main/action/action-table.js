@@ -121,9 +121,9 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
   const _validateActions = () => {
     let isValid = true
     data.forEach((action, index) => {
-      document.querySelector(`#actions tr:nth-child(${index + 1}) td:nth-child(4) input`).classList.remove('is-invalid')
+      document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`).classList.remove('is-invalid')
       if (!action.elementFinder) {
-        document.querySelector(`#actions tr:nth-child(${index + 1}) td:nth-child(4) input`).classList.add('is-invalid')
+        document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`).classList.add('is-invalid')
         isValid = false
       }
     })
