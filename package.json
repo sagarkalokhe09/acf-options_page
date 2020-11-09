@@ -5,20 +5,20 @@
   "homepage": "./",
   "dependencies": {
     "@dhruv-techapps/acf-common": "^1.0.7",
-    "@dhruv-techapps/core-common": "^1.1.56",
+    "@dhruv-techapps/core-common": "^1.1.57",
     "@dhruv-techapps/core-components": "^1.0.10",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "bootstrap": "^4.5.2",
+    "bootstrap": "^4.5.3",
     "bootstrap-icons": "^1.0.0",
     "env-cmd": "^10.1.0",
-    "react": "^16.13.1",
+    "react": "^16.14.0",
     "react-bootstrap": "^1.3.0",
-    "react-dom": "^16.13.1",
-    "react-hook-form": "^6.9.0",
+    "react-dom": "^16.14.0",
+    "react-hook-form": "^6.9.5",
     "react-scripts": "3.4.3",
-    "react-table": "^7.5.2"
+    "react-table": "^7.6.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -49,7 +49,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.21.3",
+    "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-standard": "^4.0.1",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2"
