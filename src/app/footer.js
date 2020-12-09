@@ -6,8 +6,8 @@ const Footer = ({ version }) => {
   return <Navbar expand='lg' sticky='bottom'>
     <Nav className='mr-auto'>
       <Nav.Link href='mailto:dhruv.techapps@gmail.com' active>dhruv.techapps@gmail.com</Nav.Link>
-      <Nav.Link href='https://github.com/Dhruv-Techapps/auto-click-auto-fill/issues' target='_blank'>Issues</Nav.Link>
-      <Nav.Link href='https://getautoclicker.com/test' target='_blank'>Test</Nav.Link>
+      <Nav.Link href={process.env.REACT_APP_ISSUES} target='_blank'>Issues</Nav.Link>
+      <Nav.Link href={process.env.REACT_APP_TEST} target='_blank'>Test</Nav.Link>
       <Nav.Link>v{version}</Nav.Link>
     </Nav>
   </Navbar>

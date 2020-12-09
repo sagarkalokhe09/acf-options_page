@@ -58,7 +58,7 @@ export const ElementFinderPopover = () => <OverlayTrigger trigger="click" rootCl
           <td>&gt;1</td>
         </tr>
         <tr>
-          <td><a href="https://getautoclicker.com/docs/xpath" target="_blank" rel="noopener noreferrer">XPath</a></td>
+          <td><a href={process.env.REACT_APP_DOCS + 'element-finder'} target="_blank" rel="noopener noreferrer">XPath</a></td>
           <td><code>&#47;&#47;input[contains(@class,&apos;test&apos;)]</code></td>
           <td>&gt;1</td>
         </tr>

@@ -54,7 +54,7 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
             <FormControl
               name='url' ref={register({ required: true })}
               isInvalid={!!errors.url}
-              placeholder='https://getautoclicker.com/' aria-label='https://getautoclicker.com/' aria-describedby='config-url'
+              placeholder={process.env.BASE} aria-label={process.env.BASE} aria-describedby='config-url'
             />
             <Form.Control.Feedback type='invalid'>{errors.url && 'URL is required'}</Form.Control.Feedback>
           </InputGroup>

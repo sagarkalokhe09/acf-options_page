@@ -7,23 +7,23 @@ export const ValuePopover = () => <OverlayTrigger trigger="click" placement="rig
     <Table bordered striped className="mt-3">
       <tbody>
         <tr>
-          <td><a href="https://getautoclicker.com/docs/action#scroll-to-examples" target="_blank" rel="noopener noreferrer">Scroll To</a></td>
+          <td><a href={process.env.REACT_APP_DOCS + '/action/scroll-to-examples'} target="_blank" rel="noopener noreferrer">Scroll To</a></td>
           <td><code>ScrollTo::Bottom</code></td>
         </tr>
         <tr>
-          <td><a href="https://getautoclicker.com/docs/action#click-events-examples" target="_blank" rel="noopener noreferrer">Click Events</a></td>
+          <td><a href={process.env.REACT_APP_DOCS + '/action/click-events-examples'} target="_blank" rel="noopener noreferrer">Click Events</a></td>
           <td><code>ClickEvents::dblclick</code></td>
         </tr>
         <tr>
-          <td><a href="https://getautoclicker.com/docs/action#form-events-examples" target="_blank" rel="noopener noreferrer">Form Events</a></td>
+          <td><a href={process.env.REACT_APP_DOCS + '/action/form-events-examples'} target="_blank" rel="noopener noreferrer">Form Events</a></td>
           <td><code>FormEvents::submit</code></td>
         </tr>
         <tr>
-          <td><a href="https://getautoclicker.com/docs/action#exec-command-examples" target="_blank" rel="noopener noreferrer">Exec Command</a></td>
+          <td><a href={process.env.REACT_APP_DOCS + '/action/exec-command-examples'} target="_blank" rel="noopener noreferrer">Exec Command</a></td>
           <td><code>ExecCommand::[&quot;cut&quot;,&quot;paste&quot;]</code></td>
         </tr>
         <tr>
-          <td><a href="https://getautoclicker.com/docs/action#location-command-examples" target="_blank" rel="noopener noreferrer">Location Command</a></td>
+          <td><a href={process.env.REACT_APP_DOCS + '/action/location-command-examples'} target="_blank" rel="noopener noreferrer">Location Command</a></td>
           <td><code>LocationCommand::href::https://getautoclicker.com</code></td>
         </tr>
         <tr>

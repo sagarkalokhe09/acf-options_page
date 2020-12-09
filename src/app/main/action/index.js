@@ -32,7 +32,7 @@ const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
     <Card.Header as='h5'>
       <Row>
         <Col className='d-flex align-items-center'>
-          <a target='_blank' rel='noopener noreferrer' href='https://getautoclicker.com/docs/action'>Action</a>
+          <a target='_blank' rel='noopener noreferrer' href={process.env.REACT_APP_DOCS + 'action'}>Action</a>
         </Col>
         <Col md='auto' className='d-flex align-items-center'>
           <Button variant='success' onClick={() => { actionTableRef.current.addAction() }}>Add Action</Button>

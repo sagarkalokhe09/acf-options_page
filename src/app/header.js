@@ -41,9 +41,9 @@ const Header = ({ name }) => {
       </Nav>
       <Form inline>
         <Nav className="mr-2">
-          <Nav.Link href='https://getautoclicker.com/docs/getting-started' target='_blank'>Documentaion</Nav.Link>
-          <Nav.Link href='https://getautoclicker.com/blog' target='_blank'>Blog</Nav.Link>
-          <Nav.Link href='https://getautoclicker.com/examples/getautoclicker.com' target='_blank'>Examples</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_DOCS + 'getting-started'} target='_blank'>Documentaion</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_BLOG} target='_blank'>Blog</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_EXAMPLES} target='_blank'>Examples</Nav.Link>
         </Nav>
         <GearFill width='24' height='24' onClick={() => setShowSettings(true)} />
         <SettingsModal show={showSettings} handleClose={handleClose} />

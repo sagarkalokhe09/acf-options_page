@@ -18,7 +18,7 @@ function App () {
     ManifestService.values(['name', 'version']).then(setManifest).catch(error => {
       setError(error)
       if (error.message === 'Could not establish connection. Receiving end does not exist.') {
-        window.location.href = 'https://getautoclicker.com/'
+        window.location.href = process.env.REACT_APP_BASE
       }
     })
   }, [])
