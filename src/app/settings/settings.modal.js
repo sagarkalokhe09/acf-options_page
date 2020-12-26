@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Form, Card, InputGroup, FormControl, Row, Col, Button, Alert } from 'react-bootstrap'
+import { Modal, Form, Card, InputGroup, FormControl, Row, Col, Button } from 'react-bootstrap'
 import { defaultSettings, LOAD_TYPES, RETRY_OPTIONS, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { ReactComponent as VolumeUp } from 'bootstrap-icons/icons/volume-up.svg'
 import { ReactComponent as VolumeMute } from 'bootstrap-icons/icons/volume-mute.svg'
@@ -9,6 +9,7 @@ import { Loading } from '@dhruv-techapps/core-components'
 import { useForm } from 'react-hook-form'
 import { REGEX_NUM } from '../util/regex'
 import { convertNumberField } from '../util/validation'
+import { ErrorAlert } from '../components/error.alert'
 
 const NUMBER_FIELDS = ['retry', 'retryInterval']
 
@@ -45,7 +46,8 @@ const SettingsModal = ({ show, handleClose }) => {
       </Modal.Header>
       <Modal.Body>
         {loading ? <Loading className='d-flex justify-content-center m-5' />
-          : error ? <Alert variant='danger'><Alert.Heading>Error</Alert.Heading>{JSON.stringify(error)}</Alert> : <>
+          : <>
+            {error && <ErrorAlert message={error}/>}
             <Card className='mb-2'>
               <Card.Body>
                 <Form.Check type="switch" id='checkiFrames' name='checkiFrames' ref={register} label='Check IFrames' />
@@ -135,7 +137,7 @@ const SettingsModal = ({ show, handleClose }) => {
       </Modal.Body>
       <Modal.Footer>
         <span className='text-success'>{message}</span>
-        <Button type='submit' className="ml-2" disabled={!isValid || !isDirty}>Save</Button>
+        <Button type='submit' className="ml-2" disabled={!isValid || !isDirty || error}>Save</Button>
       </Modal.Footer>
     </Form>
   </Modal>

@@ -5,7 +5,7 @@ import Batch from './batch'
 import Action from './action'
 import AddonModal from './action/addon.modal'
 
-import { Row, Col, Button, Form, Dropdown, Alert, Card } from 'react-bootstrap'
+import { Row, Col, Button, Form, Dropdown, Card, Badge } from 'react-bootstrap'
 import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg'
 
 import { defaultAction, defaultConfig, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
@@ -16,6 +16,7 @@ import { DropdownToggle } from '../components/DropdownToggle'
 import { getConfigName } from '../util/helper'
 import ConfirmModal from '../components/ConfirmModal'
 import ActionSettingsModal from './action/action-settings.modal'
+import { ErrorAlert } from '../components/error.alert'
 
 const Configs = ({ toastRef }) => {
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
@@ -87,7 +88,7 @@ const Configs = ({ toastRef }) => {
     const name = getConfigName(undefined, configs.length)
     setConfigs([...configs, { ...defaultConfig, name }])
     toastRef.current.push({
-      body: <p><span className='badge badge-success'>{name}</span> added successfully </p>,
+      body: <p><Badge variant='success'>{name}</Badge> added successfully </p>,
       header: <strong className='mr-auto'>Configuration</strong>
     })
   }
@@ -148,7 +149,8 @@ const Configs = ({ toastRef }) => {
 
   return <>
     {loading ? <Loading className='d-flex justify-content-center m-5' />
-      : error ? <Alert variant='danger'><Alert.Heading>Error</Alert.Heading>{JSON.stringify(error)}</Alert> : <>
+      : <>
+        {error && <ErrorAlert message={error}></ErrorAlert> }
         <Card className='mb-3'>
           <Card.Body>
             <Row >

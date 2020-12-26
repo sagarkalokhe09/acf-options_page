@@ -11,7 +11,7 @@ import { convertNumberField } from '../../util/validation'
 const NUMBER_FIELDS = ['retry', 'retryInterval']
 
 const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
-  const { register, handleSubmit, errors, reset, formState: { isDirty } } = useForm({
+  const { register, handleSubmit, errors, reset, formState: { isDirty, isValid } } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
     defaultValues: { ...defaultAddon },
@@ -25,12 +25,26 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
     reset(data)
     setConfigs(configs => configs.map((config, index) => {
       if (index === configIndex) {
+        if (!config.actions[actionIndex.current]) {
+          config.actions[actionIndex.current] = {}
+        }
         config.actions[actionIndex.current].addon = { ...data }
         return { ...config }
       }
       return config
     }))
     setShow(false)
+  }
+
+  const onReset = () => {
+    reset({})
+    setConfigs(configs => configs.map((config, index) => {
+      if (index === configIndex && config.actions[actionIndex.current]) {
+        delete config.actions[actionIndex.current].addon
+        return { ...config }
+      }
+      return config
+    }))
   }
 
   useImperativeHandle(ref, () => ({
@@ -44,7 +58,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const handleClose = () => { setShow(false) }
 
   return <Modal show={show} size='lg' onHide={handleClose}>
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} onReset={onReset}>
       <Modal.Header closeButton>
         <Modal.Title>Addon</Modal.Title>
       </Modal.Header>
@@ -126,9 +140,10 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
           </Card.Body>
         </Card>
       </Modal.Body>
-      {isDirty && <Modal.Footer>
-        <Button type='submit'>Save</Button>
-      </Modal.Footer>}
+      <Modal.Footer>
+        <Button type='reset' variant="danger">Clear</Button>
+        <Button type='submit' disabled={!isValid || !isDirty} className="ml-3">Save</Button>
+      </Modal.Footer>
     </Form>
   </Modal>
 })

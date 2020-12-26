@@ -114,7 +114,7 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
         </Card>
       </Modal.Body>
       <Modal.Footer>
-        <Button type='reset' variant="secondary">Clear</Button>
+        <Button type='reset' variant="danger">Clear</Button>
         <Button type='submit' disabled={!isValid || !isDirty} className="ml-3">Save</Button>
       </Modal.Footer>
     </Form>

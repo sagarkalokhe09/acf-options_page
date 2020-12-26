@@ -60,7 +60,7 @@ Action.propTypes = {
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
   addonRef: ActionTable.propTypes.addonRef,
-  actionSettingsRef: ActionTable.propTypes.addonRef,
+  actionSettingsRef: ActionTable.propTypes.actionSettingsRef,
   toastRef: ActionTable.propTypes.toastRef
 }
 export default React.memo(Action)
