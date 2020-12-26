@@ -4,26 +4,28 @@ import PropTypes from 'prop-types'
 import './action-table.scss'
 
 import { useTable } from 'react-table'
-import { Button, Form, Table } from 'react-bootstrap'
+import { Button, Form, Table, Dropdown } from 'react-bootstrap'
 
-import { ReactComponent as XCircle } from 'bootstrap-icons/icons/x-circle.svg'
-import { ReactComponent as CodeSlash } from 'bootstrap-icons/icons/code-slash.svg'
 import { ReactComponent as CaretUp } from 'bootstrap-icons/icons/caret-up.svg'
 import { ReactComponent as CaretDown } from 'bootstrap-icons/icons/caret-down.svg'
+import { ReactComponent as ThreeDots } from 'bootstrap-icons/icons/three-dots.svg'
 
 import { EditableCell } from './editable-cell'
-import AddonModal from './addon'
+import AddonModal from './addon.modal'
 import { REGEX_NUM } from '../../util/regex'
 import ConfirmModel from '../../components/ConfirmModal'
+import { DropdownToggle } from '../../components/DropdownToggle'
 import { ElementFinderPopover } from '../../popover/element-finder.popover'
 import { ValuePopover } from '../../popover/value.popover'
 import { numberWithExponential } from '../../util/prop-types'
-import { defaultAction } from '@dhruv-techapps/acf-common'
+import { defaultAction, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
+import { StorageService } from '@dhruv-techapps/core-common'
 
-const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, toastRef }, ref) => {
+const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, toastRef, actionSettingsRef }, ref) => {
   const [data, setData] = useState(actions)
   const [error, setError] = useState()
   const confirmRef = useRef()
+  const [actionSettings, setActionSettings] = useState(false)
   const didMountRef = useRef(true)
   const didUpdateRef = useRef(false)
 
@@ -35,6 +37,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
   }))
 
   useEffect(() => {
+    StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS).then(settings => setActionSettings(settings.actionSettings))
     if (didMountRef.current) {
       didMountRef.current = false
       return
@@ -134,7 +137,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
     const name = `#${+rowIndex + 1} - ${data[rowIndex].name || data[rowIndex].elementFinder || 'row'}`
     confirmRef.current.confirm({
       title: 'Remove Action',
-      message: <p>Are you sure to remove <span className='codecode-danger'>{name}</span> Action?</p>,
+      message: <p>Are you sure to remove <span className='text-danger'>{name}</span> Action?</p>,
       confirmFunc: removeAction.bind(null, Number(rowIndex))
     })
   }
@@ -153,6 +156,10 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
 
   const showAddon = (row) => {
     addonRef.current.showAddon(row.id, row.original.addon)
+  }
+
+  const showSettings = (row) => {
+    actionSettingsRef.current.showSettings(row.id, row.original.settings)
   }
 
   const _arrayMove = (arr, oldIndex, newIndex) => {
@@ -198,7 +205,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
       <tbody {...getTableBodyProps()}>
         {rows.map((row, index) => {
           prepareRow(row)
-          return (<tr {...row.getRowProps()} key={index}>
+          return (<tr {...row.getRowProps()} key={index} className={actions[index] ? '' : 'border border-warning'}>
             <td align='center'>
               <div className='d-flex flex-column align-items-center'>
                 <CaretUp width='20' height='20' onClick={(e) => moveUp(e, row.id)} disabled={index === 0}/>
@@ -211,10 +218,17 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
               </td>
             ))}
             <td align='center'>
-              <CodeSlash className='text-primary mr-3' width='20' height='20' onClick={() => showAddon(row)} />
-              <Button variant='link' className='p-0' onClick={() => { removeActionConfirm(row.id) }} disabled={data.length === 1}>
-                <XCircle className={'x-circle ' + (data.length === 1 ? 'text-muted' : 'text-danger')} width='20' height='20' />
-              </Button>
+              {actions[row.id] && <Dropdown className='ml-3' alignRight>
+                <Dropdown.Toggle as={DropdownToggle} id='dropdown-basic'>
+                  <ThreeDots width='24' height='24' />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => showAddon(row)}>Addon</Dropdown.Item>
+                  {actionSettings && <Dropdown.Item onClick={() => showSettings(row)}>Settings</Dropdown.Item>}
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={() => { removeActionConfirm(row.id) }} className={data.length === 1 ? 'text-muted' : 'text-danger'} disabled={data.length === 1}>Remove Action</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>}
             </td>
           </tr>)
         })}
@@ -243,6 +257,7 @@ ActionTable.propTypes = {
   }),
   toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired,
   addonRef: PropTypes.shape({ current: PropTypes.shape({ showAddon: PropTypes.func.isRequired }) }).isRequired,
+  actionSettingsRef: PropTypes.shape({ current: PropTypes.shape({ showSettings: PropTypes.func.isRequired }) }).isRequired,
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
   hiddenColumns: PropTypes.arrayOf(PropTypes.string)

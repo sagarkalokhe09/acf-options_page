@@ -3,7 +3,7 @@ import React, { createRef, useEffect, useRef, useState } from 'react'
 import Config from './config'
 import Batch from './batch'
 import Action from './action'
-import AddonModal from './action/addon'
+import AddonModal from './action/addon.modal'
 
 import { Row, Col, Button, Form, Dropdown, Alert, Card } from 'react-bootstrap'
 import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg'
@@ -15,6 +15,7 @@ import { Loading } from '@dhruv-techapps/core-components'
 import { DropdownToggle } from '../components/DropdownToggle'
 import { getConfigName } from '../util/helper'
 import ConfirmModal from '../components/ConfirmModal'
+import ActionSettingsModal from './action/action-settings.modal'
 
 const Configs = ({ toastRef }) => {
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
@@ -24,6 +25,7 @@ const Configs = ({ toastRef }) => {
   const config = configs[selected]
   const didMountRef = useRef(true)
   const addonRef = useRef()
+  const actionSettingsRef = useRef()
   const confirmRef = useRef()
   const importFiled = createRef()
 
@@ -184,8 +186,9 @@ const Configs = ({ toastRef }) => {
         <ConfirmModal ref={confirmRef} />
         {config.enable && <>
           <Batch batch={config.batch} configIndex={selected} setConfigs={setConfigs} />
-          <Action actions={config.actions} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} addonRef={addonRef} />
+          <Action actions={config.actions} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} addonRef={addonRef} actionSettingsRef={actionSettingsRef} />
           <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
+          <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
         </>}
       </>}
   </>

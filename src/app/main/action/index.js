@@ -9,7 +9,7 @@ import PropTypes from 'prop-types'
 const HIDDEN_COLUMN_KEY = 'hiddenColumns'
 const defaultHiddenColumns = ['name', 'initWait', 'repeat', 'repeatInterval']
 
-const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
+const Action = (props) => {
   const [hiddenColumns, setHiddenColumns] = useState(LocalStorage.getItem(HIDDEN_COLUMN_KEY, defaultHiddenColumns))
   const actionTableRef = useRef()
   const didMountRef = useRef(true)
@@ -51,7 +51,7 @@ const Action = ({ actions, configIndex, setConfigs, addonRef, toastRef }) => {
       </Row>
     </Card.Header>
     <Card.Body>
-      <ActionTable ref={actionTableRef} toastRef={toastRef} actions={actions} configIndex={configIndex} setConfigs={setConfigs} hiddenColumns={hiddenColumns} addonRef={addonRef} />
+      <ActionTable ref={actionTableRef} {...props} hiddenColumns={hiddenColumns} />
     </Card.Body>
   </Card>
 }
@@ -60,6 +60,7 @@ Action.propTypes = {
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
   addonRef: ActionTable.propTypes.addonRef,
+  actionSettingsRef: ActionTable.propTypes.addonRef,
   toastRef: ActionTable.propTypes.toastRef
 }
 export default React.memo(Action)
