@@ -33,7 +33,7 @@ function App () {
         <Footer version={manifest.version} />
         <ToastHandler ref={toastRef} />
       </>}
-      <GoogleAds client="ca-pub-9512495707028343" slot="4304175895" format="auto"/>
+      <GoogleAds client={process.env.REACT_APP_GOOGLE_ADS_CLIENT} slot={process.env.REACT_APP_GOOGLE_ADS_SLOT} format="auto"/>
     </Container>
   } catch (error) {
     console.error(',ers', error)

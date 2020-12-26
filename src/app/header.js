@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Navbar, Nav, Form } from 'react-bootstrap'
+import { Navbar, Nav, Form, Badge } from 'react-bootstrap'
 import { ReactComponent as GearFill } from 'bootstrap-icons/icons/gear-fill.svg'
-import SettingsModal from './settings/SettingsModal'
-import PropTypes from 'prop-types'
+import SettingsModal from './settings/settings.modal'
 
-const Header = ({ name }) => {
+const Header = () => {
   const [showSettings, setShowSettings] = useState(false)
   const [scroll, setScroll] = useState(false)
 
@@ -25,7 +24,7 @@ const Header = ({ name }) => {
 
   const className = `${scroll ? 'shadow' : ''}`
   return <Navbar expand='lg' variant="light" sticky='top' className={className}>
-    <Navbar.Brand className={`${name.match(/DEV/i) ? 'dev' : name.match(/BETA/i) ? 'beta' : ''}`}>
+    <Navbar.Brand>
       <img
         src='./icon32.png'
         width='30'
@@ -33,7 +32,8 @@ const Header = ({ name }) => {
         className='d-inline-block align-top mr-2'
         alt='Auto click Auto Fill logo'
       />
-      {name}
+      {process.env.REACT_APP_NAME}
+      {process.env.REACT_APP_VARIANT && <Badge variant="danger ml-2 font-weight-light" >{process.env.REACT_APP_VARIANT}</Badge>}
     </Navbar.Brand>
     <Navbar.Toggle aria-controls='basic-navbar-nav' />
     <Navbar.Collapse id='basic-navbar-nav'>
@@ -41,7 +41,7 @@ const Header = ({ name }) => {
       </Nav>
       <Form inline>
         <Nav className="mr-2">
-          <Nav.Link href={process.env.REACT_APP_DOCS + 'getting-started'} target='_blank'>Documentaion</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_DOCS + 'getting-started'} target='_blank'>Documentation</Nav.Link>
           <Nav.Link href={process.env.REACT_APP_BLOG} target='_blank'>Blog</Nav.Link>
           <Nav.Link href={process.env.REACT_APP_EXAMPLES} target='_blank'>Examples</Nav.Link>
         </Nav>
@@ -51,7 +51,5 @@ const Header = ({ name }) => {
     </Navbar.Collapse>
   </Navbar>
 }
-Header.propTypes = {
-  name: PropTypes.string.isRequired
-}
+Header.propTypes = {}
 export default Header

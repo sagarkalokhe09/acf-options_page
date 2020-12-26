@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 
 const GoogleAds = ({ client, slot, format }) => {
   useEffect(() => {
-    if (process.env.NODE_ENV === 'production') {
+    if (window.location.href.match('.getautoclicker.com') !== null) {
       (window.adsbygoogle = window.adsbygoogle || []).push({})
     }
   }, [])
-  if (process.env.NODE_ENV === 'production') {
+  if (window.location.href.match('.getautoclicker.com') !== null) {
     return (
       <ins
         className='adsbygoogle'
