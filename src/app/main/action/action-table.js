@@ -37,7 +37,11 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
   }))
 
   useEffect(() => {
-    StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS).then(settings => setActionSettings(settings.actionSettings))
+    StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS).then(settings => {
+      if (settings) {
+        setActionSettings(settings.actionSettings)
+      }
+    })
     if (didMountRef.current) {
       didMountRef.current = false
       return

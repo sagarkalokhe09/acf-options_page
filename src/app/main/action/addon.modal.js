@@ -2,13 +2,13 @@ import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
 import { Modal, Form, Row, Col, Button, Alert, Card, InputGroup, FormControl } from 'react-bootstrap'
-import { ADDON_CONDITIONS, defaultAddon } from '@dhruv-techapps/acf-common'
+import { ADDON_CONDITIONS, defaultAddon, RECHECK_OPTIONS } from '@dhruv-techapps/acf-common'
 import { useForm } from 'react-hook-form'
 import { REGEX_NUM } from '../../util/regex'
 import { ValueExtractorPopover } from '../../popover/value-extractor.popover'
 import { convertNumberField } from '../../util/validation'
 
-const NUMBER_FIELDS = ['retry', 'retryInterval']
+const NUMBER_FIELDS = ['recheck', 'recheckInterval']
 
 const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const { register, handleSubmit, errors, reset, formState: { isDirty, isValid } } = useForm({
@@ -110,31 +110,43 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
             </Row>
             <hr/>
             <Row>
-              <Col>
+              <Col md={6} sm={12}>
                 <InputGroup>
                   <InputGroup.Prepend>
-                    <InputGroup.Text id='addon-retry'>Retry</InputGroup.Text>
+                    <InputGroup.Text id='addon-recheck'>Recheck</InputGroup.Text>
                   </InputGroup.Prepend>
                   <FormControl
-                    placeholder='0' aria-label='0' name='retry' aria-describedby='addon-retry'
+                    placeholder='0' aria-label='0' name='recheck' aria-describedby='addon-recheck'
                     ref={register({ pattern: REGEX_NUM })}
-                    isInvalid={errors.retry}
+                    isInvalid={errors.recheck}
                   />
-                  <Form.Control.Feedback type='invalid'>{errors.retry && 'Only valid numbers are allowed'}</Form.Control.Feedback>
+                  <Form.Control.Feedback type='invalid'>{errors.recheck && 'Only valid numbers are allowed'}</Form.Control.Feedback>
                 </InputGroup>
               </Col>
-              <Col >
+              <Col md={6} sm={12}>
                 <InputGroup>
                   <InputGroup.Prepend>
-                    <InputGroup.Text id='addon-retry-interval'>Retry Interval&nbsp;<small className='text-info'>(sec)</small></InputGroup.Text>
+                    <InputGroup.Text id='addon-recheck-interval'>Recheck Interval&nbsp;<small className='text-info'>(sec)</small></InputGroup.Text>
                   </InputGroup.Prepend>
                   <FormControl
-                    placeholder='0' aria-label='0' id='addon-retryInterval' name='retryInterval' aria-describedby='retry-interval'
+                    placeholder='0' aria-label='0' id='addon-recheckInterval' name='recheckInterval' aria-describedby='recheck-interval'
                     ref={register({ validate: value => !isNaN(value) })}
-                    isInvalid={errors.retryInterval}
+                    isInvalid={errors.recheckInterval}
                   />
-                  <Form.Control.Feedback type='invalid'>{errors.retryInterval && 'Only valid numbers are allowed'}</Form.Control.Feedback>
+                  <Form.Control.Feedback type='invalid'>{errors.recheckInterval && 'Only valid numbers are allowed'}</Form.Control.Feedback>
                 </InputGroup>
+              </Col>
+              <Col xs={12}>
+                <h6 className='my-2 text-secondary font-weight-light'><small>* Below are action which can be performed if recheck is not matched by extension after recheck</small></h6>
+              </Col>
+              <Col md={4} sm={12}>
+                <Form.Check type='radio' name='recheckOption' id='recheckOptionStop' value={RECHECK_OPTIONS.STOP} ref={register} label='Stop' />
+              </Col>
+              <Col md={4} sm={12}>
+                <Form.Check type='radio' name='recheckOption' id='recheckOptionSkip' value={RECHECK_OPTIONS.SKIP} ref={register} label='Skip' />
+              </Col>
+              <Col md={4} sm={12}>
+                <Form.Check type='radio' name='recheckOption' id='recheckOptionReload' value={RECHECK_OPTIONS.RELOAD} ref={register} label='Refresh' />
               </Col>
             </Row>
           </Card.Body>

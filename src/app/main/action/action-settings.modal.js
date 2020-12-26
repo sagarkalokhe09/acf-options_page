@@ -67,7 +67,7 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
         <Modal.Title>Action Settings</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Alert variant="info">Action settings will override global settings</Alert>
+        <Alert variant="info">Action settings will override global settings, and its applicable for both action and its addon condition</Alert>
         <Card className='mb-2'>
           <Card.Body>
             <Row>

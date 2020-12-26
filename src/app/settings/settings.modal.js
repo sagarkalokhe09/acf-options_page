@@ -59,13 +59,13 @@ const SettingsModal = ({ show, handleClose }) => {
               <Card.Body>
                 <Row>
                   <Col>
-                    <Form.Check id='notifications.onError' name='notifications.onError' ref={register} label={<span>on <span className="text-danger">Error</span> occurred</span>}/>
-                    <Form.Check id='notifications.onAction' name='notifications.onAction' ref={register} label={<span>on <span className="text-success">Action</span> completion</span>} />
-                    <Form.Check id='notifications.onBatch' name='notifications.onBatch' ref={register} label={<span>on <span className="text-success">Batch</span> completion</span>} />
-                    <Form.Check id='notifications.onConfig' name='notifications.onConfig' ref={register} label={<span>on <span className="text-success">Config</span> completion</span>} />
+                    <Form.Check type="switch" id='notifications.onError' name='notifications.onError' ref={register} label={<span>on <span className="text-danger">Error</span> occurred</span>}/>
+                    <Form.Check type="switch" id='notifications.onAction' name='notifications.onAction' ref={register} label={<span>on <span className="text-success">Action</span> completion</span>} />
+                    <Form.Check type="switch" id='notifications.onBatch' name='notifications.onBatch' ref={register} label={<span>on <span className="text-success">Batch</span> completion</span>} />
+                    <Form.Check type="switch" id='notifications.onConfig' name='notifications.onConfig' ref={register} label={<span>on <span className="text-success">Config</span> completion</span>} />
                   </Col>
                   <Col className="d-flex align-items-center">
-                    <Form.Check id='notifications.sound' name='notifications.sound' ref={register} label={<span>Notification Sound {notificationSound ? <VolumeUp/> : <VolumeMute/>} </span>} />
+                    <Form.Check type="switch" id='notifications.sound' name='notifications.sound' ref={register} label={<span>Notification Sound {notificationSound ? <VolumeUp/> : <VolumeMute/>} </span>} />
                   </Col>
                 </Row>
               </Card.Body>
@@ -121,7 +121,7 @@ const SettingsModal = ({ show, handleClose }) => {
                     <Form.Check type='radio' name='retryOption' id='retryOptionSkip' value={RETRY_OPTIONS.SKIP} ref={register} label='Skip Not Found' />
                   </Col>
                   <Col md={4} sm={12}>
-                    <Form.Check type='radio' name='retryOption' id='retryOptionReload' value={RETRY_OPTIONS.RELOAD} ref={register} label='Retry Refresh' />
+                    <Form.Check type='radio' name='retryOption' id='retryOptionReload' value={RETRY_OPTIONS.RELOAD} ref={register} label='Refresh' />
                   </Col>
                   <Col xs={12}>
                     <hr/>
