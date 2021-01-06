@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import BatchBody from './batch-body'
 import { numberWithExponential } from '../../util/prop-types'
 
-const Batch = ({ batch, configIndex, setConfigs }) => {
+const Batch = ({ batch, configIndex, setConfigs, configEnable }) => {
   const onChange = (e) => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
     setConfigs(configs => configs.map((config, index) => {
@@ -21,7 +21,7 @@ const Batch = ({ batch, configIndex, setConfigs }) => {
     <Card.Header as='h5'>
       <Row>
         <Col>
-          <a target='_blank' rel='noopener noreferrer' href={process.env.REACT_APP_DOCS + 'batch'}>Batch</a>
+          <a target='_blank' rel='noopener noreferrer' href={process.env.REACT_APP_DOCS + 'batch' } className={configEnable ? undefined : 'text-muted'}>Batch</a>
         </Col>
         <Col md='auto'>
           <Form.Check
@@ -46,6 +46,7 @@ Batch.propTypes = {
     repeatInterval: numberWithExponential
   }),
   configIndex: PropTypes.number.isRequired,
-  setConfigs: PropTypes.func.isRequired
+  setConfigs: PropTypes.func.isRequired,
+  configEnable: PropTypes.bool
 }
 export default React.memo(Batch)

@@ -186,12 +186,10 @@ const Configs = ({ toastRef }) => {
         </Card>
         <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} />
         <ConfirmModal ref={confirmRef} />
-        {config.enable && <>
-          <Batch batch={config.batch} configIndex={selected} setConfigs={setConfigs} />
-          <Action actions={config.actions} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} addonRef={addonRef} actionSettingsRef={actionSettingsRef} />
-          <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
-          <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
-        </>}
+        <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />
+        <Action actions={config.actions} configEnable={config.enable} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} addonRef={addonRef} actionSettingsRef={actionSettingsRef} />
+        <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
+        <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
       </>}
   </>
 }

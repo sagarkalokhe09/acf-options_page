@@ -7,6 +7,7 @@ import ToastHandler from './app/components/ToastHandler'
 import { Container } from 'react-bootstrap'
 import { ManifestService } from '@dhruv-techapps/core-common'
 import ExtensionNotFoundModel from './app/extension-not-found.modal'
+import GoogleAds from './app/components/GoogleAds'
 
 function App () {
   const toastRef = useRef()
@@ -29,7 +30,7 @@ function App () {
     <Footer version={manifest.version || ''}/>
     <ToastHandler ref={toastRef} />
     <ExtensionNotFoundModel ref={extensionNotFoundRef} />
-    {/* <GoogleAds client={process.env.REACT_APP_GOOGLE_ADS_CLIENT} slot={process.env.REACT_APP_GOOGLE_ADS_SLOT} format="auto"/> */}
+    <GoogleAds client={process.env.REACT_APP_GOOGLE_ADS_CLIENT} slot={process.env.REACT_APP_GOOGLE_ADS_SLOT} format="auto"/>
   </Container>
 }
 

@@ -65,7 +65,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
     <Card.Header as='h5'>
       <Row>
         <Col className='d-flex align-items-center'>
-          <a target='_blank' rel='noopener noreferrer' href={process.env.REACT_APP_DOCS + 'configuration'}>Configuration</a>
+          <a target='_blank' rel='noopener noreferrer' href={process.env.REACT_APP_DOCS + 'configuration'} className={config.enable ? undefined : 'text-muted' }>Configuration</a>
         </Col>
         <Col md='auto' className='d-flex align-items-center'>
           <Form.Check type='switch' name='enable' id='config-enable' label='Enable' checked={config.enable} onChange={onChange} />
@@ -85,7 +85,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
         </Col>
       </Row>
     </Card.Header>
-    {config.enable && <ConfigBody config={config} configIndex={configIndex} setConfigs={setConfigs} />}
+    <ConfigBody config={config} configIndex={configIndex} setConfigs={setConfigs} />
   </Card>
 }
 

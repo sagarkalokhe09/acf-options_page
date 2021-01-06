@@ -32,7 +32,7 @@ const Action = (props) => {
     <Card.Header as='h5'>
       <Row>
         <Col className='d-flex align-items-center'>
-          <a target='_blank' rel='noopener noreferrer' href={process.env.REACT_APP_DOCS + 'action'}>Action</a>
+          <a target='_blank' rel='noopener noreferrer' href={process.env.REACT_APP_DOCS + 'action'} className={props.configEnable ? undefined : 'text-muted'}>Action</a>
         </Col>
         <Col md='auto' className='d-flex align-items-center'>
           <Button variant='success' onClick={() => { actionTableRef.current.addAction() }}>Add Action</Button>
@@ -61,6 +61,7 @@ Action.propTypes = {
   setConfigs: PropTypes.func.isRequired,
   addonRef: ActionTable.propTypes.addonRef,
   actionSettingsRef: ActionTable.propTypes.actionSettingsRef,
-  toastRef: ActionTable.propTypes.toastRef
+  toastRef: ActionTable.propTypes.toastRef,
+  configEnable: PropTypes.bool
 }
 export default React.memo(Action)
