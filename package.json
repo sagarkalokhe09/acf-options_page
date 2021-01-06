@@ -30,9 +30,9 @@
     "build:stable": "react-scripts build",
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:beta": "env-cmd -f .env.beta react-scripts build",
-    "deploy:stable": "npm run build:stable && aws s3 sync build/. s3://stable.getautoclicker.com/",
-    "deploy:dev": "npm run build:dev && aws s3 sync build/. s3://dev.getautoclicker.com/",
-    "deploy:beta": "npm run build:beta && aws s3 sync build/. s3://beta.getautoclicker.com/"
+    "deploy:stable": "npm run build:stable && aws s3 sync build/. s3://stable.getautoclicker.com/ --delete",
+    "deploy:dev": "npm run build:dev && aws s3 sync build/. s3://dev.getautoclicker.com/ --delete",
+    "deploy:beta": "npm run build:beta && aws s3 sync build/. s3://beta.getautoclicker.com/ --delete"
   },
   "eslintConfig": {
     "extends": "react-app"
