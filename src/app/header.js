@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Navbar, Nav, Form, Badge } from 'react-bootstrap'
 import { ReactComponent as GearFill } from 'bootstrap-icons/icons/gear-fill.svg'
 import SettingsModal from './settings/settings.modal'
+import GTAG from './gtag'
 
 const Header = () => {
   const [showSettings, setShowSettings] = useState(false)
