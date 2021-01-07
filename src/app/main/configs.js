@@ -138,16 +138,22 @@ const Configs = ({ toastRef }) => {
     fr.onload = function (e) {
       try {
         setLoading(true)
-        setConfigs(JSON.parse(e.target.result))
-        setSelected(0)
+        const result = JSON.parse(e.target.result)
+        if (Array.isArray(result)) {
+          setConfigs(result)
+          setSelected(0)
+          GTAG.event({ category: 'Configuration', action: 'Click', label: 'Import All' })
+        } else {
+          toastRef.current.push({
+            body: 'selected Json is not array',
+            header: <strong className='mr-auto'>Import Error</strong>,
+            bodyClass: 'text-danger'
+          })
+          GTAG.exception({ description: 'selected Json is not array', fatal: true })
+        }
         setLoading(false)
-        GTAG.event({ category: 'Configuration', action: 'Click', label: 'Import All' })
       } catch (error) {
-        toastRef.current.push({
-          body: JSON.stringify(error),
-          header: <strong className='mr-auto'>Import Error</strong>,
-          bodyClass: 'text-danger'
-        })
+        console.error(error)
         GTAG.exception({ description: error, fatal: true })
       }
     }

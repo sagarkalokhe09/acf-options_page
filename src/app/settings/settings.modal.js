@@ -28,7 +28,6 @@ const SettingsModal = ({ show, handleClose }) => {
   const [message, setMessage] = useState()
 
   useEffect(() => {
-    GTAG.modalview('/settings/global')
     StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS, defaultSettings).then(reset).catch(setError).finally(_ => setLoading(false))
   }, [reset])
 
@@ -39,6 +38,7 @@ const SettingsModal = ({ show, handleClose }) => {
       setMessage('Settings saved successfully!')
       setTimeout(setMessage, 1500)
     }).catch(setError).finally(_ => setLoading(false))
+    GTAG.event({ category: 'Settings', action: 'Click', label: 'Save' })
   }
 
   return <Modal show={show} onHide={handleClose} size='lg'>

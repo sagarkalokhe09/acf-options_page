@@ -6,7 +6,7 @@ import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common'
 import { useForm } from 'react-hook-form'
 import { REGEX_NUM } from '../../util/regex'
 import { convertNumberField } from '../../util/validation'
-import GTAG from 'gtag'
+import GTAG from '../../gtag'
 
 const NUMBER_FIELDS = ['retry', 'retryInterval']
 
@@ -56,7 +56,7 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
 
   useImperativeHandle(ref, () => ({
     showSettings (index, settings) {
-      GTAG.modalview('/settings/action')
+      GTAG.modalview({ title: 'Action Settings', url: window.location.href, path: '/settings/action' })
       actionIndex.current = index
       reset({ ...settings })
       setShow(true)

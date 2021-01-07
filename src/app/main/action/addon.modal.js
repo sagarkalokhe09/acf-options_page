@@ -52,7 +52,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
 
   useImperativeHandle(ref, () => ({
     showAddon (index, addon) {
-      GTAG.modalview('/addon')
+      GTAG.modalview({ title: 'Addon', url: window.location.href, path: '/addon' })
       actionIndex.current = index
       reset({ ...addon })
       setShow(true)

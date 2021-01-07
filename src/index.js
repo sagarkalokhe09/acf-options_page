@@ -8,7 +8,7 @@ import GTAG from './app/gtag'
 
 window.react_env = process.env
 
-GTAG.pageview(window.location.pathname + window.location.search)
+GTAG.pageview({ title: 'Home', url: window.location.href, path: '/' })
 
 ReactDOM.render(<App />, document.getElementById('root'))
 

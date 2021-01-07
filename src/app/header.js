@@ -48,9 +48,9 @@ const Header = () => {
       </Nav>
       <Form inline>
         <Nav className="mr-2">
-          <Nav.Link href={process.env.REACT_APP_DOCS + 'getting-started'} target='_blank' onClick={GTAG.event({ category: 'Navbar', action: 'Click', label: 'Documentation' })}>Documentation</Nav.Link>
-          <Nav.Link href={process.env.REACT_APP_BLOG} target='_blank' onClick={GTAG.event({ category: 'Navbar', action: 'Click', label: 'Blog' })}>Blog</Nav.Link>
-          <Nav.Link href={process.env.REACT_APP_EXAMPLES} target='_blank' onClick={GTAG.event({ category: 'Navbar', action: 'Click', label: 'Examples' })}>Examples</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_DOCS + 'getting-started'} target='_blank' onClick={() => { GTAG.event({ category: 'Navbar', action: 'Click', label: 'Documentation' }) }}>Documentation</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_BLOG} target='_blank' onClick={() => { GTAG.event({ category: 'Navbar', action: 'Click', label: 'Blog' }) }}>Blog</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_EXAMPLES} target='_blank' onClick={() => { GTAG.event({ category: 'Navbar', action: 'Click', label: 'Examples' }) }}>Examples</Nav.Link>
         </Nav>
         <GearFill width='24' height='24' onClick={openSettings} />
         <SettingsModal show={showSettings} handleClose={handleClose} />

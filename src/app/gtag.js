@@ -1,28 +1,26 @@
-export const GA_TRACKING_ID = '<YOUR_GA_TRACKING_ID>'
-
 const GTAG = {
-  pageview: (title, url, path) => {
-    window.gtag('config', GA_TRACKING_ID, {
+  pageview: ({ title, path, url }) => {
+    window.gtag('config', process.env.REACT_APP_GOOGLE_ANALYTICS_ID, {
       page_title: title,
       page_path: path,
       page_location: url
     })
   },
-  modalview: (title, url, path) => {
-    window.gtag('config', GA_TRACKING_ID, {
+  modalview: ({ title, path, url }) => {
+    window.gtag('config', process.env.REACT_APP_GOOGLE_ANALYTICS_ID, {
       page_title: title,
       page_path: `/modal/${path}`,
       page_location: url
     })
   },
-  event: (action, category, label, value) => {
+  event: ({ action, category, label, value }) => {
     window.gtag('event', action, {
       event_category: category,
       event_label: label,
       value: value
     })
   },
-  exception: (description, fatal) => {
+  exception: ({ description, fatal }) => {
     window.gtag('event', 'exception', {
       description,
       fatal
