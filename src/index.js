@@ -4,9 +4,11 @@ import './index.scss'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { disableContextMenu } from './app/util/helper'
-import { GAService } from '@dhruv-techapps/core-common'
+import GTAG from './app/gtag'
 
 window.react_env = process.env
+
+GTAG.pageview(window.location.pathname + window.location.search)
 
 ReactDOM.render(<App />, document.getElementById('root'))
 
@@ -14,14 +16,14 @@ if (process.env.NODE_ENV !== 'development') {
   disableContextMenu()
 }
 window.onerror = function (message) {
-  GAService.error({ name: 'OptionsPageError', stack: message })
+  GTAG.exception({ description: message, fatal: true })
 }
 
 console.error = (function () {
   const { error } = console
   return function (...args) {
-    GAService.error({ name: 'OptionsPageError', stack: args[0] })
     error.apply(console, args)
+    GTAG.exception({ description: args[0], fatal: true })
   }
 }())
 

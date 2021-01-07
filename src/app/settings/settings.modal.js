@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form'
 import { REGEX_NUM } from '../util/regex'
 import { convertNumberField } from '../util/validation'
 import { ErrorAlert } from '../components/error.alert'
+import GTAG from '../gtag'
 
 const NUMBER_FIELDS = ['retry', 'retryInterval']
 
@@ -27,6 +28,7 @@ const SettingsModal = ({ show, handleClose }) => {
   const [message, setMessage] = useState()
 
   useEffect(() => {
+    GTAG.modalview('/settings/global')
     StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS, defaultSettings).then(reset).catch(setError).finally(_ => setLoading(false))
   }, [reset])
 

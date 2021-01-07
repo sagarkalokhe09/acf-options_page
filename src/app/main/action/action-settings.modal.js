@@ -6,6 +6,7 @@ import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common'
 import { useForm } from 'react-hook-form'
 import { REGEX_NUM } from '../../util/regex'
 import { convertNumberField } from '../../util/validation'
+import GTAG from 'gtag'
 
 const NUMBER_FIELDS = ['retry', 'retryInterval']
 
@@ -38,6 +39,7 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
       return config
     }))
     setShow(false)
+    GTAG.event({ category: 'Action-Settings', action: 'Click', label: 'Save' })
   }
 
   const onReset = () => {
@@ -49,17 +51,22 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
       }
       return config
     }))
+    GTAG.event({ category: 'Action-Settings', action: 'Click', label: 'Reset' })
   }
 
   useImperativeHandle(ref, () => ({
     showSettings (index, settings) {
+      GTAG.modalview('/settings/action')
       actionIndex.current = index
       reset({ ...settings })
       setShow(true)
     }
   }))
 
-  const handleClose = () => { setShow(false) }
+  const handleClose = () => {
+    setShow(false)
+    GTAG.event({ category: 'Action-Settings', action: 'Click', label: 'Close' })
+  }
 
   return <Modal show={show} size='lg' onHide={handleClose}>
     <Form onSubmit={handleSubmit(onSubmit)} onReset={onReset}>

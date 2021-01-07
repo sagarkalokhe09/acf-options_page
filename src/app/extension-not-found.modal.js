@@ -1,6 +1,7 @@
 import { BROWSER } from '@dhruv-techapps/core-common'
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { Badge, Button, Modal } from 'react-bootstrap'
+import GTAG from './gtag'
 
 const ExtensionNotFoundModel = forwardRef((_, ref) => {
   const [show, setShow] = useState(false)
@@ -14,6 +15,10 @@ const ExtensionNotFoundModel = forwardRef((_, ref) => {
   const closeClick = () => {
     setShow(false)
   }
+
+  useEffect(() => {
+    GTAG.exception({ description: 'Extension Not Found', fatal: true })
+  }, [])
 
   const downloadClick = () => {
     const webStore = process.env[`REACT_APP_${BROWSER}_WEB_STORE`]

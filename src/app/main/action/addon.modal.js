@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { REGEX_NUM } from '../../util/regex'
 import { ValueExtractorPopover } from '../../popover/value-extractor.popover'
 import { convertNumberField } from '../../util/validation'
+import GTAG from '../../gtag'
 
 const NUMBER_FIELDS = ['recheck', 'recheckInterval']
 
@@ -34,6 +35,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
       return config
     }))
     setShow(false)
+    GTAG.event({ category: 'Addon', action: 'Click', label: 'Save' })
   }
 
   const onReset = () => {
@@ -45,17 +47,22 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
       }
       return config
     }))
+    GTAG.event({ category: 'Addon', action: 'Click', label: 'Reset' })
   }
 
   useImperativeHandle(ref, () => ({
     showAddon (index, addon) {
+      GTAG.modalview('/addon')
       actionIndex.current = index
       reset({ ...addon })
       setShow(true)
     }
   }))
 
-  const handleClose = () => { setShow(false) }
+  const handleClose = () => {
+    setShow(false)
+    GTAG.event({ category: 'Addon', action: 'Click', label: 'Close' })
+  }
 
   return <Modal show={show} size='lg' onHide={handleClose}>
     <Form onSubmit={handleSubmit(onSubmit)} onReset={onReset}>
