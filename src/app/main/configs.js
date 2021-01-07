@@ -145,11 +145,11 @@ const Configs = ({ toastRef }) => {
           GTAG.event({ category: 'Configuration', action: 'Click', label: 'Import All' })
         } else {
           toastRef.current.push({
-            body: 'selected Json is not array',
+            body: 'selected Json is not valid',
             header: <strong className='mr-auto'>Import Error</strong>,
             bodyClass: 'text-danger'
           })
-          GTAG.exception({ description: 'selected Json is not array', fatal: true })
+          GTAG.exception({ description: 'selected Json is not valid', fatal: false })
         }
         setLoading(false)
       } catch (error) {

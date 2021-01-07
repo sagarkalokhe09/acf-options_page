@@ -48,11 +48,11 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
         const _config = JSON.parse(e.target.result)
         if (Array.isArray(_config)) {
           toastRef.current.push({
-            body: 'selected Json is valid',
+            body: 'selected Json is not valid',
             header: <strong className='mr-auto'>Import Error</strong>,
             bodyClass: 'text-danger'
           })
-          GTAG.exception({ description: 'selected Json is not array', fatal: true })
+          GTAG.exception({ description: 'selected Json is not valid', fatal: false })
         } else {
           const _name = _config.name || _config.url || 'configuration'
           ImportService.import(_config, LOCAL_STORAGE_KEY.CONFIGS)
