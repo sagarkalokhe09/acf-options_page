@@ -4,6 +4,7 @@ import { ElementUtil } from '@dhruv-techapps/core-common'
 import PropTypes from 'prop-types'
 import BatchBody from './batch-body'
 import { numberWithExponential } from '../../util/prop-types'
+import GTAG from '../../gtag'
 
 const Batch = ({ batch, configIndex, setConfigs, configEnable }) => {
   const onChange = (e) => {
@@ -15,6 +16,7 @@ const Batch = ({ batch, configIndex, setConfigs, configEnable }) => {
       }
       return config
     }))
+    GTAG.event({ category: 'Batch', action: 'Change', label: 'Refresh', value: value })
   }
 
   return <Card className='mb-3'>

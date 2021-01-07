@@ -17,6 +17,7 @@ import { getConfigName } from '../util/helper'
 import ConfirmModal from '../components/ConfirmModal'
 import ActionSettingsModal from './action/action-settings.modal'
 import { ErrorAlert } from '../components/error.alert'
+import GTAG from '../gtag'
 
 const Configs = ({ toastRef }) => {
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
@@ -91,6 +92,7 @@ const Configs = ({ toastRef }) => {
       body: <p><Badge variant='success'>{name}</Badge> added successfully </p>,
       header: <strong className='mr-auto'>Configuration</strong>
     })
+    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Add' })
   }
 
   const removeConfig = () => {
@@ -103,6 +105,7 @@ const Configs = ({ toastRef }) => {
       body: <p><span className='badge badge-danger'>{name}</span> removed successfully</p>,
       header: <strong className='mr-auto'>Configuration</strong>
     })
+    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Remove Confirmation' })
   }
 
   const removeConfigConfirm = () => {
@@ -112,6 +115,7 @@ const Configs = ({ toastRef }) => {
       message: <p>Are you sure to remove <span className='badge badge-danger'>{name}</span> Configuration?</p>,
       confirmFunc: removeConfig
     })
+    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Remove' })
   }
 
   const exportAll = () => {
@@ -122,6 +126,7 @@ const Configs = ({ toastRef }) => {
         bodyClass: 'text-danger'
       })
     })
+    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Export All' })
   }
 
   const importAll = (e) => {
@@ -133,15 +138,23 @@ const Configs = ({ toastRef }) => {
     fr.onload = function (e) {
       try {
         setLoading(true)
-        setConfigs(JSON.parse(e.target.result))
-        setSelected(0)
+        const result = JSON.parse(e.target.result)
+        if (Array.isArray(result)) {
+          setConfigs(result)
+          setSelected(0)
+          GTAG.event({ category: 'Configuration', action: 'Click', label: 'Import All' })
+        } else {
+          toastRef.current.push({
+            body: 'selected Json is not valid',
+            header: <strong className='mr-auto'>Import Error</strong>,
+            bodyClass: 'text-danger'
+          })
+          GTAG.exception({ description: 'selected Json is not valid', fatal: false })
+        }
         setLoading(false)
       } catch (error) {
-        toastRef.current.push({
-          body: JSON.stringify(error),
-          header: <strong className='mr-auto'>Import Error</strong>,
-          bodyClass: 'text-danger'
-        })
+        console.error(error)
+        GTAG.exception({ description: error, fatal: true })
       }
     }
     fr.readAsText(files.item(0))

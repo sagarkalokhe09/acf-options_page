@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form'
 import { REGEX_NUM } from '../util/regex'
 import { convertNumberField } from '../util/validation'
 import { ErrorAlert } from '../components/error.alert'
+import GTAG from '../gtag'
 
 const NUMBER_FIELDS = ['retry', 'retryInterval']
 
@@ -37,6 +38,7 @@ const SettingsModal = ({ show, handleClose }) => {
       setMessage('Settings saved successfully!')
       setTimeout(setMessage, 1500)
     }).catch(setError).finally(_ => setLoading(false))
+    GTAG.event({ category: 'Settings', action: 'Click', label: 'Save' })
   }
 
   return <Modal show={show} onHide={handleClose} size='lg'>

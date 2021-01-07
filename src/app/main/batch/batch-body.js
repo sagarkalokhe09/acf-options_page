@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form'
 import { REGEX_NUM } from '../../util/regex'
 import { numberWithExponential } from '../../util/prop-types'
 import { convertNumberField } from '../../util/validation'
+import GTAG from '../../gtag'
+
 const NUMBER_FIELDS = ['repeat', 'repeatInterval']
 const BatchBody = ({ batch, configIndex, setConfigs }) => {
   const { register, handleSubmit, errors, reset, formState: { isDirty, isValid } } = useForm({
@@ -28,6 +30,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
       }
       return config
     }))
+    GTAG.event({ category: 'Batch', action: 'Click', label: 'Save' })
   }
 
   return <Form onSubmit={handleSubmit(onSubmit)}>

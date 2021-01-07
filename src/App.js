@@ -8,6 +8,7 @@ import { Container } from 'react-bootstrap'
 import { ManifestService } from '@dhruv-techapps/core-common'
 import ExtensionNotFoundModel from './app/extension-not-found.modal'
 import GoogleAds from './app/components/GoogleAds'
+import GTAG from './app/gtag'
 
 function App () {
   const toastRef = useRef()
@@ -17,6 +18,7 @@ function App () {
   useEffect(() => {
     ManifestService.values(['name', 'version']).then(setManifest).catch(error => {
       if (error.message === 'Could not establish connection. Receiving end does not exist.') {
+        GTAG.exception({ description: error.message, fatal: true })
         extensionNotFoundRef.current.show()
       }
     })

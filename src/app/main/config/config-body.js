@@ -6,6 +6,8 @@ import { REGEX_START_TIME } from '../../util/regex'
 import { StartTimePopover } from '../../popover/start-time.popover'
 import { numberWithExponential } from '../../util/prop-types'
 import { convertNumberField } from '../../util/validation'
+import GTAG from '../../gtag'
+
 const NUMBER_FIELDS = ['initWait']
 const ConfigBody = ({ config, configIndex, setConfigs }) => {
   const didMountRef = useRef(true)
@@ -33,6 +35,7 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
       }
       return config
     }))
+    GTAG.event({ category: 'Action', action: 'Click', label: 'Save' })
   }
 
   return <Form onSubmit={handleSubmit(onSubmit)}>

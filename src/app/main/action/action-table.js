@@ -20,6 +20,7 @@ import { ValuePopover } from '../../popover/value.popover'
 import { numberWithExponential } from '../../util/prop-types'
 import { defaultAction, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { StorageService } from '@dhruv-techapps/core-common'
+import GTAG from '../../gtag'
 
 const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, toastRef, actionSettingsRef }, ref) => {
   const [data, setData] = useState(actions)
@@ -102,6 +103,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
   const removeAction = (rowIndex) => {
     setData(actions => actions.filter((_action, index) => index !== rowIndex))
     didUpdateRef.current = true
+    GTAG.event({ category: 'Action', action: 'Click', label: 'Remove' })
   }
 
   const saveActions = (e) => {
@@ -123,6 +125,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
     } else {
       setError('Element Finder cant be empty')
     }
+    GTAG.event({ category: 'Action', action: 'Click', label: 'Save' })
   }
 
   const _validateActions = () => {
@@ -144,6 +147,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
       message: <p>Are you sure to remove <span className='text-danger'>{name}</span> Action?</p>,
       confirmFunc: removeAction.bind(null, Number(rowIndex))
     })
+    GTAG.event({ category: 'Action', action: 'Click', label: 'Remove Confirmation' })
   }
 
   const tableInstance = useTable({ columns, data, defaultColumn, initialState, updateAction })
@@ -159,10 +163,12 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
   }, [hiddenColumns, setHiddenColumns])
 
   const showAddon = (row) => {
+    GTAG.event({ category: 'Action', action: 'Click', label: 'Show Addon' })
     addonRef.current.showAddon(row.id, row.original.addon)
   }
 
   const showSettings = (row) => {
+    GTAG.event({ category: 'Action', action: 'Click', label: 'Show Settings' })
     actionSettingsRef.current.showSettings(row.id, row.original.settings)
   }
 
@@ -181,12 +187,14 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
     if (e.currentTarget.getAttribute('disabled') === null) {
       setData(actions => [..._arrayMove(actions, +rowId, rowId - 1)])
       didUpdateRef.current = true
+      GTAG.event({ category: 'Action', action: 'Move', label: 'Up' })
     }
   }
   const moveDown = (e, rowId) => {
     if (e.currentTarget.getAttribute('disabled') === null) {
       setData(actions => [..._arrayMove(actions, +rowId, +rowId + 1)])
       didUpdateRef.current = true
+      GTAG.event({ category: 'Action', action: 'Move', label: 'Down' })
     }
   }
   return <Form onSubmit={saveActions}>
