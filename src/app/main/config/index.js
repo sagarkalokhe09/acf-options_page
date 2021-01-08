@@ -12,6 +12,7 @@ import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import ConfigBody from './config-body'
 import { numberWithExponential } from '../../util/prop-types'
 import GTAG from '../../gtag'
+import Format from '../../data/format'
 
 const Config = ({ config, configIndex, toastRef, setConfigs }) => {
   const importFiled = createRef()
@@ -55,7 +56,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
           GTAG.exception({ description: 'selected Json is not valid', fatal: false })
         } else {
           const _name = _config.name || _config.url || 'configuration'
-          ImportService.import(_config, LOCAL_STORAGE_KEY.CONFIGS)
+          ImportService.import(Format.configuration(_config), LOCAL_STORAGE_KEY.CONFIGS)
           toastRef.current.push({
             body: <p><span className="badge badge-success">{_name}</span> imported successfully!</p>,
             header: <strong className='mr-auto'>Configuration</strong>,
@@ -70,6 +71,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
           header: <strong className='mr-auto'>Import Error</strong>,
           bodyClass: 'text-danger'
         })
+        console.error(error)
         GTAG.exception({ description: error, fatal: true })
       }
     }
