@@ -13,7 +13,7 @@ import ConfigBody from './config-body'
 import { numberWithExponential } from '../../util/prop-types'
 import GTAG from '../../gtag'
 
-const Config = ({ config, configIndex, toastRef, setConfigs }) => {
+const Config = ({ config, configIndex, toastRef, setConfigs, configHotkeyRef }) => {
   const importFiled = createRef()
   const onChange = (e) => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
@@ -23,7 +23,15 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
       }
       return config
     }))
-    GTAG.event({ category: 'Action', action: 'Change', label: 'Enable', value })
+    GTAG.event({ category: 'Action', action: 'Change', label: name, value })
+  }
+
+  const onStartChange = (e) => {
+    const { name, value } = ElementUtil.getNameValue(e.currentTarget)
+    if (value === true) {
+      configHotkeyRef.current.showHotkey(config.hotkey)
+    }
+    GTAG.event({ category: 'Action', action: 'Change', label: name, value })
   }
 
   const exportConfig = () => {
@@ -84,6 +92,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
         </Col>
         <Col md='auto' className='d-flex align-items-center'>
           <Form.Check type='switch' name='enable' id='config-enable' label='Enable' checked={config.enable} onChange={onChange} />
+          <Form.Check type='switch' name='startManually' id='config-start' label='Start Manual' checked={config.startManually} onChange={onStartChange} className="ml-3"/>
           <Dropdown className='ml-3' alignRight>
             <Dropdown.Toggle as={DropdownToggle}>
               <ThreeDotsVertical width='24' height='24' />
@@ -108,6 +117,7 @@ Config.propTypes = {
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
   toastRef: Action.type.propTypes.toastRef,
+  configHotkeyRef: PropTypes.shape({ current: PropTypes.shape({ showHotkey: PropTypes.func.isRequired }) }).isRequired,
   config: PropTypes.shape({
     enable: PropTypes.bool.isRequired,
     name: PropTypes.string,
@@ -115,7 +125,9 @@ Config.propTypes = {
     initWait: numberWithExponential,
     startTime: PropTypes.string,
     batch: Batch.type.propTypes.batch,
-    actions: Action.type.propTypes.actions
+    actions: Action.type.propTypes.actions,
+    startManually: PropTypes.bool,
+    hotkey: PropTypes.string
   }).isRequired
 }
 export default React.memo(Config)
