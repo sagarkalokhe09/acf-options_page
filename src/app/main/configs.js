@@ -16,7 +16,6 @@ import { DropdownToggle } from '../components/DropdownToggle'
 import { getConfigName } from '../util/helper'
 import ConfirmModal from '../components/ConfirmModal'
 import ActionSettingsModal from './action/action-settings.modal'
-import ConfigHotkeyModal from './config/config-hotkey.modal'
 import { ErrorAlert } from '../components/error.alert'
 import GTAG from '../gtag'
 
@@ -29,7 +28,6 @@ const Configs = ({ toastRef }) => {
   const didMountRef = useRef(true)
   const addonRef = useRef()
   const actionSettingsRef = useRef()
-  const configHotkeyRef = useRef()
   const confirmRef = useRef()
   const importFiled = createRef()
 
@@ -199,13 +197,12 @@ const Configs = ({ toastRef }) => {
             </Row>
           </Card.Body>
         </Card>
-        <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} configHotkeyRef={configHotkeyRef} />
+        <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} />
         <ConfirmModal ref={confirmRef} />
         <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />
         <Action actions={config.actions} configEnable={config.enable} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} addonRef={addonRef} actionSettingsRef={actionSettingsRef} />
         <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
         <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
-        <ConfigHotkeyModal ref={configHotkeyRef} configIndex={selected} setConfigs={setConfigs} />
       </>}
   </>
 }

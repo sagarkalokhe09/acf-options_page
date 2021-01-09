@@ -11,6 +11,7 @@ import { REGEX_NUM } from '../util/regex'
 import { convertNumberField } from '../util/validation'
 import { ErrorAlert } from '../components/error.alert'
 import GTAG from '../gtag'
+import { HotkeyPopover } from '../popover/hotkey.popover'
 
 const NUMBER_FIELDS = ['retry', 'retryInterval']
 
@@ -41,6 +42,24 @@ const SettingsModal = ({ show, handleClose }) => {
     GTAG.event({ category: 'Settings', action: 'Click', label: 'Save' })
   }
 
+  const onKeyDown = e => {
+    e.preventDefault()
+    let value = ''
+    if (e.ctrlKey) {
+      value += 'Ctrl + '
+    } else if (e.altKey) {
+      value += 'Alt + '
+    }
+    if (e.shiftKey) {
+      value += 'Shift + '
+    }
+    if (e.keyCode >= 65 && e.keyCode < 91) {
+      value += String.fromCharCode(e.keyCode)
+    }
+    e.currentTarget.value = value
+    return false
+  }
+
   return <Modal show={show} onHide={handleClose} size='lg'>
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Modal.Header closeButton>
@@ -52,8 +71,27 @@ const SettingsModal = ({ show, handleClose }) => {
             {error && <ErrorAlert message={error}/>}
             <Card className='mb-2'>
               <Card.Body>
-                <Form.Check type="switch" id='checkiFrames' name='checkiFrames' ref={register} label='Check IFrames' />
-                <small className='text-muted'>Check this box if you want to check xPath within iFrames also</small>
+                <Row>
+                  <Col md={6} sm={12}>
+                    <Form.Check type="switch" id='checkiFrames' name='checkiFrames' ref={register} label='Check IFrames' />
+                    <small className='text-muted'>This checks element within iFrames</small>
+                  </Col>
+                  <Col md={6} sm={12} className="border-left d-flex align-items-center">
+                    <InputGroup>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text id='hotkey'>Hotkey</InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <FormControl
+                        placeholder='Ctrl + Shift + R' aria-label='Ctrl + Shift + R' id='hotkey' name='hotkey' aria-describedby='hotkey'
+                        onKeyDown={onKeyDown}
+                        ref={register({ pattern: /^(Ctrl \+ |Alt \+ |Shift \+ )+\D$/ })}
+                        isInvalid={errors.hotkey}
+                      />
+                      <Form.Control.Feedback type='invalid'>{errors.hotkey && 'Enter valid hotkey'}</Form.Control.Feedback>
+                    </InputGroup>
+                    <HotkeyPopover />
+                  </Col>
+                </Row>
               </Card.Body>
             </Card>
             <Card className='mb-2'>

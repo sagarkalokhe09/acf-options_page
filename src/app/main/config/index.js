@@ -12,8 +12,9 @@ import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import ConfigBody from './config-body'
 import { numberWithExponential } from '../../util/prop-types'
 import GTAG from '../../gtag'
+import { StartManualPopover } from '../../popover/start-manual.popover'
 
-const Config = ({ config, configIndex, toastRef, setConfigs, configHotkeyRef }) => {
+const Config = ({ config, configIndex, toastRef, setConfigs }) => {
   const importFiled = createRef()
   const onChange = (e) => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
@@ -23,14 +24,6 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configHotkeyRef }) 
       }
       return config
     }))
-    GTAG.event({ category: 'Action', action: 'Change', label: name, value })
-  }
-
-  const onStartChange = (e) => {
-    const { name, value } = ElementUtil.getNameValue(e.currentTarget)
-    if (value === true) {
-      configHotkeyRef.current.showHotkey(config.hotkey)
-    }
     GTAG.event({ category: 'Action', action: 'Change', label: name, value })
   }
 
@@ -92,7 +85,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configHotkeyRef }) 
         </Col>
         <Col md='auto' className='d-flex align-items-center'>
           <Form.Check type='switch' name='enable' id='config-enable' label='Enable' checked={config.enable} onChange={onChange} />
-          <Form.Check type='switch' name='startManually' id='config-start' label='Start Manual' checked={config.startManually} onChange={onStartChange} className="ml-3"/>
+          <Form.Check type='switch' name='startManually' id='config-start' label='Start Manual' checked={config.startManually} onChange={onChange} className="ml-3"/> <StartManualPopover />
           <Dropdown className='ml-3' alignRight>
             <Dropdown.Toggle as={DropdownToggle}>
               <ThreeDotsVertical width='24' height='24' />
@@ -117,7 +110,6 @@ Config.propTypes = {
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
   toastRef: Action.type.propTypes.toastRef,
-  configHotkeyRef: PropTypes.shape({ current: PropTypes.shape({ showHotkey: PropTypes.func.isRequired }) }).isRequired,
   config: PropTypes.shape({
     enable: PropTypes.bool.isRequired,
     name: PropTypes.string,
