@@ -26,14 +26,22 @@ export default class Format {
           action.elementFinder = action.xpath
           delete action.xpath
         }
+        if (action.repeat === '') {
+          delete action.repeat
+          delete action.repeatInterval
+        }
         // Addon Process
-        if (action.addon && (action.addon.xpath || action.addon.retry)) {
-          action.addon.elementFinder = action.addon.xpath
-          action.addon.recheck = action.addon.retry
-          action.addon.recheckInterval = action.addon.retryInterval
-          delete action.addon.xpath
-          delete action.addon.retry
-          delete action.addon.retryInterval
+        if (action.addon) {
+          if (action.addon.xpath) {
+            action.addon.elementFinder = action.addon.xpath
+            delete action.addon.xpath
+          }
+          if (action.addon.retry) {
+            action.addon.recheck = action.addon.retry
+            action.addon.recheckInterval = action.addon.retryInterval
+            delete action.addon.retry
+            delete action.addon.retryInterval
+          }
         }
         return action
       })

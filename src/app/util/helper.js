@@ -11,10 +11,13 @@ export const getConfigName = (url, index) => {
 }
 
 export const disableContextMenu = () => {
-  window.$(document).keydown(function (e) {
-    return e.keyCode !== 123 && ((!e.ctrlKey || !e.shiftKey || e.keyCode !== 73) && void 0)
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'J')) {
+      e.preventDefault()
+      return false
+    }
   })
-  window.$(document).on('contextmenu', function (e) {
+  document.addEventListener('contextmenu', function (e) {
     e.preventDefault()
   })
 }
