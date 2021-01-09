@@ -12,6 +12,7 @@ import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import ConfigBody from './config-body'
 import { numberWithExponential } from '../../util/prop-types'
 import GTAG from '../../gtag'
+import { StartManualPopover } from '../../popover/start-manual.popover'
 import Format from '../../data/format'
 
 const Config = ({ config, configIndex, toastRef, setConfigs }) => {
@@ -24,7 +25,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
       }
       return config
     }))
-    GTAG.event({ category: 'Action', action: 'Change', label: 'Enable', value })
+    GTAG.event({ category: 'Action', action: 'Change', label: name, value })
   }
 
   const exportConfig = () => {
@@ -86,6 +87,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
         </Col>
         <Col md='auto' className='d-flex align-items-center'>
           <Form.Check type='switch' name='enable' id='config-enable' label='Enable' checked={config.enable} onChange={onChange} />
+          <Form.Check type='switch' name='startManually' id='config-start' label='Start Manual' checked={config.startManually} onChange={onChange} className="ml-3"/> <StartManualPopover />
           <Dropdown className='ml-3' alignRight>
             <Dropdown.Toggle as={DropdownToggle}>
               <ThreeDotsVertical width='24' height='24' />
@@ -117,7 +119,8 @@ Config.propTypes = {
     initWait: numberWithExponential,
     startTime: PropTypes.string,
     batch: Batch.type.propTypes.batch,
-    actions: Action.type.propTypes.actions
+    actions: Action.type.propTypes.actions,
+    startManually: PropTypes.bool
   }).isRequired
 }
 export default React.memo(Config)

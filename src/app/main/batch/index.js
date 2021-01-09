@@ -43,7 +43,7 @@ const Batch = ({ batch, configIndex, setConfigs, configEnable }) => {
 
 Batch.propTypes = {
   batch: PropTypes.shape({
-    refresh: PropTypes.bool.isRequired,
+    refresh: PropTypes.bool,
     repeat: PropTypes.number,
     repeatInterval: numberWithExponential
   }),
