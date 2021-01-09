@@ -8,19 +8,19 @@ export const HotkeyPopover = () => <OverlayTrigger trigger="click" placement="ri
     <p>Press hotkey on keyboard to auto type in field</p>
     <ul>
       <li>
-        Ctrl + R
+        Ctrl + A
       </li>
       <li>
-        Ctrl + Shift + R
+        Ctrl + Shift + A
       </li>
       <li>
-        Alt + R
+        Alt + A
       </li>
       <li>
-        Alt + Shift + R
+        Alt + Shift + A
       </li>
       <li>
-        Ctrl + Alt + Shift + R
+        Ctrl + Alt + Shift + A
       </li>
     </ul>
     <span className="text-danger">Single letter without <kbd>Ctrl</kbd>, <kbd>Alt</kbd> or <kbd>Shift</kbd> is not valid</span>

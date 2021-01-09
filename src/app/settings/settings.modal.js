@@ -82,7 +82,7 @@ const SettingsModal = ({ show, handleClose }) => {
                         <InputGroup.Text id='hotkey'>Hotkey</InputGroup.Text>
                       </InputGroup.Prepend>
                       <FormControl
-                        placeholder='Ctrl + Shift + R' aria-label='Ctrl + Shift + R' id='hotkey' name='hotkey' aria-describedby='hotkey'
+                        placeholder={defaultSettings.hotkey} aria-label={defaultSettings.hotkey} id='hotkey' name='hotkey' aria-describedby='hotkey'
                         onKeyDown={onKeyDown}
                         ref={register({ pattern: /^(Ctrl \+ |Alt \+ |Shift \+ )+\D$/ })}
                         isInvalid={errors.hotkey}
