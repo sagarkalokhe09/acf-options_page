@@ -118,8 +118,7 @@ Config.propTypes = {
     startTime: PropTypes.string,
     batch: Batch.type.propTypes.batch,
     actions: Action.type.propTypes.actions,
-    startManually: PropTypes.bool,
-    hotkey: PropTypes.string
+    startManually: PropTypes.bool
   }).isRequired
 }
 export default React.memo(Config)
