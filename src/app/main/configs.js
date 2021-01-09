@@ -18,6 +18,7 @@ import ConfirmModal from '../components/ConfirmModal'
 import ActionSettingsModal from './action/action-settings.modal'
 import { ErrorAlert } from '../components/error.alert'
 import GTAG from '../gtag'
+import Format from '../data/format'
 
 const Configs = ({ toastRef }) => {
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
@@ -140,7 +141,7 @@ const Configs = ({ toastRef }) => {
         setLoading(true)
         const result = JSON.parse(e.target.result)
         if (Array.isArray(result)) {
-          setConfigs(result)
+          setConfigs(Format.configurations(result))
           setSelected(0)
           GTAG.event({ category: 'Configuration', action: 'Click', label: 'Import All' })
         } else {
