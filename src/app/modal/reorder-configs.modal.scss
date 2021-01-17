@@ -1,0 +1,7 @@
+.list-group-item {
+  cursor: move;
+  &:hover {
+    background-color: var(--primary);
+    color: var(--white);
+  }
+}

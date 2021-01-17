@@ -16,6 +16,7 @@ import { DropdownToggle } from '../components/DropdownToggle'
 import { getConfigName } from '../util/helper'
 import ConfirmModal from '../components/ConfirmModal'
 import ActionSettingsModal from './action/action-settings.modal'
+import ReorderConfigsModal from '../modal/reorder-configs.modal'
 import { ErrorAlert } from '../components/error.alert'
 import GTAG from '../gtag'
 import Format from '../data/format'
@@ -29,6 +30,7 @@ const Configs = ({ toastRef }) => {
   const didMountRef = useRef(true)
   const addonRef = useRef()
   const actionSettingsRef = useRef()
+  const reorderConfigsRef = useRef()
   const confirmRef = useRef()
   const importFiled = createRef()
 
@@ -189,6 +191,8 @@ const Configs = ({ toastRef }) => {
                     <Dropdown.Item onClick={exportAll}>Export All</Dropdown.Item>
                     <Dropdown.Item onClick={_ => importFiled.current.click()}>Import All</Dropdown.Item>
                     <Dropdown.Divider />
+                    <Dropdown.Item onClick={() => { reorderConfigsRef.current.showReorder() }}>Reorder Configurations</Dropdown.Item>
+                    <Dropdown.Divider />
                     <Dropdown.Item onClick={removeConfigConfirm} className={configs.length === 1 ? 'text-muted' : 'text-danger'} disabled={configs.length === 1}>Remove Configuration</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
@@ -206,6 +210,7 @@ const Configs = ({ toastRef }) => {
         <Action actions={config.actions} configEnable={config.enable} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} addonRef={addonRef} actionSettingsRef={actionSettingsRef} />
         <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
         <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
+        <ReorderConfigsModal ref={reorderConfigsRef}/>
       </>}
   </>
 }

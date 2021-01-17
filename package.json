@@ -17,6 +17,7 @@
     "react-bootstrap": "^1.4.3",
     "react-dom": "^16.14.0",
     "react-hook-form": "^6.9.5",
+    "react-reorder": "^3.0.0-alpha.7",
     "react-scripts": "3.4.3",
     "react-table": "^7.6.0"
   },
