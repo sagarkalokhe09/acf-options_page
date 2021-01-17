@@ -167,12 +167,14 @@ const Configs = ({ toastRef }) => {
         {error && <ErrorAlert message={error}></ErrorAlert> }
         <Card className='mb-3'>
           <Card.Body>
-            <Row >
+            <Row>
               <Col>
                 <Form>
                   <Form.Group controlId='selected' className='mb-0'>
                     <Form.Control as='select' custom onChange={onChange} value={selected} data-type='number'>
-                      {configs.map((config, index) => <option key={index} value={index}>{config.name || getConfigName(config.url, index)}</option>)}
+                      {configs.map((config, index) => <option key={index} value={index}>
+                        {config.name || getConfigName(config.url, index)} {!config.enable && '(Disabled)'}
+                      </option>)}
                     </Form.Control>
                   </Form.Group>
                 </Form>

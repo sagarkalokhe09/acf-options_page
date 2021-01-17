@@ -4,7 +4,7 @@ import './config.scss'
 import Batch from '../batch'
 import Action from '../action'
 
-import { Card, Form, Row, Col, Dropdown } from 'react-bootstrap'
+import { Card, Form, Row, Col, Dropdown, Badge } from 'react-bootstrap'
 import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg'
 import { DropdownToggle } from '../../components/DropdownToggle'
 import { ExportService, ImportService, ElementUtil } from '@dhruv-techapps/core-common'
@@ -83,7 +83,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
     <Card.Header as='h5'>
       <Row>
         <Col className='d-flex align-items-center'>
-          <a target='_blank' rel='noopener noreferrer' href={process.env.REACT_APP_DOCS + 'configuration'} className={config.enable ? undefined : 'text-muted' }>Configuration</a>
+          <a target='_blank' rel='noopener noreferrer' href={process.env.REACT_APP_DOCS + 'configuration'}>Configuration {!config.enable && <Badge pill variant="danger font-weight-light" >Disabled</Badge>}</a>
         </Col>
         <Col md='auto' className='d-flex align-items-center'>
           <Form.Check type='switch' name='enable' id='config-enable' label='Enable' checked={config.enable} onChange={onChange} />
