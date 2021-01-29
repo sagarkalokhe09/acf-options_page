@@ -18,15 +18,13 @@ import { DropdownToggle } from '../../components/DropdownToggle'
 import { ElementFinderPopover } from '../../popover/element-finder.popover'
 import { ValuePopover } from '../../popover/value.popover'
 import { numberWithExponential } from '../../util/prop-types'
-import { defaultAction, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
-import { StorageService } from '@dhruv-techapps/core-common'
+import { defaultAction } from '@dhruv-techapps/acf-common'
 import GTAG from '../../gtag'
 
 const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, toastRef, actionSettingsRef }, ref) => {
   const [data, setData] = useState(actions)
   const [error, setError] = useState()
   const confirmRef = useRef()
-  const [actionSettings, setActionSettings] = useState(false)
   const didMountRef = useRef(true)
   const didUpdateRef = useRef(false)
 
@@ -38,11 +36,6 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
   }))
 
   useEffect(() => {
-    StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS).then(settings => {
-      if (settings) {
-        setActionSettings(settings.actionSettings)
-      }
-    })
     if (didMountRef.current) {
       didMountRef.current = false
       return
@@ -236,7 +229,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item onClick={() => showAddon(row)}>Addon</Dropdown.Item>
-                  {actionSettings && <Dropdown.Item onClick={() => showSettings(row)}>Settings</Dropdown.Item>}
+                  <Dropdown.Item onClick={() => showSettings(row)}>Settings</Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item onClick={() => { removeActionConfirm(row.id) }} className={data.length === 1 ? 'text-muted' : 'text-danger'} disabled={data.length === 1}>Remove Action</Dropdown.Item>
                 </Dropdown.Menu>

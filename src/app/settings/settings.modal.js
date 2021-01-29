@@ -163,12 +163,22 @@ const SettingsModal = ({ show, handleClose }) => {
                   <Col md={4} sm={12}>
                     <Form.Check type='radio' name='retryOption' id='retryOptionReload' value={RETRY_OPTIONS.RELOAD} ref={register} label='Refresh' />
                   </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+            <Card>
+              <Card.Body>
+                <Row>
                   <Col xs={12}>
-                    <hr/>
-                    <Form.Check type='switch' name='actionSettings' id='actionSettings' ref={register} label={'Action Settings'} />
-                  </Col>
-                  <Col xs={12}>
-                    <h6 className='my-2 text-secondary font-weight-light'><small>Enable action level settings which override global settings. You can find action settings under each action. You need to refresh configuration page after saving action settings.</small></h6>
+                    <InputGroup>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text id='push-notification-key'>Push Notification Key</InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <FormControl
+                        placeholder='' aria-label='' id='pushNotificationKey' name='pushNotificationKey' aria-describedby='push-notification-key'
+                        ref={register}
+                      />
+                    </InputGroup>
                   </Col>
                 </Row>
               </Card.Body>
