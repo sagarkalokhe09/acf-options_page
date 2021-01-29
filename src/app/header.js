@@ -33,9 +33,9 @@ const Header = () => {
   return <Navbar expand='lg' variant="light" sticky='top' className={className}>
     <Navbar.Brand>
       <img
-        src='./icon32.png'
-        width='30'
-        height='30'
+        src='https://getautoclicker.com/favicons/favicon32.png'
+        width='32'
+        height='32'
         className='d-inline-block align-top mr-2'
         alt='Auto click Auto Fill logo'
       />
@@ -48,10 +48,10 @@ const Header = () => {
       </Nav>
       <Form inline>
         <Nav className="mr-2">
-          <Nav.Link href={process.env.REACT_APP_DOCS + 'getting-started'} target='_blank' onClick={() => { GTAG.event({ category: 'Navbar', action: 'Click', label: 'Docs' }) }}>Docs</Nav.Link>
-          <Nav.Link href={process.env.REACT_APP_BLOG} target='_blank' onClick={() => { GTAG.event({ category: 'Navbar', action: 'Click', label: 'Blog' }) }}>Blog</Nav.Link>
-          <Nav.Link href={process.env.REACT_APP_EXAMPLES} target='_blank' onClick={() => { GTAG.event({ category: 'Navbar', action: 'Click', label: 'Examples' }) }}>Examples</Nav.Link>
-          <Nav.Link href={process.env.REACT_APP_DISCORD} target='_blank' onClick={() => { GTAG.event({ category: 'Navbar', action: 'Click', label: 'Discord' }) }}>Chat-on-Discord</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_DOCS + 'getting-started'} target='_blank' className="text-dark" onClick={() => { GTAG.event({ category: 'Navbar', action: 'Click', label: 'Docs' }) }}>Docs</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_BLOG} target='_blank' className="text-dark" onClick={() => { GTAG.event({ category: 'Navbar', action: 'Click', label: 'Blog' }) }}>Blog</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_EXAMPLES} target='_blank' className="text-dark" onClick={() => { GTAG.event({ category: 'Navbar', action: 'Click', label: 'Examples' }) }}>Examples</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_DISCORD} target='_blank' className="text-dark" onClick={() => { GTAG.event({ category: 'Navbar', action: 'Click', label: 'Discord' }) }}>Chat-on-Discord</Nav.Link>
         </Nav>
         <GearFill width='24' height='24' onClick={openSettings} />
         <SettingsModal show={showSettings} handleClose={handleClose} />

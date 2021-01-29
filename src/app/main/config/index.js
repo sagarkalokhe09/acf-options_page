@@ -89,7 +89,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
           <Form.Check type='switch' name='enable' id='config-enable' label='Enable' checked={config.enable} onChange={onChange} />
           <Form.Check type='switch' name='startManually' id='config-start' label='Start Manual' checked={config.startManually} onChange={onChange} className="ml-3"/> <StartManualPopover />
           <Dropdown className='ml-3' alignRight>
-            <Dropdown.Toggle as={DropdownToggle}>
+            <Dropdown.Toggle as={DropdownToggle} id="config-dropdown">
               <ThreeDotsVertical width='24' height='24' />
             </Dropdown.Toggle>
             <Dropdown.Menu>

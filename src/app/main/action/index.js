@@ -44,7 +44,7 @@ const Action = (props) => {
         <Col md='auto' className='d-flex align-items-center'>
           <Button variant='success' onClick={addAction}>Add Action</Button>
           <Dropdown alignRight className='ml-2'>
-            <Dropdown.Toggle as={DropdownToggle}>
+            <Dropdown.Toggle as={DropdownToggle} id="action-dropdown">
               <FilterRight width='28' height='28' />
             </Dropdown.Toggle>
             <Dropdown.Menu>

@@ -184,7 +184,7 @@ const Configs = ({ toastRef }) => {
               <Col md='auto' className='d-flex align-items-center'>
                 <Button type='button' variant='success' onClick={addConfig}>Add Configuration</Button>
                 <Dropdown className='ml-3' alignRight>
-                  <Dropdown.Toggle as={DropdownToggle} id='dropdown-basic'>
+                  <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown'>
                     <ThreeDotsVertical width='24' height='24' />
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
