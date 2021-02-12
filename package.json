@@ -23,7 +23,7 @@
     "react-table": "^7.6.0"
   },
   "scripts": {
-    "start": "env-cmd -f .env.dev react-scripts start",
+    "start": "env-cmd -f .env.local react-scripts start",
     "beta": "env-cmd -f .env.beta react-scripts start",
     "stable": "react-scripts start",
     "serve": "npm run build:dev && serve -s build",
