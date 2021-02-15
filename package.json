@@ -4,23 +4,23 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@dhruv-techapps/acf-common": "^1.0.15",
-    "@dhruv-techapps/core-common": "^1.1.63",
+    "@dhruv-techapps/acf-common": "^1.0.17",
+    "@dhruv-techapps/core-common": "^1.1.67",
     "@dhruv-techapps/core-components": "^1.0.10",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "bootstrap": "^4.5.3",
-    "bootstrap-icons": "^1.0.0",
+    "bootstrap": "^4.6.0",
+    "bootstrap-icons": "^1.3.0",
     "env-cmd": "^10.1.0",
-    "firebase": "^8.2.4",
+    "firebase": "^8.2.7",
     "react": "^16.14.0",
     "react-bootstrap": "^1.4.3",
     "react-dom": "^16.14.0",
-    "react-hook-form": "^6.9.5",
+    "react-hook-form": "^6.15.1",
     "react-reorder": "^3.0.0-alpha.7",
     "react-scripts": "3.4.3",
-    "react-table": "^7.6.0"
+    "react-table": "^7.6.3"
   },
   "scripts": {
     "start": "env-cmd -f .env.local react-scripts start",
@@ -56,9 +56,9 @@
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.21.5",
-    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-standard": "^4.1.0",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2"
   }

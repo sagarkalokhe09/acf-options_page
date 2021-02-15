@@ -12,10 +12,9 @@ import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import ConfigBody from './config-body'
 import { numberWithExponential } from '../../util/prop-types'
 import GTAG from '../../gtag'
-import { StartManualPopover } from '../../popover/start-manual.popover'
 import Format from '../../data/format'
 
-const Config = ({ config, configIndex, toastRef, setConfigs }) => {
+const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }) => {
   const importFiled = createRef()
   const onChange = (e) => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
@@ -79,6 +78,11 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
     fr.readAsText(files.item(0))
   }
 
+  const showSettings = () => {
+    GTAG.event({ category: 'Config', action: 'Click', label: 'Show Settings' })
+    configSettingsRef.current.showSettings(config)
+  }
+
   return <Card className='mb-3'>
     <Card.Header as='h5'>
       <Row>
@@ -87,14 +91,15 @@ const Config = ({ config, configIndex, toastRef, setConfigs }) => {
         </Col>
         <Col md='auto' className='d-flex align-items-center'>
           <Form.Check type='switch' name='enable' id='config-enable' label='Enable' checked={config.enable} onChange={onChange} />
-          <Form.Check type='switch' name='startManually' id='config-start' label='Start Manual' checked={config.startManually} onChange={onChange} className="ml-3"/> <StartManualPopover />
           <Dropdown className='ml-3' alignRight>
             <Dropdown.Toggle as={DropdownToggle} id="config-dropdown">
               <ThreeDotsVertical width='24' height='24' />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href='#/action-1' onClick={exportConfig}>Export</Dropdown.Item>
-              <Dropdown.Item href='#/action-2' onClick={_ => importFiled.current.click()}>Import</Dropdown.Item>
+              <Dropdown.Item onClick={exportConfig}>Export</Dropdown.Item>
+              <Dropdown.Item onClick={_ => importFiled.current.click()}>Import</Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={showSettings}>Settings</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
           <div className="custom-file d-none">
@@ -112,6 +117,7 @@ Config.propTypes = {
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
   toastRef: Action.type.propTypes.toastRef,
+  configSettingsRef: PropTypes.shape({ current: PropTypes.shape({ showSettings: PropTypes.func.isRequired }) }).isRequired,
   config: PropTypes.shape({
     enable: PropTypes.bool.isRequired,
     name: PropTypes.string,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Modal, Form, Card, InputGroup, FormControl, Row, Col, Button } from 'react-bootstrap'
-import { defaultSettings, LOAD_TYPES, RETRY_OPTIONS, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
+import { defaultSettings, RETRY_OPTIONS, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { ReactComponent as VolumeUp } from 'bootstrap-icons/icons/volume-up.svg'
 import { ReactComponent as VolumeMute } from 'bootstrap-icons/icons/volume-mute.svg'
 import { StorageService } from '@dhruv-techapps/core-common'
@@ -11,7 +11,6 @@ import { REGEX_NUM } from '../util/regex'
 import { convertNumberField } from '../util/validation'
 import { ErrorAlert } from '../components/error.alert'
 import GTAG from '../gtag'
-import { HotkeyPopover } from '../popover/hotkey.popover'
 
 const NUMBER_FIELDS = ['retry', 'retryInterval']
 
@@ -42,24 +41,6 @@ const SettingsModal = ({ show, handleClose }) => {
     GTAG.event({ category: 'Settings', action: 'Click', label: 'Save' })
   }
 
-  const onKeyDown = e => {
-    e.preventDefault()
-    let value = ''
-    if (e.ctrlKey) {
-      value += 'Ctrl + '
-    } else if (e.altKey) {
-      value += 'Alt + '
-    }
-    if (e.shiftKey) {
-      value += 'Shift + '
-    }
-    if (e.keyCode >= 65 && e.keyCode < 91) {
-      value += String.fromCharCode(e.keyCode)
-    }
-    e.currentTarget.value = value
-    return false
-  }
-
   return <Modal show={show} onHide={handleClose} size='lg'>
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Modal.Header closeButton>
@@ -72,24 +53,9 @@ const SettingsModal = ({ show, handleClose }) => {
             <Card className='mb-2'>
               <Card.Body>
                 <Row>
-                  <Col md={6} sm={12}>
+                  <Col md={12} sm={12}>
                     <Form.Check type="switch" id='checkiFrames' name='checkiFrames' ref={register} label='Check IFrames' />
                     <small className='text-muted'>This checks element within iFrames</small>
-                  </Col>
-                  <Col md={6} sm={12} className="border-left d-flex align-items-center">
-                    <InputGroup>
-                      <InputGroup.Prepend>
-                        <InputGroup.Text id='hotkey'>Hotkey</InputGroup.Text>
-                      </InputGroup.Prepend>
-                      <FormControl
-                        placeholder={defaultSettings.hotkey} aria-label={defaultSettings.hotkey} id='hotkey' name='hotkey' aria-describedby='hotkey'
-                        onKeyDown={onKeyDown}
-                        ref={register({ pattern: /^(Ctrl \+ |Alt \+ |Shift \+ )+\D$/ })}
-                        isInvalid={errors.hotkey}
-                      />
-                      <Form.Control.Feedback type='invalid'>{errors.hotkey && 'Enter valid hotkey'}</Form.Control.Feedback>
-                    </InputGroup>
-                    <HotkeyPopover />
                   </Col>
                 </Row>
               </Card.Body>
@@ -112,14 +78,7 @@ const SettingsModal = ({ show, handleClose }) => {
             </Card>
             <Card className='mb-2'>
               <Card.Body>
-                Extension load <Form.Check inline type='radio' name='loadType' id='loadTypeWindow' value={LOAD_TYPES.WINDOW} ref={register} label='Window' />
-                <Form.Check inline type='radio' name='loadType' id='loadTypeDocument' value={LOAD_TYPES.DOCUMENT} ref={register} label='Document' />
-                <small>
-                  <ul className='mb-0 mt-2'>
-                    <li><span className='text-primary'>Window</span> (default) browser loads extension once all its content is loaded</li>
-                    <li><span className='text-primary'>Document</span> browser loads extension before scripts and images are loaded (faster)(unsafe)</li>
-                  </ul>
-                </small>
+                <small className='text-muted'>Extension load is moved under configure settings, you can set load type configure wise</small>
               </Card.Body>
             </Card>
             <Card className='mb-2'>

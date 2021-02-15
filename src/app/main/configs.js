@@ -20,6 +20,7 @@ import ReorderConfigsModal from '../modal/reorder-configs.modal'
 import { ErrorAlert } from '../components/error.alert'
 import GTAG from '../gtag'
 import Format from '../data/format'
+import ConfigSettingsModal from './config/config-settings.modal'
 
 const Configs = ({ toastRef }) => {
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
@@ -30,6 +31,7 @@ const Configs = ({ toastRef }) => {
   const didMountRef = useRef(true)
   const addonRef = useRef()
   const actionSettingsRef = useRef()
+  const configSettingsRef = useRef()
   const reorderConfigsRef = useRef()
   const confirmRef = useRef()
   const importFiled = createRef()
@@ -204,12 +206,13 @@ const Configs = ({ toastRef }) => {
             </Row>
           </Card.Body>
         </Card>
-        <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} />
+        <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} configSettingsRef={configSettingsRef}/>
         <ConfirmModal ref={confirmRef} />
         <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />
         <Action actions={config.actions} configEnable={config.enable} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} addonRef={addonRef} actionSettingsRef={actionSettingsRef} />
         <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
         <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
+        <ConfigSettingsModal ref={configSettingsRef} config={config} configIndex={selected} setConfigs={setConfigs} />
         <ReorderConfigsModal ref={reorderConfigsRef}/>
       </>}
   </>
