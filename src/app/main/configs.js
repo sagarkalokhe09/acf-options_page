@@ -37,7 +37,8 @@ const Configs = ({ toastRef }) => {
   const importFiled = createRef()
 
   useEffect(() => {
-    StorageService.getItem(LOCAL_STORAGE_KEY.CONFIGS, [{ ...defaultConfig, name: '' }]).then(_configs => {
+    StorageService.getItem(LOCAL_STORAGE_KEY.CONFIGS, [{ ...defaultConfig }]).then(_configs => {
+      _configs = _configs === null || _configs === 'null' || _configs === 'undefined' ? [{ ...defaultConfig }] : _configs
       setSelected(checkQueryParams(_configs))
       setConfigs(_configs)
     }).catch(setError).finally(_ => setLoading(false))
