@@ -82,9 +82,9 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
             <FormControl
               ref={register({ pattern: REGEX_START_TIME })}
               isInvalid={!!errors.startTime}
-              name='startTime' placeholder='hh:mm:ss:ms' aria-label='hh:mm:ss:ms' aria-describedby='config-start-time'
+              name='startTime' placeholder='HH:mm:ss:fff' aria-label='HH:mm:ss:fff' aria-describedby='config-start-time'
             />
-            <Form.Control.Feedback type='invalid'>{errors.startTime && 'Start time should matcg hh:mm:ss format'}</Form.Control.Feedback>
+            <Form.Control.Feedback type='invalid'>{errors.startTime && 'Start time should match HH:mm:ss:fff (12:12:12:000) format'}</Form.Control.Feedback>
           </InputGroup>
         </Col>
       </Row>
