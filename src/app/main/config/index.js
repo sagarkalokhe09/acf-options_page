@@ -28,7 +28,9 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }
   }
 
   const exportConfig = () => {
-    ExportService.export(config.name || config.url || `configuration-${configIndex}`, config).catch(error => {
+    let url = config.url.split('/')
+    url = url[2] || 'default'
+    ExportService.export(config.name || url || `configuration-${configIndex}`, config).catch(error => {
       toastRef.current.push({
         body: JSON.stringify(error),
         header: <strong className='mr-auto'>Export Error</strong>,

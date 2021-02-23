@@ -4,7 +4,7 @@ import Header from './app/header'
 import Footer from './app/footer'
 import Configs from './app/main/configs'
 import ToastHandler from './app/components/ToastHandler'
-import { Alert, Container } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import { IS_MOBILE, ManifestService } from '@dhruv-techapps/core-common'
 import ExtensionNotFoundModel from './app/extension-not-found.modal'
 import GoogleAds from './app/components/GoogleAds'
@@ -15,8 +15,8 @@ function App () {
   const toastRef = useRef()
   const extensionNotFoundRef = useRef()
   const [manifest, setManifest] = useState({})
-  const [token, setToken] = useState()
-  const [error, setError] = useState()
+  // const [token, setToken] = useState()
+  // const [error, setError] = useState()
 
   useEffect(() => {
     ManifestService.values(['name', 'version']).then(setManifest).catch(error => {
@@ -31,11 +31,11 @@ function App () {
           const vapidKey = process.env.REACT_APP_VAPID_KEY
           messaging.getToken({ vapidKey }).then((currentToken) => {
             if (currentToken) {
-              setToken(currentToken)
+              // setToken(currentToken)
             } else {
-              setError('No registration token available. Request permission to generate one.')
+              // setError('No registration token available. Request permission to generate one.')
             }
-          }).catch(setError)
+          })// .catch(setError)
         }
       })
     }
@@ -44,8 +44,6 @@ function App () {
   return <Container>
     <Header/>
     <main>
-      {token && <Alert variant="primary" className="font-weight-light mb-2">{token}</Alert >}
-      {error && <Alert variant="danger" className="font-weight-light mb-2">{error}</Alert >}
       <Configs toastRef={toastRef} />
     </main>
     <Footer version={manifest.version || ''}/>

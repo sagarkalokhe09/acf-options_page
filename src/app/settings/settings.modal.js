@@ -125,7 +125,7 @@ const SettingsModal = ({ show, handleClose }) => {
                 </Row>
               </Card.Body>
             </Card>
-            <Card>
+            {/* <Card>
               <Card.Body>
                 <Row>
                   <Col xs={12}>
@@ -141,7 +141,7 @@ const SettingsModal = ({ show, handleClose }) => {
                   </Col>
                 </Row>
               </Card.Body>
-            </Card>
+            </Card> */}
           </>}
       </Modal.Body>
       <Modal.Footer>
