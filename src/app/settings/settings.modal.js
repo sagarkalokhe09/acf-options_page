@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Form, Card, InputGroup, FormControl, Row, Col, Button } from 'react-bootstrap'
+import { Modal, Form, Card, InputGroup, FormControl, Row, Col, Button, Alert } from 'react-bootstrap'
 import { defaultSettings, RETRY_OPTIONS, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { ReactComponent as VolumeUp } from 'bootstrap-icons/icons/volume-up.svg'
 import { ReactComponent as VolumeMute } from 'bootstrap-icons/icons/volume-mute.svg'
@@ -76,11 +76,9 @@ const SettingsModal = ({ show, handleClose }) => {
                 </Row>
               </Card.Body>
             </Card>
-            <Card className='mb-2'>
-              <Card.Body>
-                <small className='text-muted'>Extension load is moved under configure settings, you can set load type configure wise</small>
-              </Card.Body>
-            </Card>
+            <Alert variant="info">
+              <b>Extension load</b> is moved under configure settings, you can set load type configure wise
+            </Alert>
             <Card className='mb-2'>
               <Card.Body>
                 <Row>

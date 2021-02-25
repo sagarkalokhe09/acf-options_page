@@ -24,7 +24,13 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
   useImperativeHandle(ref, () => ({
     showReorder () {
       StorageService.getItem(LOCAL_STORAGE_KEY.CONFIGS, [{ ...defaultConfig, name: '' }]).then(_configs => {
-        setConfigs(_configs)
+        setConfigs(_configs.map((config, index) => {
+          if (!config.name) {
+            const url = config.url.split('/')
+            config.name = url[2] || `config-${index}`
+          }
+          return config
+        }))
       }).catch(setError).finally(_ => setLoading(false))
       GTAG.modalview({ title: 'Reorder Configurations', url: window.location.href, path: '/configurations/reorder' })
       setShow(true)
