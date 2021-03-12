@@ -4,9 +4,9 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@dhruv-techapps/acf-common": "^1.0.17",
-    "@dhruv-techapps/core-common": "^1.1.67",
-    "@dhruv-techapps/core-components": "^1.0.10",
+    "@dhruv-techapps/acf-common": "^3.1.2",
+    "@dhruv-techapps/core-common": "^3.0.0",
+    "@dhruv-techapps/core-components": "^3.0.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -33,9 +33,8 @@
     "build:stable": "react-scripts build",
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:beta": "env-cmd -f .env.beta react-scripts build",
-    "deploy:stable": "npm run build:stable && aws s3 sync build/. s3://stable.getautoclicker.com/ --delete",
-    "deploy:dev": "npm run build:dev && aws s3 sync build/. s3://dev.getautoclicker.com/ --delete",
-    "deploy:beta": "npm run build:beta && aws s3 sync build/. s3://beta.getautoclicker.com/ --delete"
+    "deploy:dev": "npm run build:dev && aws s3 sync build/. s3://dev.getautoclicker.com/ --delete --size-only",
+    "deploy:beta": "npm run build:beta && aws s3 sync build/. s3://beta.getautoclicker.com/ --delete --size-only"
   },
   "eslintConfig": {
     "extends": "react-app"
