@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
-import { Modal, Form, Button, Alert, ListGroup } from 'react-bootstrap'
+import { Modal, Form, Button, Alert, ListGroup, Badge } from 'react-bootstrap'
 import Reorder, { reorder } from 'react-reorder'
 import { StorageService } from '@dhruv-techapps/core-common'
 import { Loading } from '@dhruv-techapps/core-components'
@@ -65,7 +65,7 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
               component={ListGroup}>
               {configs.map((config, index) => (
                 <ListGroup.Item key={index}>
-                  {config.name} {!config.enable && '(Disabled)'}
+                  {config.name} {!config.enable && <Badge pill variant="danger font-weight-light" >Disabled</Badge>}
                 </ListGroup.Item>
               ))}
             </Reorder>

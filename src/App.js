@@ -41,7 +41,7 @@ function App () {
     }
   }, [])
 
-  return <Container>
+  return <Container fluid>
     <Header/>
     <main>
       <Configs toastRef={toastRef} />
