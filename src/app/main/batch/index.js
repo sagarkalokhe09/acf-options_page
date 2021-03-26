@@ -19,7 +19,7 @@ const Batch = ({ batch, configIndex, setConfigs, configEnable }) => {
     GTAG.event({ category: 'Batch', action: 'Change', label: 'Refresh', value: value })
   }
 
-  return <Card className='mb-3'>
+  return <Card className='mb-4'>
     <Card.Header as='h5'>
       <Row>
         <Col>

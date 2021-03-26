@@ -30,7 +30,7 @@ const Header = () => {
     GTAG.event({ category: 'Settings', action: 'Click', label: 'Open' })
   }
 
-  const className = `${scroll ? 'shadow' : ''}`
+  const className = `${scroll ? 'shadow' : ''} border-bottom`
   return <Navbar expand='lg' variant="light" sticky='top' className={className}>
     <Navbar.Brand>
       <img

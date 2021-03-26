@@ -169,8 +169,8 @@ const Configs = ({ toastRef }) => {
   return <>
     {loading ? <Loading className='d-flex justify-content-center m-5' />
       : <>
-        {error && <ErrorAlert message={error}></ErrorAlert> }
-        <Card className='mb-3'>
+        {error && <ErrorAlert message={error}></ErrorAlert>}
+        <Card className='mb-4'>
           <Card.Body>
             <Row>
               <Col>
@@ -178,7 +178,7 @@ const Configs = ({ toastRef }) => {
                   <Form.Group controlId='selected' className='mb-0'>
                     <Form.Control as='select' custom onChange={onChange} value={selected} data-type='number'>
                       {configs.map((config, index) => <option key={index} value={index}>
-                        {config.name || getConfigName(config.url, index)} {!config.enable && '(Disabled)'}
+                        {config.name || getConfigName(config.url, index)} {!config.enable && '(Disabled)'} --- {config.url}
                       </option>)}
                     </Form.Control>
                   </Form.Group>
@@ -207,14 +207,20 @@ const Configs = ({ toastRef }) => {
             </Row>
           </Card.Body>
         </Card>
-        <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} configSettingsRef={configSettingsRef}/>
-        <ConfirmModal ref={confirmRef} />
-        <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />
+        <Row>
+          <Col xs={12} xl={6}>
+            <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} configSettingsRef={configSettingsRef} />
+          </Col>
+          <Col xs={12} xl={6}>
+            <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />
+          </Col>
+        </Row>
         <Action actions={config.actions} configEnable={config.enable} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} addonRef={addonRef} actionSettingsRef={actionSettingsRef} />
         <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
+        <ConfirmModal ref={confirmRef} />
         <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
         <ConfigSettingsModal ref={configSettingsRef} config={config} configIndex={selected} setConfigs={setConfigs} />
-        <ReorderConfigsModal ref={reorderConfigsRef}/>
+        <ReorderConfigsModal ref={reorderConfigsRef} />
       </>}
   </>
 }

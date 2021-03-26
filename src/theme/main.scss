@@ -1,39 +1,45 @@
 body {
   font-size: 1rem;
   line-height: 1.5;
-  background-color: #edf2f9;
+  background-color: #f2f6fc;
 }
+
 .navbar-light {
+
   .navbar-brand,
   .navbar-brand:hover {
     font-weight: 500;
+
     &.dev {
       color: #dc3545;
     }
   }
 }
+
 .sticky-top {
   font-weight: 600;
   margin-left: -0.9375rem;
   margin-right: -0.9375rem;
-  background-color: rgba(237, 242, 249, 0.96);
+  background-color: #fff;
   &.shadow {
     box-shadow: 0 0.5rem 0.5rem -0.5rem rgba(0, 0, 0, 0.2) !important;
   }
 }
 
 .popover {
-  max-width: 100%; /* Max Width of the popover (depending on the container!) */
+  max-width: 100%;
+  /* Max Width of the popover (depending on the container!) */
 }
 
 .card {
   -webkit-box-shadow: 0 7px 14px 0 rgba(65, 69, 88, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
   box-shadow: 0 7px 14px 0 rgba(65, 69, 88, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
   border-radius: 0.375rem;
-  background-color: var(--light);
+
   .card-header {
     background-color: #fff;
     font-weight: 400;
+
     &:first-child {
       border-radius: calc(0.375rem - 1px) calc(0.375rem - 1px) 0 0;
     }
