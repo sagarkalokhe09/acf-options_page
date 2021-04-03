@@ -1,26 +1,28 @@
 body {
-  font-size: 1rem;
   line-height: 1.5;
-  background-color: #f2f6fc;
+  background-color: #fff;
 }
 
-.navbar-light {
-
-  .navbar-brand,
-  .navbar-brand:hover {
-    font-weight: 500;
-
-    &.dev {
-      color: #dc3545;
-    }
-  }
+#configs {
+  margin-left: -0.9375rem;
+  margin-right: -0.9375rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 59px;
+  z-index: 1020;
 }
 
 .sticky-top {
-  font-weight: 600;
+  background-color: #7952b3;
+  font-weight: 300;
   margin-left: -0.9375rem;
   margin-right: -0.9375rem;
-  background-color: #fff;
+
+  svg {
+    color: white
+  }
+
   &.shadow {
     box-shadow: 0 0.5rem 0.5rem -0.5rem rgba(0, 0, 0, 0.2) !important;
   }
@@ -31,26 +33,16 @@ body {
   /* Max Width of the popover (depending on the container!) */
 }
 
-.card {
-  -webkit-box-shadow: 0 7px 14px 0 rgba(65, 69, 88, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
-  box-shadow: 0 7px 14px 0 rgba(65, 69, 88, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
-  border-radius: 0.375rem;
-
-  .card-header {
-    background-color: #fff;
-    font-weight: 400;
-
-    &:first-child {
-      border-radius: calc(0.375rem - 1px) calc(0.375rem - 1px) 0 0;
-    }
-  }
-}
-
 .input-group {
   .input-group-text {
     background-color: #edf2f9;
     border: 1px solid #d8e2ef;
   }
+}
+
+.card .card-header {
+  background-color: #fff;
+  font-weight: 400;
 }
 
 .form-control {
@@ -61,11 +53,6 @@ body {
 .badge,
 .blockquote-footer,
 .btn,
-.falcon-data-table .paging_first_last_numbers .page-link,
-.falcon-data-table .paging_full .page-link,
-.falcon-data-table .paging_full_numbers .page-link,
-.falcon-data-table .paging_numbers .page-link,
-.falcon-data-table .paging_simple_numbers .page-link,
 .invalid-feedback,
 .navbar,
 .pagination,

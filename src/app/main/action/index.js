@@ -39,7 +39,7 @@ const Action = (props) => {
     <Card.Header as='h5'>
       <Row>
         <Col className='d-flex align-items-center'>
-          <a target='_blank' rel='noopener noreferrer' href={process.env.REACT_APP_DOCS + 'action'}>Action</a>
+          Action
         </Col>
         <Col md='auto' className='d-flex align-items-center'>
           <Button variant='success' onClick={addAction}>Add Action</Button>
@@ -57,7 +57,7 @@ const Action = (props) => {
         </Col>
       </Row>
     </Card.Header>
-    <Card.Body>
+    <Card.Body className="p-0">
       <ActionTable ref={actionTableRef} {...props} hiddenColumns={hiddenColumns} />
     </Card.Body>
   </Card>

@@ -191,7 +191,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
     }
   }
   return <Form onSubmit={saveActions}>
-    <Table hover {...getTableProps()} id='actions' borderless>
+    <Table hover {...getTableProps()} id='actions' bordered>
       <thead>
         {headerGroups.map((headerGroup, index) => (
           <tr {...headerGroup.getHeaderGroupProps()} key={index}>

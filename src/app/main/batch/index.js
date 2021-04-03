@@ -23,7 +23,7 @@ const Batch = ({ batch, configIndex, setConfigs, configEnable }) => {
     <Card.Header as='h5'>
       <Row>
         <Col>
-          <a target='_blank' rel='noopener noreferrer' href={process.env.REACT_APP_DOCS + 'batch' }>Batch</a>
+          Batch
         </Col>
         <Col md='auto'>
           <Form.Check

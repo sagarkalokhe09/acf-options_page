@@ -5,7 +5,7 @@ import Batch from '../batch'
 import Action from '../action'
 
 import { Card, Form, Row, Col, Dropdown, Badge } from 'react-bootstrap'
-import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg'
+import { ReactComponent as ThreeDots } from 'bootstrap-icons/icons/three-dots.svg'
 import { DropdownToggle } from '../../components/DropdownToggle'
 import { ExportService, ImportService, ElementUtil } from '@dhruv-techapps/core-common'
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
@@ -89,13 +89,13 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }
     <Card.Header as='h5'>
       <Row>
         <Col className='d-flex align-items-center'>
-          <a target='_blank' rel='noopener noreferrer' href={process.env.REACT_APP_DOCS + 'configuration'}>Configuration {!config.enable && <Badge pill variant="danger font-weight-light" >Disabled</Badge>}</a>
+          Configuration {!config.enable && <Badge pill variant="danger font-weight-light" >Disabled</Badge>}
         </Col>
         <Col md='auto' className='d-flex align-items-center'>
           <Form.Check type='switch' name='enable' id='config-enable' label='Enable' checked={config.enable} onChange={onChange} />
           <Dropdown className='ml-3' alignRight>
             <Dropdown.Toggle as={DropdownToggle} id="config-dropdown">
-              <ThreeDotsVertical width='24' height='24' />
+              <ThreeDots width='24' height='24' />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item onClick={exportConfig}>Export</Dropdown.Item>

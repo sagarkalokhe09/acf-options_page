@@ -43,9 +43,7 @@ function App () {
 
   return <Container fluid>
     <Header/>
-    <main>
-      <Configs toastRef={toastRef} />
-    </main>
+    <Configs toastRef={toastRef} />
     <Footer version={manifest.version || ''}/>
     <ToastHandler ref={toastRef} />
     <ExtensionNotFoundModel ref={extensionNotFoundRef} />

@@ -5,8 +5,8 @@ import Batch from './batch'
 import Action from './action'
 import AddonModal from './action/addon.modal'
 
-import { Row, Col, Button, Form, Dropdown, Card, Badge } from 'react-bootstrap'
-import { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg'
+import { Row, Col, Button, Form, Dropdown, Badge, Container } from 'react-bootstrap'
+import { ReactComponent as ThreeDots } from 'bootstrap-icons/icons/three-dots.svg'
 
 import { defaultAction, defaultConfig, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { StorageService, ExportService, ElementUtil } from '@dhruv-techapps/core-common'
@@ -170,9 +170,9 @@ const Configs = ({ toastRef }) => {
     {loading ? <Loading className='d-flex justify-content-center m-5' />
       : <>
         {error && <ErrorAlert message={error}></ErrorAlert>}
-        <Card className='mb-4'>
-          <Card.Body>
-            <Row>
+        <div id="configs">
+          <Container>
+            <Row className='mb-4 py-2'>
               <Col>
                 <Form>
                   <Form.Group controlId='selected' className='mb-0'>
@@ -185,10 +185,10 @@ const Configs = ({ toastRef }) => {
                 </Form>
               </Col>
               <Col md='auto' className='d-flex align-items-center'>
-                <Button type='button' variant='success' onClick={addConfig}>Add Configuration</Button>
+                <Button type='button' variant='outline-success' onClick={addConfig}>Add Configuration</Button>
                 <Dropdown className='ml-3' alignRight>
                   <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown'>
-                    <ThreeDotsVertical width='24' height='24' />
+                    <ThreeDots width='24' height='24' />
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item onClick={exportAll}>Export All</Dropdown.Item>
@@ -205,22 +205,20 @@ const Configs = ({ toastRef }) => {
                 </div>
               </Col>
             </Row>
-          </Card.Body>
-        </Card>
-        <Row>
-          <Col xs={12} xl={6}>
+          </Container>
+        </div>
+        <main>
+          <Container>
             <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} configSettingsRef={configSettingsRef} />
-          </Col>
-          <Col xs={12} xl={6}>
             <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />
-          </Col>
-        </Row>
-        <Action actions={config.actions} configEnable={config.enable} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} addonRef={addonRef} actionSettingsRef={actionSettingsRef} />
-        <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
-        <ConfirmModal ref={confirmRef} />
-        <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
-        <ConfigSettingsModal ref={configSettingsRef} config={config} configIndex={selected} setConfigs={setConfigs} />
-        <ReorderConfigsModal ref={reorderConfigsRef} />
+          </Container>
+          <Action actions={config.actions} configEnable={config.enable} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} addonRef={addonRef} actionSettingsRef={actionSettingsRef} />
+          <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
+          <ConfirmModal ref={confirmRef} />
+          <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
+          <ConfigSettingsModal ref={configSettingsRef} config={config} configIndex={selected} setConfigs={setConfigs} />
+          <ReorderConfigsModal ref={reorderConfigsRef} />
+        </main>
       </>}
   </>
 }
