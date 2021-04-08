@@ -21,6 +21,7 @@ import { ErrorAlert } from '../components/error.alert'
 import GTAG from '../gtag'
 import Format from '../data/format'
 import ConfigSettingsModal from './config/config-settings.modal'
+import GoogleAds from '../components/GoogleAds'
 
 const Configs = ({ toastRef }) => {
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
@@ -207,6 +208,7 @@ const Configs = ({ toastRef }) => {
             </Row>
           </Container>
         </div>
+        <GoogleAds client={process.env.REACT_APP_GOOGLE_ADS_CLIENT} slot={process.env.REACT_APP_GOOGLE_ADS_SLOT} format="auto"/>
         <main>
           <Container>
             <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} configSettingsRef={configSettingsRef} />
