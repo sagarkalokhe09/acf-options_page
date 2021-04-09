@@ -170,10 +170,9 @@ const Configs = ({ toastRef }) => {
   return <>
     {loading ? <Loading className='d-flex justify-content-center m-5' />
       : <>
-        {error && <ErrorAlert message={error}></ErrorAlert>}
         <div id="configs">
           <Container>
-            <Row className='mb-4 py-2'>
+            <Row className='mb-3 py-2'>
               <Col>
                 <Form>
                   <Form.Group controlId='selected' className='mb-0'>
@@ -208,9 +207,14 @@ const Configs = ({ toastRef }) => {
             </Row>
           </Container>
         </div>
-        <GoogleAds client={process.env.REACT_APP_GOOGLE_ADS_CLIENT} slot={process.env.REACT_APP_GOOGLE_ADS_SLOT} format="auto"/>
         <main>
           <Container>
+            <Row className="mb-3">
+              <Col>
+                {error && <ErrorAlert message={error}></ErrorAlert>}
+                <GoogleAds client={process.env.REACT_APP_GOOGLE_ADS_CLIENT} slot={process.env.REACT_APP_GOOGLE_ADS_SLOT} format="auto" />
+              </Col>
+            </Row>
             <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} configSettingsRef={configSettingsRef} />
             <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />
           </Container>
