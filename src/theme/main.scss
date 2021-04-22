@@ -1,43 +1,29 @@
+@import './header';
+@import './footer';
+@import './configs';
+
 body {
-  line-height: 1.5;
-  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
-#configs {
-  margin-left: -0.9375rem;
-  margin-right: -0.9375rem;
-  background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  position: sticky;
-  top: 59px;
-  z-index: 1020;
+.container-fluid{
+  max-width: 1440px;
 }
 
-.sticky-top {
-  background-color: #7952b3;
-  font-weight: 300;
-  margin-left: -0.9375rem;
-  margin-right: -0.9375rem;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
 
-  svg {
-    color: white
-  }
-
-  &.shadow {
-    box-shadow: 0 0.5rem 0.5rem -0.5rem rgba(0, 0, 0, 0.2) !important;
-  }
+svg {
+  cursor: pointer;
 }
 
 .popover {
   max-width: 100%;
   /* Max Width of the popover (depending on the container!) */
-}
-
-.input-group {
-  .input-group-text {
-    background-color: #edf2f9;
-    border: 1px solid #d8e2ef;
-  }
 }
 
 .card .card-header {
@@ -49,31 +35,10 @@ body {
   color: #344050;
 }
 
-.alert,
-.badge,
-.blockquote-footer,
-.btn,
-.invalid-feedback,
-.navbar,
-.pagination,
-.valid-feedback,
-button,
-input,
-label,
-optgroup,
-select,
-textarea,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Poppins", sans-serif;
+.dropdown-toggle::after {
+  content: '';
+}
+
+main {
+  position: relative;
 }

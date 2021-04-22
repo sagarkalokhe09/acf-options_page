@@ -25,6 +25,7 @@ import GoogleAds from '../components/GoogleAds'
 
 const Configs = ({ toastRef }) => {
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
+  const [scroll, setScroll] = useState(false)
   const [selected, setSelected] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState()
@@ -38,14 +39,29 @@ const Configs = ({ toastRef }) => {
   const importFiled = createRef()
 
   useEffect(() => {
-    StorageService.getItem(LOCAL_STORAGE_KEY.CONFIGS, [{ ...defaultConfig }]).then(_configs => {
-      _configs = _configs === null || _configs === 'null' || _configs === 'undefined' ? [{ ...defaultConfig }] : _configs
-      setSelected(checkQueryParams(_configs))
-      setConfigs(_configs)
-    }).catch(setError).finally(_ => setLoading(false))
+    const handleScroll = () => {
+      console.log(window.pageYOffset)
+      setScroll(window.pageYOffset >= 64)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [])
 
-  const checkQueryParams = (configs) => {
+  useEffect(() => {
+    StorageService.getItem(LOCAL_STORAGE_KEY.CONFIGS, [{ ...defaultConfig }])
+      .then(_configs => {
+        _configs = _configs === null || _configs === 'null' || _configs === 'undefined' ? [{ ...defaultConfig }] : _configs
+        setSelected(checkQueryParams(_configs))
+        setConfigs(_configs)
+      })
+      .catch(setError)
+      .finally(_ => setLoading(false))
+  }, [])
+
+  const checkQueryParams = configs => {
     const object = {}
     let selectedConfigIndex = 0
     if (window.location.search) {
@@ -85,10 +101,12 @@ const Configs = ({ toastRef }) => {
       didMountRef.current = false
       return
     }
-    StorageService.setItem(LOCAL_STORAGE_KEY.CONFIGS, configs).catch(setError).finally(_ => setLoading(false))
+    StorageService.setItem(LOCAL_STORAGE_KEY.CONFIGS, configs)
+      .catch(setError)
+      .finally(_ => setLoading(false))
   }, [configs])
 
-  const onChange = (e) => {
+  const onChange = e => {
     setSelected(ElementUtil.getValue(e.currentTarget))
   }
 
@@ -96,7 +114,11 @@ const Configs = ({ toastRef }) => {
     const name = getConfigName(undefined, configs.length)
     setConfigs([...configs, { ...defaultConfig, name }])
     toastRef.current.push({
-      body: <p><Badge variant='success'>{name}</Badge> added successfully </p>,
+      body: (
+        <p>
+          <Badge variant='success'>{name}</Badge> added successfully{' '}
+        </p>
+      ),
       header: <strong className='mr-auto'>Configuration</strong>
     })
     GTAG.event({ category: 'Configuration', action: 'Click', label: 'Add' })
@@ -106,10 +128,14 @@ const Configs = ({ toastRef }) => {
     const name = configs[selected].name
     setLoading(true)
     setConfigs(configs.filter((_config, index) => index !== selected))
-    setSelected(selected => configs.length === 2 ? 0 : selected === 0 ? selected : selected - 1)
+    setSelected(selected => (configs.length === 2 ? 0 : selected === 0 ? selected : selected - 1))
     setLoading(false)
     toastRef.current.push({
-      body: <p><span className='badge badge-danger'>{name}</span> removed successfully</p>,
+      body: (
+        <p>
+          <span className='badge badge-danger'>{name}</span> removed successfully
+        </p>
+      ),
       header: <strong className='mr-auto'>Configuration</strong>
     })
     GTAG.event({ category: 'Configuration', action: 'Click', label: 'Remove Confirmation' })
@@ -119,7 +145,11 @@ const Configs = ({ toastRef }) => {
     const name = configs[selected].name || configs[selected].url || `configuration-${selected}`
     confirmRef.current.confirm({
       title: 'Remove Configuration',
-      message: <p>Are you sure to remove <span className='badge badge-danger'>{name}</span> Configuration?</p>,
+      message: (
+        <p>
+          Are you sure to remove <span className='badge badge-danger'>{name}</span> Configuration?
+        </p>
+      ),
       confirmFunc: removeConfig
     })
     GTAG.event({ category: 'Configuration', action: 'Click', label: 'Remove' })
@@ -136,7 +166,7 @@ const Configs = ({ toastRef }) => {
     GTAG.event({ category: 'Configuration', action: 'Click', label: 'Export All' })
   }
 
-  const importAll = (e) => {
+  const importAll = e => {
     var files = e.currentTarget.files
     if (files.length <= 0) {
       return false
@@ -166,67 +196,93 @@ const Configs = ({ toastRef }) => {
     }
     fr.readAsText(files.item(0))
   }
-
-  return <>
-    {loading ? <Loading className='d-flex justify-content-center m-5' />
-      : <>
-        <div id="configs">
-          <Container>
-            <Row className='mb-3 py-2'>
-              <Col>
-                <Form>
-                  <Form.Group controlId='selected' className='mb-0'>
-                    <Form.Control as='select' custom onChange={onChange} value={selected} data-type='number'>
-                      {configs.map((config, index) => <option key={index} value={index}>
-                        {config.name || getConfigName(config.url, index)} {!config.enable && '(Disabled)'} --- {config.url}
-                      </option>)}
-                    </Form.Control>
-                  </Form.Group>
-                </Form>
-              </Col>
-              <Col md='auto' className='d-flex align-items-center'>
-                <Button type='button' variant='outline-success' onClick={addConfig}>Add Configuration</Button>
-                <Dropdown className='ml-3' alignRight>
-                  <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown'>
-                    <ThreeDots width='24' height='24' />
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={exportAll}>Export All</Dropdown.Item>
-                    <Dropdown.Item onClick={_ => importFiled.current.click()}>Import All</Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item onClick={() => { reorderConfigsRef.current.showReorder() }}>Reorder Configurations</Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item onClick={removeConfigConfirm} className={configs.length === 1 ? 'text-muted' : 'text-danger'} disabled={configs.length === 1}>Remove Configuration</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <div className="custom-file d-none">
-                  <input type="file" className="custom-file-input" ref={importFiled} accept=".json" id="import-configurations" onChange={importAll} />
-                  <label className="custom-file-label" htmlFor="import-configurations" style={{ fontSize: 1 + 'rem', fontWeight: 400 }}>Import All</label>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-        <main>
-          <Container>
-            <Row className="mb-3">
-              <Col>
-                {error && <ErrorAlert message={error}></ErrorAlert>}
-                <GoogleAds client={process.env.REACT_APP_GOOGLE_ADS_CLIENT} slot={process.env.REACT_APP_GOOGLE_ADS_SLOT} format="auto" />
-              </Col>
-            </Row>
-            <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} configSettingsRef={configSettingsRef} />
-            <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />
-          </Container>
-          <Action actions={config.actions} configEnable={config.enable} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} addonRef={addonRef} actionSettingsRef={actionSettingsRef} />
-          <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
-          <ConfirmModal ref={confirmRef} />
-          <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
-          <ConfigSettingsModal ref={configSettingsRef} config={config} configIndex={selected} setConfigs={setConfigs} />
-          <ReorderConfigsModal ref={reorderConfigsRef} />
-        </main>
-      </>}
-  </>
+  const className = scroll ? 'shadow' : ''
+  return (
+    <>
+      {loading ? (
+        <Loading className='d-flex justify-content-center m-5' />
+      ) : (
+        <>
+          <div id='configs' className={className}>
+            <Container fluid>
+              <Row>
+                <Col className="px-0">
+                  <Form>
+                    <Form.Group controlId='selected' className='mb-0'>
+                      <Form.Control as='select' custom onChange={onChange} value={selected} data-type='number'>
+                        {configs.map((config, index) => (
+                          <option key={index} value={index}>
+                            {config.name || getConfigName(config.url, index)} {!config.enable && '(Disabled)'} --- {config.url}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    </Form.Group>
+                  </Form>
+                </Col>
+                <Col md='auto' className='d-flex align-items-center px-0'>
+                  <Button type='button' variant='outline-success' onClick={addConfig}>
+                    Add Configuration
+                  </Button>
+                  <Dropdown alignRight>
+                    <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown'>
+                      <ThreeDots width='24' height='24' />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={exportAll}>Export All</Dropdown.Item>
+                      <Dropdown.Item onClick={_ => importFiled.current.click()}>Import All</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item
+                        onClick={() => {
+                          reorderConfigsRef.current.showReorder()
+                        }}>
+                        Reorder Configurations
+                      </Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item onClick={removeConfigConfirm} className={configs.length === 1 ? 'text-muted' : 'text-danger'} disabled={configs.length === 1}>
+                        Remove Configuration
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  <div className='custom-file d-none'>
+                    <input type='file' className='custom-file-input' ref={importFiled} accept='.json' id='import-configurations' onChange={importAll} />
+                    <label className='custom-file-label' htmlFor='import-configurations' style={{ fontSize: 1 + 'rem', fontWeight: 400 }}>
+                      Import All
+                    </label>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
+          </div>
+          <main>
+            <Container fluid>
+              <Row className='mb-3'>
+                <Col>
+                  {error && <ErrorAlert message={error}></ErrorAlert>}
+                  <GoogleAds client={process.env.REACT_APP_GOOGLE_ADS_CLIENT} slot={process.env.REACT_APP_GOOGLE_ADS_SLOT} format='auto' />
+                </Col>
+              </Row>
+              <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} configSettingsRef={configSettingsRef} />
+              <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />
+              <Action
+                actions={config.actions}
+                configEnable={config.enable}
+                configIndex={selected}
+                toastRef={toastRef}
+                setConfigs={setConfigs}
+                addonRef={addonRef}
+                actionSettingsRef={actionSettingsRef}
+              />
+            </Container>
+            <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
+            <ConfirmModal ref={confirmRef} />
+            <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
+            <ConfigSettingsModal ref={configSettingsRef} config={config} configIndex={selected} setConfigs={setConfigs} />
+            <ReorderConfigsModal ref={reorderConfigsRef} />
+          </main>
+        </>
+      )}
+    </>
+  )
 }
 Configs.propTypes = {
   toastRef: Action.type.propTypes.toastRef

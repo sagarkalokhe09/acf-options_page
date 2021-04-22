@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import './App.scss'
 import Header from './app/header'
 import Footer from './app/footer'
 import Configs from './app/main/configs'
@@ -40,13 +39,13 @@ function App () {
     }
   }, [])
 
-  return <Container fluid>
+  return <>
     <Header/>
     <Configs toastRef={toastRef} />
     <Footer version={manifest.version || ''}/>
     <ToastHandler ref={toastRef} />
     <ExtensionNotFoundModel ref={extensionNotFoundRef} />
-  </Container>
+  </>
 }
 
 export default App

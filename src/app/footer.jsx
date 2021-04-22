@@ -6,8 +6,8 @@ import { BROWSER } from '@dhruv-techapps/core-common'
 
 const Footer = ({ version }) => {
   return (
-    <Container>
-      <footer className='pt-4 my-md-5 pt-md-5 border-top'>
+    <footer className='pt-4 mt-md-5 pt-md-5 border-top'>
+      <Container>
         <Row>
           <Col md xs={12}>
             <img
@@ -173,8 +173,8 @@ const Footer = ({ version }) => {
             </ul>
           </Col>
         </Row>
-      </footer>
-    </Container>
+      </Container>
+    </footer>
   )
 }
 Footer.propTypes = {

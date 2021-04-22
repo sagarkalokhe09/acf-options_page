@@ -7,10 +7,10 @@ import { ReactComponent as VolumeMute } from 'bootstrap-icons/icons/volume-mute.
 import { StorageService } from '@dhruv-techapps/core-common'
 import { Loading } from '@dhruv-techapps/core-components'
 import { useForm } from 'react-hook-form'
-import { REGEX_NUM } from '../util/regex'
-import { convertNumberField } from '../util/validation'
-import { ErrorAlert } from '../components/error.alert'
-import GTAG from '../gtag'
+import { REGEX_NUM } from '../app/util/regex'
+import { convertNumberField } from '../app/util/validation'
+import { ErrorAlert } from '../app/components/error.alert'
+import GTAG from '../app/gtag'
 
 const NUMBER_FIELDS = ['retry', 'retryInterval']
 
@@ -76,9 +76,6 @@ const SettingsModal = ({ show, handleClose }) => {
                 </Row>
               </Card.Body>
             </Card>
-            <Alert variant="info">
-              <b>Extension load</b> is moved under configure settings, you can set load type configure wise
-            </Alert>
             <Card className='mb-2'>
               <Card.Body>
                 <Row>

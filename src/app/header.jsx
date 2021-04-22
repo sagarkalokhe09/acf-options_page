@@ -1,24 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Navbar, Nav, Form, Container } from 'react-bootstrap'
+import { Navbar, Nav, Form, Container, Button } from 'react-bootstrap'
 import { BROWSER } from '@dhruv-techapps/core-common'
 import { ReactComponent as GearFill } from 'bootstrap-icons/icons/gear-fill.svg'
-import SettingsModal from './settings/settings.modal'
+import SettingsModal from '../modal/settings.modal'
 import GTAG from './gtag'
 
 const Header = () => {
   const [showSettings, setShowSettings] = useState(false)
-  const [scroll, setScroll] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScroll(window.pageYOffset !== 0)
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
 
   const handleClose = () => {
     setShowSettings(false)
@@ -30,13 +18,12 @@ const Header = () => {
     GTAG.event({ category: 'Settings', action: 'Click', label: 'Open' })
   }
 
-  const className = `${scroll ? 'shadow' : ''} border-bottom`
   return (
-    <Navbar expand='lg' variant='dark' sticky='top' className={className}>
-      <Container>
+    <header className='border-bottom'>
+      <Navbar expand='lg'>
         <Navbar.Brand>
           <img
-            src='./white_favicon32.svg'
+            src='https://getautoclicker.com/favicons/favicon32.png'
             width='32'
             height='32'
             className='d-inline-block align-top mr-2'
@@ -47,16 +34,15 @@ const Header = () => {
           />
           {process.env.REACT_APP_NAME}
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls='basic-navbar-nav' />
-        <Navbar.Collapse id='basic-navbar-nav'>
-          <Nav className='mr-auto' />
-          <Form inline>
-            <GearFill width='24' height='24' onClick={openSettings} />
-            <SettingsModal show={showSettings} handleClose={handleClose} />
-          </Form>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+        <Nav className='mr-auto' />
+        <Form inline>
+          <button type='button' onClick={openSettings}>
+            <GearFill width='24' height='24' />
+          </button>
+          <SettingsModal show={showSettings} handleClose={handleClose} />
+        </Form>
+      </Navbar>
+    </header>
   )
 }
 Header.propTypes = {}
