@@ -1,6 +1,6 @@
 {
   "root": true,
-  "extends": ["airbnb", "prettier", "plugin:react/recommended", "plugin:node/recommended"],
+  "extends": ["airbnb", "prettier", "eslint:recommended", "plugin:react/recommended", "plugin:json/recommended"],
   "rules": {
     "prettier/prettier": [
       "error",
@@ -13,7 +13,17 @@
     "func-names": "off",
     "no-process-exit": "off",
     "object-shorthand": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "sort-imports": [
+      "error",
+      {
+        "ignoreDeclarationSort": true
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "no-param-reassign": "off",
+    "react/no-array-index-key": "off",
+    "react/jsx-props-no-spreading": "off"
   },
   "env": {
     "browser": true,
@@ -25,11 +35,11 @@
     "process": true
   },
   "parserOptions": {
+    "ecmaVersion": 2019,
+    "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
-    },
-    "ecmaVersion": 12,
-    "sourceType": "module"
+    }
   },
   "plugins": ["prettier", "react"],
   "settings": {

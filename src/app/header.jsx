@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { Navbar, Nav, Form, Container, Button } from 'react-bootstrap'
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import { Form, Nav, Navbar } from 'react-bootstrap'
 import { BROWSER } from '@dhruv-techapps/core-common'
-import { ReactComponent as GearFill } from 'bootstrap-icons/icons/gear-fill.svg'
-import SettingsModal from '../modal/settings.modal'
-import GTAG from './gtag'
+import { GTAG, GearFill, Moon, Sun } from '../util'
+import { SettingsModal } from '../modal'
 
-const Header = () => {
+const Header = ({ toggleTheme, theme }) => {
   const [showSettings, setShowSettings] = useState(false)
 
   const handleClose = () => {
@@ -19,24 +19,27 @@ const Header = () => {
   }
 
   return (
-    <header className='border-bottom'>
+    <header>
       <Navbar expand='lg'>
         <Navbar.Brand>
           <img
-            src='https://getautoclicker.com/favicons/favicon32.png'
+            src={`chrome-extension://${process.env[`REACT_APP_${BROWSER}_EXTENSION_ID`]}/assets/icons/icon32.png`}
             width='32'
             height='32'
             className='d-inline-block align-top mr-2'
             alt='Auto click Auto Fill logo'
             onError={e => {
-              e.currentTarget.src = `chrome-extension://${process.env[`REACT_APP_${BROWSER}_EXTENSION_ID`]}/assets/icons/icon32.png`
+              e.currentTarget.src = 'https://getautoclicker.com/favicons/favicon32.png'
             }}
           />
           {process.env.REACT_APP_NAME}
         </Navbar.Brand>
         <Nav className='mr-auto' />
         <Form inline>
-          <button type='button' onClick={openSettings}>
+          <button type='button' onClick={toggleTheme}>
+            {theme !== 'light' ? <Sun width='24' height='24' /> : <Moon width='24' height='24' />}
+          </button>
+          <button type='button' onClick={openSettings} className='ml-3'>
             <GearFill width='24' height='24' />
           </button>
           <SettingsModal show={showSettings} handleClose={handleClose} />
@@ -45,5 +48,8 @@ const Header = () => {
     </header>
   )
 }
-Header.propTypes = {}
+Header.propTypes = {
+  toggleTheme: PropTypes.func.isRequired,
+  theme: PropTypes.string.isRequired
+}
 export default Header

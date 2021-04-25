@@ -1,5 +1,4 @@
-@import './color';
 footer {
-  background-color: $footer-bg-color;
-  color: $footer-color
+  background: var(--footer-bg-color);
+  color: var(--footer-color)
 }

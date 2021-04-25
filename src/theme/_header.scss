@@ -1,24 +1,14 @@
-@import './color';
-
 header {
+  border-bottom: 1px solid var(--border-color);
   nav {
     margin: 0 60px;
   }
   .navbar-light .navbar-brand {
     font-size: 22px;
     font-weight: 500;
-    color: $header-color;
-  }
-  button {
-    border: none;
-    background-color: transparent;
-    padding: 10px;
-    height: 44px;
-    border-radius: 50%;
-    color: $header-color;
+    color: var(--header-color);
     &:hover {
-      color: $header-hover-color;
-      background: rgba(95, 99, 104, 0.04);
+      color: var(--header-color);
     }
   }
 }
