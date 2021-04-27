@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { Toast } from 'react-bootstrap'
 
-const ToastHandler = forwardRef((props, ref) => {
+export const ToastHandler = forwardRef((props, ref) => {
   const [list, setList] = useState([])
 
   const close = selected => {
@@ -23,7 +23,7 @@ const ToastHandler = forwardRef((props, ref) => {
 
   return (
     <div className='toast-handler'>
-      {list.map(({ body, header, bodyClass, headerClass, delay = 5000, autohide = false, show = true, onClose }, index) => (
+      {list.map(({ body, header, bodyClass, headerClass, delay = 5000, autohide = true, show = true, onClose }, index) => (
         <Toast
           key={index}
           onClose={() => {
@@ -41,4 +41,3 @@ const ToastHandler = forwardRef((props, ref) => {
   )
 })
 ToastHandler.displayName = 'ToastHandler'
-export default ToastHandler

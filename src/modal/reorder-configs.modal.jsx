@@ -59,7 +59,7 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
         <Modal.Header>
           <Modal.Title>Reorder Configurations</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ overflow: 'auto', height: 'calc(100vh - 200px)' }}>
           {loading ? (
             <Loading className='d-flex justify-content-center m-5' />
           ) : (
@@ -71,7 +71,7 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
                   <ListGroup.Item key={index}>
                     {config.name}{' '}
                     {!config.enable && (
-                      <Badge pill variant='danger font-weight-light'>
+                      <Badge pill variant='danger'>
                         Disabled
                       </Badge>
                     )}

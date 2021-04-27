@@ -1,21 +1,21 @@
 .toast {
+  background-color: var(--toaster-background-color);
   &-handler {
     position: absolute;
     z-index: 2322;
     top: 5rem;
     right: 1rem;
-    background-color: var(--toaster-background-color);
-    color: var(--toaster-color);
+    color: var(--color);
   }
   &-header {
     background: var(--toaster-header-color);
-    color: var(--toaster-color);
+    color: var(--color);
   }
   button {
     width: auto;
     height: auto;
     padding: 0;
-    color: var(--toaster-color);
+    color: var(--color);
     font-weight: 300;
   }
 }

@@ -11,10 +11,12 @@ export const StartTimePopover = () => (
       <Popover id='popover-basic'>
         <Popover.Content>
           <p>
+            Try{' '}
             <a href='https://scheduleurl.com/docs/1.0/getting-started/download/' target='_blank' rel='noopener noreferrer'>
               Schedule URL
             </a>{' '}
-            is browser extension used to schedule webpage / URL at particular day and time
+            our new browser extension.
+            <br /> it&apos;s used to schedule webpage / URL at particular day and time
           </p>
         </Popover.Content>
       </Popover>

@@ -1,6 +1,6 @@
 import React, { createRef, useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Badge, Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap'
+import { Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap'
 import { Loading } from '@dhruv-techapps/core-components'
 import { LOCAL_STORAGE_KEY, defaultAction, defaultConfig } from '@dhruv-techapps/acf-common'
 import { ElementUtil, ExportService, StorageService } from '@dhruv-techapps/core-common'
@@ -104,7 +104,7 @@ const Configs = ({ toastRef }) => {
     toastRef.current.push({
       body: (
         <p>
-          <Badge variant='success'>{name}</Badge> added successfully{' '}
+          <span className='text-success'>{name}</span> added successfully{' '}
         </p>
       ),
       header: <strong className='mr-auto'>Configuration</strong>
@@ -126,7 +126,7 @@ const Configs = ({ toastRef }) => {
     toastRef.current.push({
       body: (
         <p>
-          <span className='badge badge-danger'>{name}</span> removed successfully
+          <span className='text-danger'>{name}</span> removed successfully
         </p>
       ),
       header: <strong className='mr-auto'>Configuration</strong>
@@ -140,7 +140,7 @@ const Configs = ({ toastRef }) => {
       title: 'Remove Configuration',
       message: (
         <p>
-          Are you sure to remove <span className='badge badge-danger'>{name}</span> Configuration?
+          Are you sure to remove <span className='text-danger'>{name}</span> Configuration?
         </p>
       ),
       confirmFunc: removeConfig

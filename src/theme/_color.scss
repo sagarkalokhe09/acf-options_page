@@ -29,7 +29,7 @@
   --box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
   --footer-bg-color: #f8f9fa;
   --footer-color: #5f6368;
-  --toaster-background-color: #fffff;
+  --toaster-background-color: #ffffff;
   --toaster-header-color: #ffffff;
   --toaster-color: #202124;
 }
@@ -60,13 +60,17 @@
   --button-hover-color: #e8eaed;
   --box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
   --border-color: #5f6368;
+  
   --modal-bg-color: linear-gradient(0deg, rgba(232, 234, 237, 0.08), rgba(232, 234, 237, 0.08)), #202124;
   --modal-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 3), 0 2px 6px 2px rgba(0, 0, 0, 1.5);
+ 
   --popover-bg-color: linear-gradient(0deg, rgba(232, 234, 237, 0.08), rgba(232, 234, 237, 0.08)), #202124;
+ 
   --footer-bg-color: linear-gradient(0deg, rgba(232, 234, 237, 0.08), rgba(232, 234, 237, 0.08)), #202124;
   --footer-color: #e8eaed;
+
   --toaster-background-color: #3c4043;
-  --toaster-header-color: rgba(138, 180, 248, 0.24);
+  --toaster-header-color: rgba(138,180,248,.24);
   --toaster-color: #e8eaed;
   select,
   select:focus,

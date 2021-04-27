@@ -131,7 +131,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
       toastRef.current.push({
         body: (
           <p>
-            <span className='badge badge-success'>actions</span> saved successfully !
+            <span className='text-success'>actions</span> saved successfully !
           </p>
         ),
         header: <strong className='mr-auto'>Actions</strong>

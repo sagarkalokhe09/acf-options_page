@@ -58,7 +58,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }
           toastRef.current.push({
             body: (
               <p>
-                <span className='badge badge-success'>{importedConfig.name || importedConfig.url || 'configuration'}</span> imported successfully!
+                <span className='text-success'>{importedConfig.name || importedConfig.url || 'configuration'}</span> imported successfully!
               </p>
             ),
             header: <strong className='mr-auto'>Configuration</strong>,
