@@ -126,6 +126,9 @@ function App() {
         <option value='LocationCommand::assign::url'>LocationCommand::assign::url</option>
       </datalist>
       <datalist id='valueExtractor'>
+        <option value='@id'>To get id attribute of element</option>
+        <option value='@class'>To get class attribute of element</option>
+        <option value='@data-attr'>To get data attribute of element</option>
         <option value='/^(\d+)$/'>extract 1 or more number 299</option>
         <option value='/^(\d+.\d*)$/'>extract decimal number 29.99</option>
         <option value='/^(\d{2})$/'>extract only first two number 29</option>

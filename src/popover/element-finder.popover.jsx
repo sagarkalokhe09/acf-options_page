@@ -21,7 +21,7 @@ export const ElementFinderPopover = () => (
             <tbody>
               <tr>
                 <td>
-                  <a href='https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById' target='_blank' rel='noopener noreferrer'>
+                  <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#get-element-by-id`} target='_blank' rel='noopener noreferrer'>
                     getElementById
                   </a>
                 </td>
@@ -34,7 +34,7 @@ export const ElementFinderPopover = () => (
               </tr>
               <tr>
                 <td>
-                  <a href='https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByClassName' target='_blank' rel='noopener noreferrer'>
+                  <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#get-elements-by-classname`} target='_blank' rel='noopener noreferrer'>
                     getElementsByClassName
                   </a>
                 </td>
@@ -45,7 +45,7 @@ export const ElementFinderPopover = () => (
               </tr>
               <tr>
                 <td>
-                  <a href='https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByName' target='_blank' rel='noopener noreferrer'>
+                  <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#get-elements-by-name`} target='_blank' rel='noopener noreferrer'>
                     getElementsByName
                   </a>
                 </td>
@@ -56,7 +56,7 @@ export const ElementFinderPopover = () => (
               </tr>
               <tr>
                 <td>
-                  <a href='https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByTagName' target='_blank' rel='noopener noreferrer'>
+                  <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#get-elements-by-tag-name`} target='_blank' rel='noopener noreferrer'>
                     getElementsByTagName
                   </a>
                 </td>
@@ -67,7 +67,7 @@ export const ElementFinderPopover = () => (
               </tr>
               <tr>
                 <td>
-                  <a href='https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector' target='_blank' rel='noopener noreferrer'>
+                  <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#query-selector`} target='_blank' rel='noopener noreferrer'>
                     querySelector
                   </a>
                 </td>
@@ -91,7 +91,7 @@ export const ElementFinderPopover = () => (
               </tr>
               <tr>
                 <td>
-                  <a href='https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll' target='_blank' rel='noopener noreferrer'>
+                  <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#query-selector-all`} target='_blank' rel='noopener noreferrer'>
                     querySelectorAll
                   </a>
                 </td>
@@ -102,7 +102,7 @@ export const ElementFinderPopover = () => (
               </tr>
               <tr>
                 <td>
-                  <a href={`${process.env.REACT_APP_DOCS}element-finder`} target='_blank' rel='noopener noreferrer'>
+                  <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#xpath`} target='_blank' rel='noopener noreferrer'>
                     XPath
                   </a>
                 </td>
