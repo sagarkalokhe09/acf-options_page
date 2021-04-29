@@ -32,8 +32,8 @@
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:beta": "env-cmd -f .env.beta react-scripts build",
     "build:stable": "react-scripts build",
-    "deploy:dev": "npm run build:dev && aws s3 sync build/. s3://dev.getautoclicker.com/ --exclude=\"*.svg\" --exclude=\"*.json\" --exclude=\"*.txt\" --exclude=\"firebase-messaging-sw.js/*\" ",
-    "deploy:beta": "npm run build:beta && aws s3 sync build/. s3://beta.getautoclicker.com/ --delete --size-only",
+    "deploy:dev": "npm run build:dev && aws s3 sync build/. s3://dev.getautoclicker.com/ --delete ",
+    "deploy:beta": "npm run build:beta && aws s3 sync build/. s3://beta.getautoclicker.com/ --delete ",
     "deploy:stable": "npm run build:stable && aws s3 sync build/. s3://stable.getautoclicker.com/ --delete ",
     "lint": "eslint --cache --format codeframe --ext jsx,js,json src --fix"
   },
