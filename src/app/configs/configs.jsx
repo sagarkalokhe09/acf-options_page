@@ -250,8 +250,8 @@ const Configs = ({ toastRef }) => {
           <main>
             <Container fluid>
               <Row>
-                <Col>
-                  {error && <ErrorAlert message={error} />}
+                <Col xs={12}>{error && <ErrorAlert message={error} />}</Col>
+                <Col xs={12} className='text-center'>
                   <GoogleAds client={process.env.REACT_APP_GOOGLE_ADS_CLIENT} slot={process.env.REACT_APP_GOOGLE_ADS_SLOT} format='auto' className='mb-3' />
                 </Col>
               </Row>
