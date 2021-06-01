@@ -22,7 +22,8 @@
     "react-reorder": "^3.0.0-alpha.7",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "react-table": "^7.6.3"
+    "react-table": "^7.6.3",
+    "sitemap": "^7.0.0"
   },
   "scripts": {
     "start": "env-cmd -f .env.localhost react-scripts start",
@@ -32,10 +33,13 @@
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:beta": "env-cmd -f .env.beta react-scripts build",
     "build:stable": "react-scripts build",
-    "deploy:dev": "npm run build:dev && aws s3 sync build/. s3://dev.getautoclicker.com/ --delete ",
-    "deploy:beta": "npm run build:beta && aws s3 sync build/. s3://beta.getautoclicker.com/ --delete ",
-    "deploy:stable": "npm run build:stable && aws s3 sync build/. s3://stable.getautoclicker.com/ --delete ",
-    "lint": "eslint --cache --format codeframe --ext jsx,js,json src --fix"
+    "deploy:dev": "npm run sitemap:dev && npm run build:dev && aws s3 sync build/. s3://dev.getautoclicker.com/ --delete ",
+    "deploy:beta": "npm run sitemap:beta && npm run build:beta && aws s3 sync build/. s3://beta.getautoclicker.com/ --delete ",
+    "deploy:stable": "npm run sitemap:stable && npm run build:stable && aws s3 sync build/. s3://stable.getautoclicker.com/ --delete ",
+    "lint": "eslint --cache --format codeframe --ext jsx,js,json src --fix",
+    "sitemap:dev": "node sitemap-generator.js https://dev.getautoclicker.com/",
+    "sitemap:beta": "node sitemap-generator.js https://beta.getautoclicker.com/",
+    "sitemap:stable": "node sitemap-generator.js https://stable.getautoclicker.com/"
   },
   "eslintConfig": {
     "extends": "react-app"
