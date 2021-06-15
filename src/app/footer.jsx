@@ -15,6 +15,7 @@ const Footer = ({ version }) => (
             height='48'
             className='d-inline-block align-top mr-2'
             alt='Auto click Auto Fill logo'
+            title='Auto click Auto Fill logo'
             onError={e => {
               e.currentTarget.src = 'https://getautoclicker.com/favicons/favicon48.png'
             }}
@@ -34,6 +35,7 @@ const Footer = ({ version }) => (
                 className='text-muted'
                 target='_blank'
                 rel='noopener noreferrer'
+                title='docs'
                 href={`${process.env.REACT_APP_DOCS}getting-started`}
                 onClick={() => {
                   GTAG.event({ category: 'Footer', action: 'Click', label: 'Docs' })
@@ -47,6 +49,7 @@ const Footer = ({ version }) => (
                 target='_blank'
                 rel='noopener noreferrer'
                 href={process.env.REACT_APP_BLOG}
+                title='blog'
                 onClick={() => {
                   GTAG.event({ category: 'Footer', action: 'Click', label: 'Blog' })
                 }}>
@@ -58,6 +61,7 @@ const Footer = ({ version }) => (
                 className='text-muted'
                 target='_blank'
                 rel='noopener noreferrer'
+                title='examples'
                 href={process.env.REACT_APP_EXAMPLES}
                 onClick={() => {
                   GTAG.event({ category: 'Footer', action: 'Click', label: 'Examples' })
@@ -70,6 +74,7 @@ const Footer = ({ version }) => (
                 className='text-muted'
                 target='_blank'
                 rel='noopener noreferrer'
+                title='issues'
                 href={process.env.REACT_APP_ISSUES}
                 onClick={() => {
                   GTAG.event({ category: 'Footer', action: 'Click', label: 'Issues' })
@@ -82,6 +87,7 @@ const Footer = ({ version }) => (
                 className='text-muted'
                 target='_blank'
                 rel='noopener noreferrer'
+                title='test'
                 href={process.env.REACT_APP_TEST}
                 onClick={() => {
                   GTAG.event({ category: 'Footer', action: 'Click', label: 'Test' })
@@ -98,7 +104,9 @@ const Footer = ({ version }) => (
               <a
                 className='text-muted'
                 target='_blank'
+                author='Dhruv Techapps'
                 rel='noopener noreferrer'
+                title='contact'
                 href='mailto:dhruv.techapps@gmail.com'
                 onClick={() => {
                   GTAG.event({ category: 'Footer', action: 'Click', label: 'Mail' })
@@ -111,6 +119,7 @@ const Footer = ({ version }) => (
                 className='text-muted'
                 target='_blank'
                 rel='noopener noreferrer'
+                title='chat'
                 href={process.env.REACT_APP_DISCORD}
                 onClick={() => {
                   GTAG.event({ category: 'Footer', action: 'Click', label: 'Chat' })
@@ -123,6 +132,7 @@ const Footer = ({ version }) => (
                 className='text-muted'
                 target='_blank'
                 rel='noopener noreferrer'
+                title='privacy'
                 href='https://dhruv-techapps.github.io/policy'
                 onClick={() => {
                   GTAG.event({ category: 'Footer', action: 'Click', label: 'Privacy' })
@@ -141,6 +151,7 @@ const Footer = ({ version }) => (
                 target='_blank'
                 rel='noopener noreferrer'
                 href={process.env.REACT_APP_DISCORD}
+                title='discord'
                 onClick={() => {
                   GTAG.event({ category: 'Footer', action: 'Click', label: 'Discord' })
                 }}>
@@ -152,6 +163,7 @@ const Footer = ({ version }) => (
                 className='text-muted'
                 target='_blank'
                 rel='noopener noreferrer'
+                title='twitter'
                 href={process.env.REACT_APP_TWITTER}
                 onClick={() => {
                   GTAG.event({ category: 'Footer', action: 'Click', label: 'Twitter' })
@@ -164,6 +176,7 @@ const Footer = ({ version }) => (
                 className='text-muted'
                 target='_blank'
                 rel='noopener noreferrer'
+                title='github'
                 href={process.env.REACT_APP_GITHUB}
                 onClick={() => {
                   GTAG.event({ category: 'Footer', action: 'Click', label: 'Github' })

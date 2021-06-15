@@ -14,16 +14,6 @@ export const ValuePopover = () => (
             <tbody>
               <tr>
                 <td>
-                  <a href={`${process.env.REACT_APP_DOCS}action/value/#query-param`} target='_blank' rel='noopener noreferrer'>
-                    Query Param
-                  </a>
-                </td>
-                <td>
-                  <code>Query::param</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
                   <a href={`${process.env.REACT_APP_DOCS}action/value/#select-option`} target='_blank' rel='noopener noreferrer'>
                     Select Option
                   </a>
@@ -64,6 +54,16 @@ export const ValuePopover = () => (
               </tr>
               <tr>
                 <td>
+                  <a href={`${process.env.REACT_APP_DOCS}action/value/#query-param`} target='_blank' rel='noopener noreferrer'>
+                    Query Param
+                  </a>
+                </td>
+                <td>
+                  <code>Query::param</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
                   <a href={`${process.env.REACT_APP_DOCS}action/value/#batch-repeat`} target='_blank' rel='noopener noreferrer'>
                     Batch Repeat
                   </a>
@@ -84,6 +84,36 @@ export const ValuePopover = () => (
                 </td>
                 <td>
                   <code>LocationCommand::href::https://getautoclicker.com</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href={`${process.env.REACT_APP_DOCS}action/value/#window-command`} target='_blank' rel='noopener noreferrer'>
+                    Window Command
+                  </a>
+                </td>
+                <td>
+                  <code>WindowCommand::close</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href={`${process.env.REACT_APP_DOCS}action/value/#attribute`} target='_blank' rel='noopener noreferrer'>
+                    Attribute Command
+                  </a>
+                </td>
+                <td>
+                  <code>Attr::set::disabled::false</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href={`${process.env.REACT_APP_DOCS}action/value/#class`} target='_blank' rel='noopener noreferrer'>
+                    Class Command
+                  </a>
+                </td>
+                <td>
+                  <code>Class::add::btn</code>
                 </td>
               </tr>
               <tr>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { StorageService } from '@dhruv-techapps/core-common'
 import { Loading } from '@dhruv-techapps/core-components'
@@ -7,10 +7,12 @@ import { Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstra
 import { useForm } from 'react-hook-form'
 import { GTAG, REGEX_NUM, VolumeMute, VolumeUp, convertNumberField } from '../util'
 import { ErrorAlert } from '../components/error-alert.components'
+import { AuthContext } from '../_providers/AuthProvider'
 
 const NUMBER_FIELDS = ['retry', 'retryInterval']
 
 const SettingsModal = ({ show, handleClose }) => {
+  const user = useContext(AuthContext)
   const {
     register,
     handleSubmit,
@@ -124,7 +126,7 @@ const SettingsModal = ({ show, handleClose }) => {
                         }
                       />
                     </Col>
-                    <Col className='d-flex align-items-center'>
+                    <Col className='d-flex justify-content-around flex-column'>
                       <Form.Check
                         type='switch'
                         id='notifications.sound'
@@ -132,6 +134,17 @@ const SettingsModal = ({ show, handleClose }) => {
                         ref={register}
                         label={<span>Notification Sound {notificationSound ? <VolumeUp /> : <VolumeMute />} </span>}
                       />
+                      <Form.Check type='switch' disabled={!user} id='notifications.discord' name='notifications.discord' ref={register} label={<span>Notification on Discord</span>} />
+                      <Form.Text className='text-muted'>
+                        You need to login and join our{' '}
+                        <a className='text-link' target='_blank' rel='noopener noreferrer' href={process.env.REACT_APP_DISCORD}>
+                          Discord server
+                        </a>{' '}
+                        in order to receive notification on Discord
+                      </Form.Text>
+                      <Form.Text className='text-info'>
+                        Its currently under development and feature may move to <b>action</b> specific notification in upcoming release
+                      </Form.Text>
                     </Col>
                   </Row>
                 </Card.Body>

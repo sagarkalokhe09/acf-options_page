@@ -22,7 +22,7 @@ const Batch = ({ batch, configIndex, setConfigs }) => {
 
   return (
     <Card className='mb-4'>
-      <Card.Header as='h5'>
+      <Card.Header as='h2'>
         <Row>
           <Col>
             <small>Batch</small>

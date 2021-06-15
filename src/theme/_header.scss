@@ -3,10 +3,13 @@ header {
   nav {
     margin: 0 60px;
   }
-  .navbar-light .navbar-brand {
+  .navbar-light .navbar-brand h1 {
     font-size: 22px;
     font-weight: 500;
     color: var(--header-color);
+    display: inline-block;
+    line-height: 1.5;
+    margin: 01;
     &:hover {
       color: var(--header-color);
     }

@@ -36,7 +36,7 @@ const Action = props => {
 
   return (
     <Card>
-      <Card.Header as='h5'>
+      <Card.Header as='h2'>
         <Row>
           <Col className='d-flex align-items-center'>
             <small>Action</small>
