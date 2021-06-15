@@ -70,7 +70,7 @@
       document.body.innerText = 'Error back from the Instagram auth page: ' + error;
     } else if (!code) {
       // Start the auth flow.
-      if (window.location.hostname === 'localhost') {
+      if (window.location.hostname !== 'localhost') {
         window.location.href = `https://us-central1-${getFirebaseProjectId()}.cloudfunctions.net/redirect?redirectUri=${window.location.origin}`;
       } else {
         window.location.href = `http://localhost:5001/auto-fill-proj/us-central1/redirect?redirectUri=${window.location.origin}`;
@@ -82,7 +82,7 @@
       // This is the URL to the HTTP triggered 'token' Firebase Function.
       // See https://firebase.google.com/docs/functions.
       var tokenFunctionURL = 'https://us-central1-' + getFirebaseProjectId() + '.cloudfunctions.net/token';
-      if (window.location.hostname !== 'localhost') {
+      if (window.location.hostname === 'localhost') {
         tokenFunctionURL = 'http://localhost:5001/auto-fill-proj/us-central1/token';
       }
       script.src = tokenFunctionURL +
