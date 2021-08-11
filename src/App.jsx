@@ -113,6 +113,10 @@ function App() {
           <option value='ScrollTo::TopRight'>ScrollTo::TopRight</option>
           <option value='ScrollTo::BottomLeft'>ScrollTo::BottomLeft</option>
           <option value='ScrollTo::BottomRight'>ScrollTo::BottomRight</option>
+          <option value='TouchEvents::touchstart'>TouchEvents::touchstart</option>
+          <option value='TouchEvents::touchend'>TouchEvents::touchend</option>
+          <option value='TouchEvents::touchmove'>TouchEvents::touchmove</option>
+          <option value='TouchEvents::touchcancel'>TouchEvents::touchcancel</option>
           <option value='MouseEvents::click'>MouseEvents::click</option>
           <option value='MouseEvents::dblclick'>MouseEvents::dblclick</option>
           <option value='MouseEvents::input'>MouseEvents::input</option>
