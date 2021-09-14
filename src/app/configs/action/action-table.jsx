@@ -3,13 +3,15 @@ import PropTypes from 'prop-types'
 import { useTable } from 'react-table'
 import { Button, Dropdown, Form, Table } from 'react-bootstrap'
 import { defaultAction } from '@dhruv-techapps/acf-common'
+import { useTranslation } from 'react-i18next'
 import { EditableCell } from './editable-cell'
-import { CaretDown, CaretUp, GTAG, REGEX_NUM, ThreeDots, numberWithExponential } from '../../../util'
+import { CaretDown, CaretUp, GTAG, REGEX_FLOAT, REGEX_NUM, ThreeDots, numberWithExponential } from '../../../util'
 import { AddonModal, ConfirmModal } from '../../../modal'
 import { ElementFinderPopover, ValuePopover } from '../../../popover'
 import { DropdownToggle } from '../../../components'
 
 const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, toastRef, actionSettingsRef }, ref) => {
+  const { t } = useTranslation()
   const [data, setData] = useState(actions)
   const [error, setError] = useState()
   const confirmRef = useRef()
@@ -39,31 +41,31 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Init Wait',
-        style: { width: '80px' },
+        Header: t('action.initWait'),
+        style: { width: '108px' },
         accessor: 'initWait',
         dataType: 'number',
         list: 'interval',
-        validate: value => !Number.isNaN(value)
+        pattern: REGEX_FLOAT
       },
       {
-        Header: 'Name',
+        Header: t('action.name'),
         style: { width: '10%' },
         accessor: 'name'
       },
       {
-        Header: 'Element Finder',
+        Header: t('action.elementFinder'),
         accessor: 'elementFinder',
         list: 'elementFinder',
         required: true
       },
       {
-        Header: 'Value',
+        Header: t('action.value'),
         list: 'value',
         accessor: 'value'
       },
       {
-        Header: 'Repeat',
+        Header: t('action.repeat'),
         style: { width: '70px' },
         accessor: 'repeat',
         dataType: 'number',
@@ -71,15 +73,15 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
         pattern: REGEX_NUM
       },
       {
-        Header: 'R-Interval',
-        style: { width: '90px' },
+        Header: t('action.repeatInterval'),
+        style: { width: '95px' },
         accessor: 'repeatInterval',
         dataType: 'number',
         list: 'interval',
-        validate: value => !Number.isNaN(value)
+        pattern: REGEX_FLOAT
       }
     ],
-    []
+    [t]
   )
 
   const initialState = { hiddenColumns }
@@ -129,15 +131,12 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
       )
       didUpdateRef.current = false
       toastRef.current.push({
-        body: (
-          <p>
-            <span className='text-success'>actions</span> saved successfully !
-          </p>
-        ),
-        header: <strong className='mr-auto'>Actions</strong>
+        body: t('toast.action.save.body'),
+        header: t('toast.action.save.header'),
+        toastClass: 'bg-success text-white'
       })
     } else {
-      setError('Element Finder cant be empty')
+      setError(t('error.elementFinder'))
     }
     GTAG.event({ category: 'Action', action: 'Click', label: 'Save' })
   }
@@ -145,12 +144,9 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
   const removeActionConfirm = rowIndex => {
     const name = `#${+rowIndex + 1} - ${data[rowIndex].name || data[rowIndex].elementFinder || 'row'}`
     confirmRef.current.confirm({
-      title: 'Remove Action',
-      message: (
-        <p>
-          Are you sure to remove <span className='text-danger'>{name}</span> Action?
-        </p>
-      ),
+      title: t('confirm.action.remove.title'),
+      message: t('confirm.action.remove.message', name),
+      headerClass: 'text-danger',
       confirmFunc: removeAction.bind(null, Number(rowIndex))
     })
     GTAG.event({ category: 'Action', action: 'Click', label: 'Remove Confirmation' })
@@ -214,8 +210,8 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
               {headerGroup.headers.map((column, headerIndex) => (
                 <th {...column.getHeaderProps([{ style: column.style }])} key={headerIndex}>
                   {column.render('Header')} {column.required && <small className='text-danger'>*</small>}
-                  {column.Header === 'Element Finder' && <ElementFinderPopover />}
-                  {column.Header === 'Value' && <ValuePopover />}
+                  {column.Header === t('action.elementFinder') && <ElementFinderPopover />}
+                  {column.Header === t('action.value') && <ValuePopover />}
                 </th>
               ))}
               <th style={{ width: '54px' }}>&nbsp;</th>
@@ -245,8 +241,8 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
                         <ThreeDots width='24' height='24' />
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => showAddon(row)}>Addon</Dropdown.Item>
-                        <Dropdown.Item onClick={() => showSettings(row)}>Settings</Dropdown.Item>
+                        <Dropdown.Item onClick={() => showAddon(row)}>{t('action.addon')}</Dropdown.Item>
+                        <Dropdown.Item onClick={() => showSettings(row)}>{t('action.settings')}</Dropdown.Item>
                         <Dropdown.Divider />
                         <Dropdown.Item
                           onClick={() => {
@@ -254,7 +250,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
                           }}
                           className={data.length === 1 ? 'text-muted' : 'text-danger'}
                           disabled={data.length === 1}>
-                          Remove Action
+                          {t('action.remove')}
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
@@ -269,7 +265,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
         <div className='d-flex justify-content-end align-items-center my-2 px-2'>
           <span className='text-danger mr-3'>{error}</span>
           <Button type='submit' variant='outline-primary'>
-            Save
+            {t('common.save')}
           </Button>
         </div>
       )}

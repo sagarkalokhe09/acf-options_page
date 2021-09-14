@@ -3,10 +3,12 @@ import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 import { Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
 import { LOAD_TYPES, START_TYPES, defaultConfig } from '@dhruv-techapps/acf-common'
+import { Trans, useTranslation } from 'react-i18next'
 import { GTAG } from '../util'
 import { HotkeyPopover } from '../popover'
 
 const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
+  const { t } = useTranslation()
   const {
     register,
     handleSubmit,
@@ -30,7 +32,6 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
         requestData[prop] = data[prop]
       }
     })
-    console.log('requestData', requestData)
     setConfigs(configs =>
       configs.map((config, index) => {
         if (index === configIndex) {
@@ -78,23 +79,23 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
     <Modal show={show} size='lg' onHide={handleClose}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Header closeButton>
-          <Modal.Title>Config Settings</Modal.Title>
+          <Modal.Title>{t('modal.configSettings.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Card className='mb-2'>
             <Card.Body>
               <Row>
                 <Col md={12} sm={12}>
-                  Start&nbsp;
-                  <Form.Check inline type='radio' name='startType' id='startAuto' value={START_TYPES.AUTO} ref={register} label='Auto' />
-                  <Form.Check inline type='radio' name='startType' id='startManual' value={START_TYPES.MANUAL} ref={register} label='Manual' />
+                  {t('modal.configSettings.start')}&nbsp;
+                  <Form.Check inline type='radio' name='startType' id='startAuto' value={START_TYPES.AUTO} ref={register} label={t('modal.configSettings.auto')} />
+                  <Form.Check inline type='radio' name='startType' id='startManual' value={START_TYPES.MANUAL} ref={register} label={t('modal.configSettings.manual')} />
                   <small>
                     <ul className='mb-0 mt-2'>
                       <li>
-                        <span className='text-primary'>Auto</span> (default) once browser is refresh or new page is loaded extension auto loads with it
+                        <Trans i18nKey='modal.configSettings.autoHint' components={{ b: <b /> }} />
                       </li>
                       <li>
-                        <span className='text-primary'>Manual</span> once browser is loaded, user can manually invoke extension using hotkey
+                        <Trans i18nKey='modal.configSettings.manualHint' components={{ b: <b /> }} />
                       </li>
                     </ul>
                   </small>
@@ -113,22 +114,22 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                       ref={register({ pattern: /^(Ctrl \+ |Alt \+ |Shift \+ )+\D$/ })}
                       isInvalid={errors.hotkey}
                     />
-                    <Form.Label>Hotkey</Form.Label>
+                    <Form.Label>{t('modal.configSettings.hotkey')}</Form.Label>
                     <HotkeyPopover />
-                    <Form.Control.Feedback type='invalid'>{errors.hotkey && 'Enter valid hotkey'}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.hotkey && t('error.hotkey')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md={12} sm={12} hidden={startType === START_TYPES.MANUAL}>
-                  Extension load&nbsp;
-                  <Form.Check inline type='radio' name='loadType' id='loadTypeWindow' value={LOAD_TYPES.WINDOW} ref={register} label='Window' />
-                  <Form.Check inline type='radio' name='loadType' id='loadTypeDocument' value={LOAD_TYPES.DOCUMENT} ref={register} label='Document' />
+                  {t('modal.configSettings.extensionLoad')}&nbsp;
+                  <Form.Check inline type='radio' name='loadType' id='loadTypeWindow' value={LOAD_TYPES.WINDOW} ref={register} label={t('modal.configSettings.window')} />
+                  <Form.Check inline type='radio' name='loadType' id='loadTypeDocument' value={LOAD_TYPES.DOCUMENT} ref={register} label={t('modal.configSettings.document')} />
                   <small>
                     <ul className='mb-0 mt-2'>
                       <li>
-                        <span className='text-primary'>Window</span> (default) browser loads extension once all its content is loaded
+                        <Trans i18nKey='modal.configSettings.windowHint' components={{ b: <b /> }} />
                       </li>
                       <li>
-                        <span className='text-primary'>Document</span> browser loads extension before scripts and images are loaded (faster)(unsafe)
+                        <Trans i18nKey='modal.configSettings.documentHint' components={{ b: <b /> }} />
                       </li>
                     </ul>
                   </small>
@@ -139,7 +140,7 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
         </Modal.Body>
         <Modal.Footer>
           <Button type='submit' disabled={!isValid || !isDirty} variant='outline-primary'>
-            Save
+            {t('common.save')}
           </Button>
         </Modal.Footer>
       </Form>

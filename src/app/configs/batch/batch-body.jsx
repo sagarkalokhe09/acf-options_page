@@ -2,10 +2,12 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Card, Col, Form, FormControl, Row } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
-import { GTAG, REGEX_NUM, convertNumberField, numberWithExponential } from '../../../util'
+import { useTranslation } from 'react-i18next'
+import { GTAG, REGEX_FLOAT, REGEX_NUM, convertNumberField, numberWithExponential } from '../../../util'
 
 const NUMBER_FIELDS = ['repeat', 'repeatInterval']
 const BatchBody = ({ batch, configIndex, setConfigs }) => {
+  const { t } = useTranslation()
   const {
     register,
     handleSubmit,
@@ -24,9 +26,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
   }, [batch, reset])
 
   const onSubmit = data => {
-    console.log(data)
     convertNumberField(data, NUMBER_FIELDS)
-    console.log(data)
     reset(data)
     setConfigs(configs =>
       configs.map((config, index) => {
@@ -47,15 +47,15 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
           <Col md='6' sm='12'>
             <Form.Group controlId='batch-repeat'>
               <FormControl name='repeat' ref={register({ pattern: REGEX_NUM })} isInvalid={!!errors.repeat} placeholder='0' aria-label='0' aria-describedby='batch-repeat' list='repeat' />
-              <Form.Label>Repeat</Form.Label>
-              <Form.Control.Feedback type='invalid'>{errors.repeat && 'Only valid numbers are allowed'}</Form.Control.Feedback>
+              <Form.Label>{t('batch.repeat')}</Form.Label>
+              <Form.Control.Feedback type='invalid'>{errors.repeat && t('error.repeat')}</Form.Control.Feedback>
             </Form.Group>
           </Col>
           <Col md='6' sm='12'>
             <Form.Group controlId='batch-repeat-interval'>
               <FormControl
                 name='repeatInterval'
-                ref={register({ validate: value => !Number.isNaN(value) })}
+                ref={register({ pattern: REGEX_FLOAT })}
                 isInvalid={!!errors.repeatInterval}
                 placeholder='0'
                 aria-label='0'
@@ -63,16 +63,16 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
                 aria-describedby='batch-repeat-interval'
               />
               <Form.Label>
-                R-Interval&nbsp;<small className='text-info'>(sec)</small>
+                {t('batch.repeatInterval')}&nbsp;<small className='text-info'>({t('common.sec')})</small>
               </Form.Label>
-              <Form.Control.Feedback type='invalid'>{errors.repeatInterval && 'Only valid numbers are allowed'}</Form.Control.Feedback>
+              <Form.Control.Feedback type='invalid'>{errors.repeatInterval && t('error.interval')}</Form.Control.Feedback>
             </Form.Group>
           </Col>
         </Row>
         {isDirty && (
           <div className='d-flex justify-content-end mt-2'>
             <Button type='submit' variant='outline-primary' disabled={!isValid}>
-              Save
+              {t('common.save')}
             </Button>
           </div>
         )}

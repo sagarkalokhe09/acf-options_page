@@ -3,6 +3,7 @@ import { Alert, Badge, Button, Form, ListGroup, Modal } from 'react-bootstrap'
 import Reorder, { reorder } from 'react-reorder'
 import { StorageService } from '@dhruv-techapps/core-common'
 import { Loading } from '@dhruv-techapps/core-components'
+import { useTranslation } from 'react-i18next'
 import { LOCAL_STORAGE_KEY, defaultConfig } from '@dhruv-techapps/acf-common'
 import { ErrorAlert } from '../components'
 import { GTAG } from '../util'
@@ -12,7 +13,7 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
   const [error, setError] = useState()
   const [show, setShow] = useState(false)
   const [loading, setLoading] = useState(true)
-
+  const { t } = useTranslation()
   const onSubmit = () => {
     StorageService.setItem(LOCAL_STORAGE_KEY.CONFIGS, configs)
       .then(() => {
@@ -57,7 +58,7 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
     <Modal show={show} size='lg' onHide={handleClose} scrollable>
       <Form onSubmit={onSubmit}>
         <Modal.Header>
-          <Modal.Title>Reorder Configurations</Modal.Title>
+          <Modal.Title>{t('modal.reorder.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ overflow: 'auto', height: 'calc(100vh - 200px)' }}>
           {loading ? (
@@ -65,14 +66,14 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
           ) : (
             <>
               {error && <ErrorAlert message={error} />}
-              <Alert variant='warning'>Please save all configurations before reordering</Alert>
+              <Alert variant='warning'>{t('modal.reorder.hint')}</Alert>
               <Reorder reorderId='configurations' draggedClassName='active' placeholderClassName='list-group-item-secondary' onReorder={onReorder} component={ListGroup}>
                 {configs.map((config, index) => (
                   <ListGroup.Item key={index}>
-                    {config.name}{' '}
+                    {config.name}
                     {!config.enable && (
                       <Badge pill variant='danger'>
-                        Disabled
+                        {t('common.disabled')}
                       </Badge>
                     )}
                   </ListGroup.Item>
@@ -83,10 +84,10 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>
           <Button type='button' variant='outline-secondary' onClick={handleClose}>
-            Close
+            {t('common.close')}
           </Button>
           <Button type='submit' variant='outline-primary' className='ml-3'>
-            Save
+            {t('common.save')}
           </Button>
         </Modal.Footer>
       </Form>

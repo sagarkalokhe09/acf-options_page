@@ -2,10 +2,12 @@ import React from 'react'
 import { Card, Col, Form, Row } from 'react-bootstrap'
 import { ElementUtil } from '@dhruv-techapps/core-common'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 import BatchBody from './batch-body'
 import { GTAG, numberWithExponential } from '../../../util'
 
 const Batch = ({ batch, configIndex, setConfigs }) => {
+  const { t } = useTranslation()
   const onChange = e => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
     setConfigs(configs =>
@@ -25,10 +27,10 @@ const Batch = ({ batch, configIndex, setConfigs }) => {
       <Card.Header as='h2'>
         <Row>
           <Col>
-            <small>Batch</small>
+            <small>{t('batch.title')}</small>
           </Col>
           <Col md='auto'>
-            <Form.Check type='switch' id='batch-refresh' label='Refresh' name='refresh' checked={batch.refresh} onChange={onChange} />
+            <Form.Check type='switch' id='batch-refresh' label={t('batch.refresh')} name='refresh' checked={batch.refresh} onChange={onChange} />
           </Col>
         </Row>
       </Card.Header>

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
 import { ManifestService } from '@dhruv-techapps/core-common'
 import Header from './app/header'
 import Footer from './app/footer'
@@ -52,12 +52,14 @@ function App() {
   return (
     <AuthProvider>
       <div>
-        <Header toggleTheme={toggleTheme} theme={theme} />
-        <Configs toastRef={toastRef} />
-        <Footer version={manifest.version || ''} />
-        <ToastHandler ref={toastRef} />
-        <AdsBlockerModal ref={adsBlockerRef} />
-        <ExtensionNotFoundModel ref={extensionNotFoundRef} />
+        <Suspense fallback='loading'>
+          <Header toggleTheme={toggleTheme} theme={theme} />
+          <Configs toastRef={toastRef} />
+          <Footer version={manifest.version || ''} />
+          <ToastHandler ref={toastRef} />
+          <AdsBlockerModal ref={adsBlockerRef} />
+          <ExtensionNotFoundModel ref={extensionNotFoundRef} />
+        </Suspense>
         <datalist id='retry'>
           <option value='1'>1</option>
           <option value='2'>2</option>

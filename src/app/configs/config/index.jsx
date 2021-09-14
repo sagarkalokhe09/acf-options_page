@@ -1,8 +1,9 @@
 import React, { createRef } from 'react'
 import PropTypes from 'prop-types'
 
-import { ElementUtil, ExportService, ImportService } from '@dhruv-techapps/core-common'
+import { ElementUtil, ExportService, ImportService, Logger } from '@dhruv-techapps/core-common'
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
+import { useTranslation } from 'react-i18next'
 import { Badge, Card, Col, Dropdown, Form, Row } from 'react-bootstrap'
 import ConfigBody from './config-body'
 import Action from '../action'
@@ -11,6 +12,7 @@ import { Format, GTAG, ThreeDots, numberWithExponential } from '../../../util'
 import { DropdownToggle } from '../../../components'
 
 const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }) => {
+  const { t } = useTranslation()
   const importFiled = createRef()
   const onChange = e => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
@@ -32,7 +34,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }
       toastRef.current.push({
         body: JSON.stringify(error),
         header: <strong className='mr-auto'>Export Error</strong>,
-        bodyClass: 'text-danger'
+        toastClass: 'bg-danger text-white'
       })
     })
     GTAG.event({ category: 'Action', action: 'Click', label: 'Export' })
@@ -48,20 +50,17 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }
         const importedConfig = JSON.parse(target.result)
         if (Array.isArray(importedConfig)) {
           toastRef.current.push({
-            body: 'selected Json is not valid',
-            header: <strong className='mr-auto'>Import Error</strong>,
-            bodyClass: 'text-danger'
+            body: t('error.json'),
+            header: t('toast.configuration.importError.header'),
+            toastClass: 'bg-danger text-white'
           })
           GTAG.exception({ description: 'selected Json is not valid', fatal: false })
         } else {
           ImportService.import(Format.configuration(importedConfig), LOCAL_STORAGE_KEY.CONFIGS)
           toastRef.current.push({
-            body: (
-              <p>
-                <span className='text-success'>{importedConfig.name || importedConfig.url || 'configuration'}</span> imported successfully!
-              </p>
-            ),
-            header: <strong className='mr-auto'>Configuration</strong>,
+            body: t('toast.configuration.importSuccess.body', { name: importedConfig.name || importedConfig.url || 'configuration' }),
+            header: t('toast.configuration.importSuccess.header'),
+            toastClass: 'bg-success text-white',
             delay: 2000,
             onClose: () => {
               window.location.reload()
@@ -72,10 +71,10 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }
       } catch (error) {
         toastRef.current.push({
           body: JSON.stringify(error),
-          header: <strong className='mr-auto'>Import Error</strong>,
-          bodyClass: 'text-danger'
+          header: t('toast.configuration.importError.header'),
+          toastClass: 'bg-danger text-white'
         })
-        console.error(error)
+        Logger.error(error)
         GTAG.exception({ description: error, fatal: true })
       }
     }
@@ -93,29 +92,29 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }
       <Card.Header as='h2'>
         <Row>
           <Col className='d-flex align-items-center'>
-            <small>Configuration</small>{' '}
+            <small>{t('configuration.title')}</small>
             {!config.enable && (
               <Badge pill variant='danger ml-2'>
-                Disabled
+                {t('common.disabled')}
               </Badge>
             )}
           </Col>
           <Col md='auto' className='d-flex align-items-center'>
-            <Form.Check type='switch' name='enable' id='config-enable' label='Enable' checked={config.enable} onChange={onChange} />
+            <Form.Check type='switch' name='enable' id='config-enable' label={t('configuration.enable')} checked={config.enable} onChange={onChange} />
             <Dropdown className='ml-3' alignRight>
               <Dropdown.Toggle as={DropdownToggle} id='config-dropdown'>
                 <ThreeDots width='24' height='24' />
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={exportConfig}>Export</Dropdown.Item>
-                <Dropdown.Item onClick={() => importFiled.current.click()}>Import</Dropdown.Item>
+                <Dropdown.Item onClick={exportConfig}>{t('configuration.export')}</Dropdown.Item>
+                <Dropdown.Item onClick={() => importFiled.current.click()}>{t('configuration.import')}</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={showSettings}>Settings</Dropdown.Item>
+                <Dropdown.Item onClick={showSettings}>{t('configuration.settings')}</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             <div className='custom-file d-none'>
               <label className='custom-file-label' htmlFor='import-configuration' style={{ fontSize: `${1}rem`, fontWeight: 400 }}>
-                Import
+                {t('configuration.import')}
                 <input type='file' className='custom-file-input' ref={importFiled} accept='.json' id='import-configuration' onChange={importConfig} />
               </label>
             </div>

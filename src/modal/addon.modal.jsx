@@ -4,12 +4,14 @@ import PropTypes from 'prop-types'
 import { Alert, Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
 import { ADDON_CONDITIONS, RECHECK_OPTIONS, defaultAddon } from '@dhruv-techapps/acf-common'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { GTAG, REGEX_NUM, convertNumberField } from '../util'
 import { ValueExtractorPopover } from '../popover'
 
 const NUMBER_FIELDS = ['recheck', 'recheckInterval']
 
 const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
+  const { t } = useTranslation()
   const {
     register,
     handleSubmit,
@@ -76,10 +78,10 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
     <Modal show={show} size='lg' onHide={handleClose}>
       <Form onSubmit={handleSubmit(onSubmit)} onReset={onReset}>
         <Modal.Header closeButton>
-          <Modal.Title>Addon</Modal.Title>
+          <Modal.Title>{t('modal.addon.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Alert variant='info'>Add condition will be checked before executing Action</Alert>
+          <Alert variant='info'>{t('modal.addon.info')}</Alert>
           <Card>
             <Card.Body>
               <Row className='mb-2'>
@@ -96,9 +98,9 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                       isInvalid={!!errors.element}
                     />
                     <Form.Label>
-                      Element Finder <small className='text-danger'>*</small>
+                      {t('modal.addon.elementFinder')} <small className='text-danger'>*</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.element && 'Element is required'}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.element && t('modal.addon.elementFinder.error')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col>
@@ -111,9 +113,9 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                       ))}
                     </Form.Control>
                     <Form.Label>
-                      Condition <small className='text-danger'>*</small>
+                      {t('modal.addon.condition')} <small className='text-danger'>*</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.condition && 'Condition is required'}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.condition && t('modal.addon.condition.error')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
@@ -131,9 +133,9 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                       list='value'
                     />
                     <Form.Label>
-                      Value <small className='text-danger'>*</small>
+                      {t('modal.addon.value')} <small className='text-danger'>*</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.value && 'Value is required'}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.value && t('modal.addon.value.error')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col>
@@ -148,9 +150,9 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                       ref={register()}
                       isInvalid={!!errors.valueExtractor}
                     />
-                    <Form.Label>Value Extractor&nbsp;</Form.Label>
+                    <Form.Label>{t('modal.addon.valueExtractor')}&nbsp;</Form.Label>
                     <ValueExtractorPopover />
-                    <Form.Control.Feedback type='invalid'>{errors.valueExtractor && 'Not a valid regex'}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.valueExtractor && t('modal.addon.valueExtractor.error')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
@@ -159,8 +161,8 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                 <Col md={6} sm={12}>
                   <Form.Group controlId='addon-recheck'>
                     <FormControl placeholder='0' aria-label='0' name='recheck' aria-describedby='addon-recheck' ref={register({ pattern: REGEX_NUM })} isInvalid={errors.recheck} list='retry' />
-                    <Form.Label>Recheck</Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.recheck && 'Only valid numbers are allowed'}</Form.Control.Feedback>
+                    <Form.Label>{t('modal.addon.recheck.title')}</Form.Label>
+                    <Form.Control.Feedback type='invalid'>{errors.recheck && t('modal.addon.recheck.error')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md={6} sm={12}>
@@ -175,24 +177,24 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                       isInvalid={errors.recheckInterval}
                     />
                     <Form.Label>
-                      Recheck Interval&nbsp;<small className='text-info'>(sec)</small>
+                      {t('modal.addon.recheck.interval')}&nbsp;<small className='text-info'>({t('common.sec')})</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.recheckInterval && 'Only valid numbers are allowed'}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.recheckInterval && t('modal.addon.recheck.intervalError')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col xs={12}>
                   <h6 className='my-2 text-secondary font-weight-light'>
-                    <small>* Below are action which can be performed if recheck is not matched by extension after recheck</small>
+                    <small>{t('modal.addon.recheck.hint')}</small>
                   </h6>
                 </Col>
                 <Col md={4} sm={12}>
-                  <Form.Check type='radio' name='recheckOption' id='recheckOptionStop' value={RECHECK_OPTIONS.STOP} ref={register} label='Stop' />
+                  <Form.Check type='radio' name='recheckOption' id='recheckOptionStop' value={RECHECK_OPTIONS.STOP} ref={register} label={t('modal.addon.recheck.stop')} />
                 </Col>
                 <Col md={4} sm={12}>
-                  <Form.Check type='radio' name='recheckOption' id='recheckOptionSkip' value={RECHECK_OPTIONS.SKIP} ref={register} label='Skip' />
+                  <Form.Check type='radio' name='recheckOption' id='recheckOptionSkip' value={RECHECK_OPTIONS.SKIP} ref={register} label={t('modal.addon.recheck.skip')} />
                 </Col>
                 <Col md={4} sm={12}>
-                  <Form.Check type='radio' name='recheckOption' id='recheckOptionReload' value={RECHECK_OPTIONS.RELOAD} ref={register} label='Refresh' />
+                  <Form.Check type='radio' name='recheckOption' id='recheckOptionReload' value={RECHECK_OPTIONS.RELOAD} ref={register} label={t('modal.addon.recheck.refresh')} />
                 </Col>
               </Row>
             </Card.Body>
@@ -200,10 +202,10 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>
           <Button type='reset' variant='outline-danger'>
-            Clear
+            {t('common.clear')}
           </Button>
           <Button type='submit' variant='outline-primary' disabled={!isValid || !isDirty} className='ml-3'>
-            Save
+            {t('common.save')}
           </Button>
         </Modal.Footer>
       </Form>

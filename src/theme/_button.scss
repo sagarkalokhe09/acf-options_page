@@ -1,4 +1,4 @@
-button:not(.btn) {
+button:not(.btn):not(.close) {
   border: none;
   color: var(--button-color);
   background: transparent;

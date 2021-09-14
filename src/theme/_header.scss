@@ -1,7 +1,8 @@
 header {
   border-bottom: 1px solid var(--border-color);
-  nav {
-    margin: 0 60px;
+  nav.navbar {
+    margin: 0 0 0 60px;
+    padding: 0;
   }
   .navbar-light .navbar-brand h1 {
     font-size: 22px;
@@ -9,9 +10,19 @@ header {
     color: var(--header-color);
     display: inline-block;
     line-height: 1.5;
-    margin: 01;
+    margin: 0;
     &:hover {
       color: var(--header-color);
     }
+  }
+  .dropdown > a {
+    line-height: 35px;
+  }
+  #language-nav-dropdown,
+  div[aria-labelledby='language-nav-dropdown'] {
+    text-transform: uppercase;
+  }
+  button {
+    width: auto;
   }
 }

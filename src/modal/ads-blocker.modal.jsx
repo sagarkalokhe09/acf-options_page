@@ -14,7 +14,6 @@ const AdsBlockerModal = forwardRef((_, ref) => {
 
   const closeClick = event => {
     document.addEventListener('visibilitychange', () => {
-      console.log(document.hidden, window.adsLoaded)
       if (!document.hidden && !window.adsLoaded) {
         setShow(true)
       }

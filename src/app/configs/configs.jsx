@@ -1,10 +1,10 @@
 import React, { createRef, useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap'
+import { Alert, Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap'
 import { Loading } from '@dhruv-techapps/core-components'
 import { LOCAL_STORAGE_KEY, defaultAction, defaultConfig } from '@dhruv-techapps/acf-common'
-import { ElementUtil, ExportService, StorageService } from '@dhruv-techapps/core-common'
-
+import { ElementUtil, ExportService, Logger, StorageService } from '@dhruv-techapps/core-common'
+import { useTranslation } from 'react-i18next'
 import Config from './config'
 import Batch from './batch'
 import Action from './action'
@@ -26,6 +26,8 @@ const Configs = ({ toastRef }) => {
   const reorderConfigsRef = useRef()
   const confirmRef = useRef()
   const importFiled = createRef()
+
+  const { t, i18n } = useTranslation()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -102,12 +104,9 @@ const Configs = ({ toastRef }) => {
     const name = getConfigName(undefined, configs.length)
     setConfigs([...configs, { ...defaultConfig, name }])
     toastRef.current.push({
-      body: (
-        <p>
-          <span className='text-success'>{name}</span> added successfully{' '}
-        </p>
-      ),
-      header: <strong className='mr-auto'>Configuration</strong>
+      body: t('toast.configuration.add.body', { name }),
+      header: t('toast.configuration.add.header'),
+      toastClass: 'bg-success text-white'
     })
     GTAG.event({ category: 'Configuration', action: 'Click', label: 'Add' })
   }
@@ -124,12 +123,9 @@ const Configs = ({ toastRef }) => {
     })
     setLoading(false)
     toastRef.current.push({
-      body: (
-        <p>
-          <span className='text-danger'>{name}</span> removed successfully
-        </p>
-      ),
-      header: <strong className='mr-auto'>Configuration</strong>
+      body: t('toast.configuration.remove.body', { name }),
+      header: t('toast.configuration.remove.header'),
+      toastClass: 'bg-danger text-white'
     })
     GTAG.event({ category: 'Configuration', action: 'Click', label: 'Remove Confirmation' })
   }
@@ -137,12 +133,9 @@ const Configs = ({ toastRef }) => {
   const removeConfigConfirm = () => {
     const name = configs[selected].name || configs[selected].url || `configuration-${selected}`
     confirmRef.current.confirm({
-      title: 'Remove Configuration',
-      message: (
-        <p>
-          Are you sure to remove <span className='text-danger'>{name}</span> Configuration?
-        </p>
-      ),
+      title: t('confirm.configuration.remove.title'),
+      message: t('confirm.configuration.remove.message', { name }),
+      headerClass: 'text-danger',
       confirmFunc: removeConfig
     })
     GTAG.event({ category: 'Configuration', action: 'Click', label: 'Remove' })
@@ -152,8 +145,8 @@ const Configs = ({ toastRef }) => {
     ExportService.export('All Configurations', configs).catch(_error => {
       toastRef.current.push({
         body: JSON.stringify(_error),
-        header: <strong className='mr-auto'>Export Error</strong>,
-        bodyClass: 'text-danger'
+        header: t('toast.configuration.exportAll.header'),
+        toastClass: 'bg-danger text-white'
       })
     })
     GTAG.event({ category: 'Configuration', action: 'Click', label: 'Export All' })
@@ -175,15 +168,15 @@ const Configs = ({ toastRef }) => {
           GTAG.event({ category: 'Configuration', action: 'Click', label: 'Import All' })
         } else {
           toastRef.current.push({
-            body: 'selected Json is not valid',
-            header: <strong className='mr-auto'>Import Error</strong>,
-            bodyClass: 'text-danger'
+            body: t('error.json'),
+            header: t('toast.configuration.importAll.header'),
+            toastClass: 'bg-danger text-white'
           })
           GTAG.exception({ description: 'selected Json is not valid', fatal: false })
         }
         setLoading(false)
       } catch (_error) {
-        console.error(_error)
+        Logger.error(_error)
         GTAG.exception({ description: _error, fatal: true })
       }
     }
@@ -197,6 +190,20 @@ const Configs = ({ toastRef }) => {
         <Loading className='d-flex justify-content-center m-5' />
       ) : (
         <>
+          {i18n.language !== 'en' && (
+            <Container fluid className='mt-2'>
+              <Row>
+                <Col>
+                  <Alert variant='info'>
+                    {t('common.translate')}{' '}
+                    <a href='https://github.com/Dhruv-Techapps/acf-i18n/discussions/4' target='_blank' rel='noopener noreferrer'>
+                      {t('common.clickHere')}
+                    </a>
+                  </Alert>
+                </Col>
+              </Row>
+            </Container>
+          )}
           <div id='configs' className={className}>
             <Container fluid>
               <Row>
@@ -215,31 +222,31 @@ const Configs = ({ toastRef }) => {
                 </Col>
                 <Col md='auto' className='d-flex align-items-center px-0'>
                   <Button type='button' variant='outline-success' onClick={addConfig}>
-                    Add Configuration
+                    {t('configuration.add')}
                   </Button>
                   <Dropdown alignRight>
                     <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown'>
                       <ThreeDots width='24' height='24' />
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item onClick={exportAll}>Export All</Dropdown.Item>
-                      <Dropdown.Item onClick={() => importFiled.current.click()}>Import All</Dropdown.Item>
+                      <Dropdown.Item onClick={exportAll}>{t('configuration.exportAll')}</Dropdown.Item>
+                      <Dropdown.Item onClick={() => importFiled.current.click()}>{t('configuration.importAll')}</Dropdown.Item>
                       <Dropdown.Divider />
                       <Dropdown.Item
                         onClick={() => {
                           reorderConfigsRef.current.showReorder()
                         }}>
-                        Reorder Configurations
+                        {t('configuration.reorder')}
                       </Dropdown.Item>
                       <Dropdown.Divider />
                       <Dropdown.Item onClick={removeConfigConfirm} className={configs.length === 1 ? 'text-muted' : 'text-danger'} disabled={configs.length === 1}>
-                        Remove Configuration
+                        {t('configuration.remove')}
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                   <div className='custom-file d-none'>
                     <label className='custom-file-label' htmlFor='import-configurations' style={{ fontSize: `${1}rem`, fontWeight: 400 }}>
-                      Import All
+                      {t('configuration.importAll')}
                       <input type='file' className='custom-file-input' ref={importFiled} accept='.json' id='import-configurations' onChange={importAll} />
                     </label>
                   </div>

@@ -1,8 +1,10 @@
 import { Badge, Button, Modal } from 'react-bootstrap'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { BROWSER } from '@dhruv-techapps/core-common'
+import { useTranslation } from 'react-i18next'
 
 const ExtensionNotFoundModel = forwardRef((_, ref) => {
+  const { t } = useTranslation()
   const [show, setShow] = useState(false)
 
   useImperativeHandle(ref, () => ({
@@ -25,21 +27,20 @@ const ExtensionNotFoundModel = forwardRef((_, ref) => {
   return (
     <Modal show={show} centered backdrop='static' keyboard={false}>
       <Modal.Header>
-        <Modal.Title>Extension Not Found</Modal.Title>
+        <Modal.Title>{t('modal.extensionNotFound.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body className='mx-auto text-center'>
         <p>
-          This is configuration page for <b>{process.env.REACT_APP_NAME}</b> {process.env.REACT_APP_VARIANT && <Badge variant='danger ml-2 font-weight-light'>{process.env.REACT_APP_VARIANT}</Badge>}{' '}
-          extension.
+          {t('modal.extensionNotFound.subTitle', process.env.REACT_APP_NAME, process.env.REACT_APP_VARIANT && <Badge variant='danger ml-2 font-weight-light'>{process.env.REACT_APP_VARIANT}</Badge>)}
         </p>
-        <p>You need to download extension first in order to make use of this</p>
+        <p>{t('modal.extensionNotFound.hint')}</p>
       </Modal.Body>
       <Modal.Footer className='justify-content-between'>
         <Button variant='outline-secondary' className='px-3' size='md' onClick={closeClick}>
-          Close
+          {t('common.close')}
         </Button>
         <Button variant='outline-primary' className='px-3' size='md' onClick={downloadClick}>
-          Download
+          {t('common.download')}
         </Button>
       </Modal.Footer>
     </Modal>

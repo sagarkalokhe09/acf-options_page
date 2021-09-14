@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Button, Card, Col, Dropdown, Row } from 'react-bootstrap'
 import { LocalStorage } from '@dhruv-techapps/core-common'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 import ActionTable from './action-table'
 import { DropdownToggle } from '../../../components'
 import { FilterRight, GTAG, numberWithExponential } from '../../../util'
@@ -10,6 +11,7 @@ const HIDDEN_COLUMN_KEY = 'hiddenColumns'
 const defaultHiddenColumns = ['name', 'initWait', 'repeat', 'repeatInterval']
 
 const Action = props => {
+  const { t } = useTranslation()
   const [hiddenColumns, setHiddenColumns] = useState(LocalStorage.getItem(HIDDEN_COLUMN_KEY, defaultHiddenColumns))
   const actionTableRef = useRef()
   const didMountRef = useRef(true)
@@ -39,11 +41,11 @@ const Action = props => {
       <Card.Header as='h2'>
         <Row>
           <Col className='d-flex align-items-center'>
-            <small>Action</small>
+            <small>{t('action.title')}</small>
           </Col>
           <Col md='auto' className='d-flex align-items-center'>
             <Button variant='outline-success' onClick={addAction}>
-              Add Action
+              {t('action.add')}
             </Button>
             <Dropdown alignRight className='ml-2'>
               <Dropdown.Toggle as={DropdownToggle} id='action-dropdown'>
@@ -51,16 +53,16 @@ const Action = props => {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={onColumnChange} data-column='name' active={hiddenColumns.indexOf('name') === -1}>
-                  Name
+                  {t('action.name')}
                 </Dropdown.Item>
                 <Dropdown.Item onClick={onColumnChange} data-column='initWait' active={hiddenColumns.indexOf('initWait') === -1}>
-                  Init Wait
+                  {t('action.initWait')}
                 </Dropdown.Item>
                 <Dropdown.Item onClick={onColumnChange} data-column='repeat' active={hiddenColumns.indexOf('repeat') === -1}>
-                  Repeat
+                  {t('action.repeat')}
                 </Dropdown.Item>
                 <Dropdown.Item onClick={onColumnChange} data-column='repeatInterval' active={hiddenColumns.indexOf('repeatInterval') === -1}>
-                  R-interval
+                  {t('action.repeatInterval')}
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
