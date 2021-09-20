@@ -14,8 +14,8 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     fallbackLng: 'en',
-    debug: true,
     ns: 'web',
+    debug: process.env.NODE_ENV === 'development',
     defaultNS: 'web',
     backend: {
       // path where resources get loaded from, or a function
@@ -26,10 +26,10 @@ i18n
       //
       // If allowMultiLoading is false, lngs and namespaces will have only one element each,
       // If allowMultiLoading is true, lngs and namespaces can have multiple elements
-      loadPath: 'https://raw.githubusercontent.com/Dhruv-Techapps/acf-i18n/main/locales/{{lng}}/{{ns}}.json',
+      loadPath: `${process.env.REACT_APP_I18N}/{{lng}}/{{ns}}.json`,
       addPath: '/locales/add/{{lng}}/{{ns}}',
       allowMultiLoading: true,
-      reloadInterval: 5000,
+      reloadInterval: process.env.NODE_ENV === 'development' ? 60000 : false,
       crossDomain: true
     },
     interpolation: {

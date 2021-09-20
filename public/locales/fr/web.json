@@ -117,7 +117,7 @@
     },
     "extensionNotFound": {
       "title": "Extension non trouvée",
-      "subTitle": "Ceci est la page de configuration pour<b>{{REACT_APP_NAME}}</b> {{REACT_APP_VARIANT}} extension",
+      "subTitle": "Ceci est la page de configuration pour<b>{{REACT_APP_NAME}}</b> <Badge variant='danger ml-2 font-weight-light'>{{REACT_APP_VARIANT}}</Badge> extension",
       "hint": "Vous devez télécharger d'abord une extension afin de l'utiliser"
     },
     "actionSettings": {

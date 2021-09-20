@@ -5,10 +5,9 @@ import Header from './app/header'
 import Footer from './app/footer'
 import { ToastHandler } from './components'
 import Configs from './app/configs/configs'
-import { ExtensionNotFoundModel } from './modal'
+import { AdsBlockerModal, ExtensionNotFoundModel } from './modal'
 import { GTAG } from './util'
 import AuthProvider from './_providers/AuthProvider'
-import { AdsBlockerModal } from './modal/ads-blocker.modal'
 
 function App() {
   const toastRef = useRef()
@@ -23,9 +22,11 @@ function App() {
       .catch(error => {
         if (error.message === 'Could not establish connection. Receiving end does not exist.') {
           GTAG.exception({ description: error.message, fatal: true })
-          if (extensionNotFoundRef.current) {
-            extensionNotFoundRef.current.show()
-          }
+          setTimeout(() => {
+            if (extensionNotFoundRef.current) {
+              extensionNotFoundRef.current.show()
+            }
+          }, 1000)
         }
       })
     setTheme(localStorage.getItem('theme') || 'light')

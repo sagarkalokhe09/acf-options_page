@@ -1,6 +1,7 @@
 export * from './action-settings.modal'
 export * from './addon.modal'
 export * from './config-settings.modal'
+export * from './ads-blocker.modal'
 export * from './confirm.modal'
 export * from './extension-not-found.modal'
 export * from './reorder-configs.modal'

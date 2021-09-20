@@ -258,12 +258,14 @@ const Configs = ({ toastRef }) => {
             <Container fluid>
               <Row>
                 <Col xs={12}>{error && <ErrorAlert message={error} />}</Col>
+              </Row>
+              <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} configSettingsRef={configSettingsRef} />
+              <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />
+              <Row>
                 <Col xs={12} className='text-center'>
                   <GoogleAds client={process.env.REACT_APP_GOOGLE_ADS_CLIENT} slot={process.env.REACT_APP_GOOGLE_ADS_SLOT} format='auto' className='mb-3' />
                 </Col>
               </Row>
-              <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} configSettingsRef={configSettingsRef} />
-              <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />
               <Action
                 actions={config.actions}
                 configEnable={config.enable}

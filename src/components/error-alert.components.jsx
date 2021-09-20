@@ -12,8 +12,7 @@ export const ErrorAlert = ({ heading = 'Error', message }) => (
 ErrorAlert.defaultProps = {
   heading: 'Error'
 }
-//! TODO - check for error
 ErrorAlert.propTypes = {
   heading: PropTypes.string,
-  message: PropTypes.instanceOf(JSON).isRequired
+  message: PropTypes.shape({ message: PropTypes.string }).isRequired
 }

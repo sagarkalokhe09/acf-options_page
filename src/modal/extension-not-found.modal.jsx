@@ -1,7 +1,7 @@
-import { Badge, Button, Modal } from 'react-bootstrap'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
+import { Badge, Button, Modal } from 'react-bootstrap'
 import { BROWSER } from '@dhruv-techapps/core-common'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 const ExtensionNotFoundModel = forwardRef((_, ref) => {
   const { t } = useTranslation()
@@ -9,7 +9,9 @@ const ExtensionNotFoundModel = forwardRef((_, ref) => {
 
   useImperativeHandle(ref, () => ({
     show() {
-      setShow(true)
+      if (!show) {
+        setShow(true)
+      }
     }
   }))
 
@@ -31,7 +33,7 @@ const ExtensionNotFoundModel = forwardRef((_, ref) => {
       </Modal.Header>
       <Modal.Body className='mx-auto text-center'>
         <p>
-          {t('modal.extensionNotFound.subTitle', process.env.REACT_APP_NAME, process.env.REACT_APP_VARIANT && <Badge variant='danger ml-2 font-weight-light'>{process.env.REACT_APP_VARIANT}</Badge>)}
+          <Trans i18nKey='modal.extensionNotFound.subTitle' components={{ b: <b />, Badge: <Badge variant='danger' className='ml-2 font-weight-light' /> }} values={process.env} />
         </p>
         <p>{t('modal.extensionNotFound.hint')}</p>
       </Modal.Body>
@@ -46,7 +48,5 @@ const ExtensionNotFoundModel = forwardRef((_, ref) => {
     </Modal>
   )
 })
-
 ExtensionNotFoundModel.displayName = 'ExtensionNotFoundModel'
-const memo = ExtensionNotFoundModel
-export { memo as ExtensionNotFoundModel }
+export { ExtensionNotFoundModel }
