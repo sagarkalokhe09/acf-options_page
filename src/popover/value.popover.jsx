@@ -9,7 +9,7 @@ export const ValuePopover = () => (
     rootClose
     overlay={
       <Popover id='popover-basic'>
-        <Popover.Content>
+        <Popover.Body>
           <Table bordered striped className='mt-3'>
             <tbody>
               <tr>
@@ -129,7 +129,7 @@ export const ValuePopover = () => (
               more
             </a>
           </div>
-        </Popover.Content>
+        </Popover.Body>
       </Popover>
     }>
     <InfoCircle className='ml-2 text-info' />

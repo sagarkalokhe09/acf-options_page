@@ -12,10 +12,9 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const {
     register,
     handleSubmit,
-    errors,
     watch,
     reset,
-    formState: { isDirty, isValid }
+    formState: { errors, isDirty, isValid }
   } = useForm({
     mode: 'onBlur',
     defaultValues: defaultConfig,
@@ -87,8 +86,8 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
               <Row>
                 <Col md={12} sm={12}>
                   {t('modal.configSettings.start')}&nbsp;
-                  <Form.Check inline type='radio' name='startType' id='startAuto' value={START_TYPES.AUTO} ref={register} label={t('modal.configSettings.auto')} />
-                  <Form.Check inline type='radio' name='startType' id='startManual' value={START_TYPES.MANUAL} ref={register} label={t('modal.configSettings.manual')} />
+                  <Form.Check inline type='radio' id='startAuto' value={START_TYPES.AUTO} {...register('startType')} label={t('modal.configSettings.auto')} />
+                  <Form.Check inline type='radio' id='startManual' value={START_TYPES.MANUAL} {...register('startType')} label={t('modal.configSettings.manual')} />
                   <small>
                     <ul className='mb-0 mt-2'>
                       <li>
@@ -108,10 +107,9 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                     <FormControl
                       placeholder={defaultConfig.hotkey}
                       aria-label={defaultConfig.hotkey}
-                      name='hotkey'
                       aria-describedby='hotkey'
                       onKeyDown={onKeyDown}
-                      ref={register({ pattern: /^(Ctrl \+ |Alt \+ |Shift \+ )+\D$/ })}
+                      {...register('hotkey', { pattern: /^(Ctrl \+ |Alt \+ |Shift \+ )+\D$/ })}
                       isInvalid={errors.hotkey}
                     />
                     <Form.Label>{t('modal.configSettings.hotkey')}</Form.Label>
@@ -121,8 +119,8 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                 </Col>
                 <Col md={12} sm={12} hidden={startType === START_TYPES.MANUAL}>
                   {t('modal.configSettings.extensionLoad')}&nbsp;
-                  <Form.Check inline type='radio' name='loadType' id='loadTypeWindow' value={LOAD_TYPES.WINDOW} ref={register} label={t('modal.configSettings.window')} />
-                  <Form.Check inline type='radio' name='loadType' id='loadTypeDocument' value={LOAD_TYPES.DOCUMENT} ref={register} label={t('modal.configSettings.document')} />
+                  <Form.Check inline type='radio' id='loadTypeWindow' value={LOAD_TYPES.WINDOW} {...register('loadType')} label={t('modal.configSettings.window')} />
+                  <Form.Check inline type='radio' id='loadTypeDocument' value={LOAD_TYPES.DOCUMENT} {...register('loadType')} label={t('modal.configSettings.document')} />
                   <small>
                     <ul className='mb-0 mt-2'>
                       <li>

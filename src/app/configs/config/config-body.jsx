@@ -13,9 +13,8 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
   const {
     register,
     handleSubmit,
-    errors,
     reset,
-    formState: { isDirty, isValid }
+    formState: { errors, isDirty, isValid }
   } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
@@ -51,7 +50,7 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
         <Row>
           <Col md='12' sm='12'>
             <Form.Group controlId='config-url'>
-              <FormControl name='url' ref={register({ required: true })} isInvalid={!!errors.url} placeholder={process.env.BASE} aria-label={process.env.BASE} aria-describedby='config-url' />
+              <FormControl {...register('url', { required: true })} isInvalid={!!errors.url} placeholder={process.env.BASE} aria-label={process.env.BASE} aria-describedby='config-url' />
               <Form.Label>
                 {t('configuration.url')}&nbsp;<small className='text-danger'>*</small>
               </Form.Label>
@@ -60,13 +59,13 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
           </Col>
           <Col md='4' sm='12'>
             <Form.Group controlId='config-name'>
-              <FormControl name='name' ref={register} placeholder='getautoclicker.com' aria-label='getautoclicker.com' aria-describedby='config-name' />
+              <FormControl {...register('name')} placeholder='getautoclicker.com' aria-label='getautoclicker.com' aria-describedby='config-name' />
               <Form.Label>{t('configuration.name')}</Form.Label>
             </Form.Group>
           </Col>
           <Col md='4' sm='12'>
             <Form.Group controlId='config-init-wait'>
-              <FormControl ref={register({ pattern: REGEX_FLOAT })} isInvalid={!!errors.initWait} name='initWait' list='interval' placeholder='0' aria-label='0' aria-describedby='config-init-wait' />
+              <FormControl {...register('initWait', { pattern: REGEX_FLOAT })} isInvalid={!!errors.initWait} list='interval' placeholder='0' aria-label='0' aria-describedby='config-init-wait' />
               <Form.Label>
                 {t('configuration.initWait')}&nbsp;<small className='text-info'>({t('common.sec')})</small>
               </Form.Label>
@@ -76,9 +75,8 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
           <Col md='4' sm='12'>
             <Form.Group controlId='config-start-time'>
               <FormControl
-                ref={register({ pattern: REGEX_START_TIME })}
+                {...register('startTime', { pattern: REGEX_START_TIME })}
                 isInvalid={!!errors.startTime}
-                name='startTime'
                 placeholder='HH:mm:ss:fff'
                 aria-label='HH:mm:ss:fff'
                 list='start-time'

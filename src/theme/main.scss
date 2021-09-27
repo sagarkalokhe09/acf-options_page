@@ -1,10 +1,30 @@
+@import "~bootstrap/scss/bootstrap";
+
+
+// Default variable overrides
+$body-bg: #000;
+$body-color: #111;
+
+// Required
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/root";
+
+// Optional Bootstrap components here
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+// etc
+
+@import './reset';
 @import './color';
+@import './header';
+@import './configs';
+/*
 @import './action-table';
 @import './button';
 @import './card';
-@import './configs';
 @import './footer';
-@import './header';
+
 @import './input';
 @import './modal';
 @import './popover';
@@ -16,6 +36,7 @@
 @import './badge';
 @import './toast-handler';
 @import './list';
+*/
 
 body {
   margin: 0;

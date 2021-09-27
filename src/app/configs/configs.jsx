@@ -210,13 +210,13 @@ const Configs = ({ toastRef }) => {
                 <Col className='px-0'>
                   <Form>
                     <Form.Group controlId='selected' className='mb-0'>
-                      <Form.Control as='select' custom onChange={onChange} value={selected} data-type='number'>
+                      <Form.Select onChange={onChange} value={selected} data-type='number'>
                         {configs.map((_config, index) => (
                           <option key={index} value={index}>
                             {_config.name || getConfigName(_config.url, index)} {!_config.enable && '(Disabled)'} --- {_config.url}
                           </option>
                         ))}
-                      </Form.Control>
+                      </Form.Select>
                     </Form.Group>
                   </Form>
                 </Col>
@@ -224,7 +224,7 @@ const Configs = ({ toastRef }) => {
                   <Button type='button' variant='outline-success' onClick={addConfig}>
                     {t('configuration.add')}
                   </Button>
-                  <Dropdown alignRight>
+                  <Dropdown>
                     <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown'>
                       <ThreeDots width='24' height='24' />
                     </Dropdown.Toggle>

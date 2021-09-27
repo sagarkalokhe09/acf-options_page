@@ -11,9 +11,8 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
   const {
     register,
     handleSubmit,
-    errors,
     reset,
-    formState: { isDirty, isValid }
+    formState: { errors, isDirty, isValid }
   } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
@@ -46,7 +45,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
         <Row>
           <Col md='6' sm='12'>
             <Form.Group controlId='batch-repeat'>
-              <FormControl name='repeat' ref={register({ pattern: REGEX_NUM })} isInvalid={!!errors.repeat} placeholder='0' aria-label='0' aria-describedby='batch-repeat' list='repeat' />
+              <FormControl {...register('repeat', { pattern: REGEX_NUM })} isInvalid={!!errors.repeat} placeholder='0' aria-label='0' aria-describedby='batch-repeat' list='repeat' />
               <Form.Label>{t('batch.repeat')}</Form.Label>
               <Form.Control.Feedback type='invalid'>{errors.repeat && t('error.repeat')}</Form.Control.Feedback>
             </Form.Group>
@@ -54,8 +53,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
           <Col md='6' sm='12'>
             <Form.Group controlId='batch-repeat-interval'>
               <FormControl
-                name='repeatInterval'
-                ref={register({ pattern: REGEX_FLOAT })}
+                {...register('repeatInterval', { pattern: REGEX_FLOAT })}
                 isInvalid={!!errors.repeatInterval}
                 placeholder='0'
                 aria-label='0'

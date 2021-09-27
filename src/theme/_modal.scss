@@ -2,15 +2,6 @@
   &-content {
     background: var(--modal-bg-color);
     color: var(--color);
-    .form-group label,
-    input,
-    select {
-      background: var(--modal-bg-color);
-      &:focus,
-      &:active {
-        background: var(--modal-bg-color);
-      }
-    }
   }
   &-title {
     color: var(--color);

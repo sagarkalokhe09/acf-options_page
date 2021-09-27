@@ -10,19 +10,13 @@ header {
     color: var(--header-color);
     display: inline-block;
     line-height: 1.5;
-    margin: 0;
-    &:hover {
-      color: var(--header-color);
-    }
+    margin: 0 0 0 10px;
   }
   .dropdown > a {
-    line-height: 35px;
+    line-height: 2;
   }
   #language-nav-dropdown,
   div[aria-labelledby='language-nav-dropdown'] {
     text-transform: uppercase;
-  }
-  button {
-    width: auto;
   }
 }

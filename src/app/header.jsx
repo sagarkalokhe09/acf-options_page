@@ -61,14 +61,14 @@ const Header = ({ toggleTheme, theme }) => {
           />
           <h1>{process.env.REACT_APP_NAME}</h1>
         </Navbar.Brand>
-        <Nav className='mr-auto' />
-        <Form inline>
-          <button type='button' onClick={toggleTheme}>
+        <Nav className='me-auto' />
+        <Form className='d-flex'>
+          <Button type='button' variant='link' onClick={toggleTheme}>
             {theme !== 'light' ? <Sun width='24' height='24' title={t('header.theme.dark')} /> : <Moon width='24' height='24' title={t('header.theme.light')} />}
-          </button>
-          <button type='button' onClick={openSettings} className='ml-3'>
+          </Button>
+          <Button type='button' variant='link' onClick={openSettings} className='ml-3'>
             <GearFill width='24' height='24' title={t('header.settings')} />
-          </button>
+          </Button>
           {user ? (
             <>
               <NavDropdown
@@ -85,7 +85,7 @@ const Header = ({ toggleTheme, theme }) => {
               {t('header.login')}
             </Button>
           )}
-          <NavDropdown title={i18n.language} id='language-nav-dropdown' alignRight>
+          <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end'>
             {languages.map((language, index) => (
               <NavDropdown.Item key={index} title={language} onClick={() => changeLanguage(language)}>
                 {t(`language.${language}`)}

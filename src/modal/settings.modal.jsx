@@ -18,10 +18,9 @@ const SettingsModal = ({ show, handleClose }) => {
   const {
     register,
     handleSubmit,
-    errors,
     reset,
     watch,
-    formState: { isDirty, isValid }
+    formState: { errors, isDirty, isValid }
   } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
@@ -36,7 +35,7 @@ const SettingsModal = ({ show, handleClose }) => {
 
   useEffect(() => {
     StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS, defaultSettings)
-      .then(reset)
+      // .then(reset)
       .catch(setError)
       .finally(() => setLoading(false))
   }, [reset])
@@ -45,7 +44,7 @@ const SettingsModal = ({ show, handleClose }) => {
     convertNumberField(data, NUMBER_FIELDS)
     StorageService.setItem(LOCAL_STORAGE_KEY.SETTINGS, data)
       .then(() => {
-        reset(data)
+        // reset(data)
         setMessage(t('modal.settings.saveMessage'))
         setTimeout(setMessage, 1500)
       })
@@ -70,7 +69,7 @@ const SettingsModal = ({ show, handleClose }) => {
                 <Card.Body>
                   <Row>
                     <Col md={12} sm={12}>
-                      <Form.Check type='switch' id='checkiFrames' name='checkiFrames' ref={register} label={t('modal.settings.checkIFrames')} />
+                      <Form.Check type='switch' id='checkiFrames' {...register('checkiFrames')} label={t('modal.settings.checkIFrames')} />
                       <small className='text-muted'>{t('modal.settings.checkIFramesHint')}</small>
                     </Col>
                   </Row>
@@ -86,29 +85,25 @@ const SettingsModal = ({ show, handleClose }) => {
                       <Form.Check
                         type='switch'
                         id='notifications.onError'
-                        name='notifications.onError'
-                        ref={register}
+                        {...register('notifications.onError')}
                         label={<span className='text-danger'>{t('modal.settings.notification.error')}</span>}
                       />
                       <Form.Check
                         type='switch'
                         id='notifications.onAction'
-                        name='notifications.onAction'
-                        ref={register}
+                        {...register('notifications.onAction')}
                         label={<span className='text-success'>{t('modal.settings.notification.action')}</span>}
                       />
                       <Form.Check
                         type='switch'
                         id='notifications.onBatch'
-                        name='notifications.onBatch'
-                        ref={register}
+                        {...register('notifications.onBatch')}
                         label={<span className='text-success'>{t('modal.settings.notification.batch')}</span>}
                       />
                       <Form.Check
                         type='switch'
                         id='notifications.onConfig'
-                        name='notifications.onConfig'
-                        ref={register}
+                        {...register('notifications.onConfig')}
                         label={<span className='text-success'>{t('modal.settings.notification.config')}</span>}
                       />
                     </Col>
@@ -116,15 +111,14 @@ const SettingsModal = ({ show, handleClose }) => {
                       <Form.Check
                         type='switch'
                         id='notifications.sound'
-                        name='notifications.sound'
-                        ref={register}
+                        {...register('notifications.sound')}
                         label={
                           <span>
                             {t('modal.settings.notification.sound')} {notificationSound ? <VolumeUp /> : <VolumeMute />}{' '}
                           </span>
                         }
                       />
-                      <Form.Check type='switch' disabled={!user} id='notifications.discord' name='notifications.discord' ref={register} label={t('modal.settings.notification.discord.title')} />
+                      <Form.Check type='switch' disabled={!user} id='notifications.discord' {...register('notifications.discord')} label={t('modal.settings.notification.discord.title')} />
                       <Form.Text className='text-muted'>
                         <Trans i18nKey='modal.settings.notification.discord.hint'>
                           You need to login and join our
@@ -146,7 +140,7 @@ const SettingsModal = ({ show, handleClose }) => {
                   <Row>
                     <Col md={6} sm={12} className='mb-2 mb-md-0'>
                       <Form.Group controlId='retry'>
-                        <FormControl placeholder='5' aria-label='5' name='retry' aria-describedby='retry' ref={register({ pattern: REGEX_NUM })} isInvalid={errors.retry} list='retry' />
+                        <FormControl placeholder='5' aria-label='5' aria-describedby='retry' {...register('retry', { pattern: REGEX_NUM })} isInvalid={errors.retry} list='retry' />
                         <Form.Label>{t('modal.settings.retry.title')}</Form.Label>
                         <Form.Control.Feedback type='invalid'>{errors.retry && t('error.retry')}</Form.Control.Feedback>
                       </Form.Group>
@@ -156,9 +150,8 @@ const SettingsModal = ({ show, handleClose }) => {
                         <FormControl
                           placeholder='1'
                           aria-label='1'
-                          name='retryInterval'
                           aria-describedby='retry-interval'
-                          ref={register({ validate: value => !Number.isNaN(value) })}
+                          {...register('retryInterval', { validate: value => !Number.isNaN(value) })}
                           isInvalid={errors.retryInterval}
                           list='interval'
                         />
@@ -174,13 +167,13 @@ const SettingsModal = ({ show, handleClose }) => {
                       </h6>
                     </Col>
                     <Col md={4} sm={12}>
-                      <Form.Check type='radio' name='retryOption' id='retryOptionStop' value={RETRY_OPTIONS.STOP} ref={register} label={t('modal.settings.retry.stop')} />
+                      <Form.Check type='radio' id='retryOptionStop' value={RETRY_OPTIONS.STOP} {...register('retryOption')} label={t('modal.settings.retry.stop')} />
                     </Col>
                     <Col md={4} sm={12}>
-                      <Form.Check type='radio' name='retryOption' id='retryOptionSkip' value={RETRY_OPTIONS.SKIP} ref={register} label={t('modal.settings.retry.skip')} />
+                      <Form.Check type='radio' id='retryOptionSkip' value={RETRY_OPTIONS.SKIP} {...register('retryOption')} label={t('modal.settings.retry.skip')} />
                     </Col>
                     <Col md={4} sm={12}>
-                      <Form.Check type='radio' name='retryOption' id='retryOptionReload' value={RETRY_OPTIONS.RELOAD} ref={register} label={t('modal.settings.retry.refresh')} />
+                      <Form.Check type='radio' id='retryOptionReload' value={RETRY_OPTIONS.RELOAD} {...register('retryOption')} label={t('modal.settings.retry.refresh')} />
                     </Col>
                   </Row>
                 </Card.Body>

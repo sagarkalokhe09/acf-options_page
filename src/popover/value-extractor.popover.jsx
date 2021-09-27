@@ -14,7 +14,7 @@ export const ValueExtractorPopover = () => {
       overlay={
         <Popover id='popover-basic'>
           <Popover.Title>{t('common.examples')}</Popover.Title>
-          <Popover.Content>
+          <Popover.Body>
             <ul>
               <li>
                 <code>\d+.\d*</code> float number extract $<span className='text-success'>123.00</span> only
@@ -24,7 +24,7 @@ export const ValueExtractorPopover = () => {
               </li>
               <li>supports regex pattern</li>
             </ul>
-          </Popover.Content>
+          </Popover.Body>
         </Popover>
       }>
       <InfoCircle className='ml-2 text-info' />
