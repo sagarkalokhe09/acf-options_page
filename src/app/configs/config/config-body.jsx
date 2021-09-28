@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Button, Card, Col, Form, FormControl, Row } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { GTAG, REGEX_FLOAT, REGEX_START_TIME, convertNumberField, numberWithExponential } from '../../../util'
+import { GTAG, REGEX_INTERVAL, REGEX_START_TIME, convertNumberField, numberWithExponential } from '../../../util'
 import { StartTimePopover } from '../../../popover'
 
 const NUMBER_FIELDS = ['initWait']
@@ -66,7 +66,15 @@ const ConfigBody = ({ config, configIndex, setConfigs }) => {
           </Col>
           <Col md='4' sm='12'>
             <Form.Group controlId='config-init-wait'>
-              <FormControl ref={register({ pattern: REGEX_FLOAT })} isInvalid={!!errors.initWait} name='initWait' list='interval' placeholder='0' aria-label='0' aria-describedby='config-init-wait' />
+              <FormControl
+                ref={register({ pattern: REGEX_INTERVAL })}
+                isInvalid={!!errors.initWait}
+                name='initWait'
+                list='interval'
+                placeholder='0'
+                aria-label='0'
+                aria-describedby='config-init-wait'
+              />
               <Form.Label>
                 {t('configuration.initWait')}&nbsp;<small className='text-info'>({t('common.sec')})</small>
               </Form.Label>

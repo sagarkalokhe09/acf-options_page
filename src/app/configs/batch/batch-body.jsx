@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Button, Card, Col, Form, FormControl, Row } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { GTAG, REGEX_FLOAT, REGEX_NUM, convertNumberField, numberWithExponential } from '../../../util'
+import { GTAG, REGEX_INTERVAL, REGEX_NUM, convertNumberField, numberWithExponential } from '../../../util'
 
 const NUMBER_FIELDS = ['repeat', 'repeatInterval']
 const BatchBody = ({ batch, configIndex, setConfigs }) => {
@@ -55,7 +55,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
             <Form.Group controlId='batch-repeat-interval'>
               <FormControl
                 name='repeatInterval'
-                ref={register({ pattern: REGEX_FLOAT })}
+                ref={register({ pattern: REGEX_INTERVAL })}
                 isInvalid={!!errors.repeatInterval}
                 placeholder='0'
                 aria-label='0'

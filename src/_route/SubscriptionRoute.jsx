@@ -1,12 +1,13 @@
+/* eslint-disable no-nested-ternary */
 import React, { useContext } from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { AuthContext, SubscribeContext } from '../_providers'
+
 const SubscriptionRoute = ({ component: Component, ...rest }) => {
   const user = useContext(AuthContext)
   const subscription = useContext(SubscribeContext)
-  console.log('user', user)
-  console.log('subscription', subscription)
+
   return (
     <Route
       {...rest}
@@ -25,7 +26,7 @@ const SubscriptionRoute = ({ component: Component, ...rest }) => {
   )
 }
 SubscriptionRoute.propTypes = {
-  component: PropTypes.any,
-  location: PropTypes.any
+  component: PropTypes.element.isRequired,
+  location: PropTypes.shape({}).isRequired
 }
 export default SubscriptionRoute

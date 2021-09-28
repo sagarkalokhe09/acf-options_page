@@ -5,7 +5,7 @@ import { Button, Dropdown, Form, Table } from 'react-bootstrap'
 import { defaultAction } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
 import { EditableCell } from './editable-cell'
-import { CaretDown, CaretUp, GTAG, REGEX_FLOAT, REGEX_NUM, ThreeDots, numberWithExponential } from '../../../util'
+import { CaretDown, CaretUp, GTAG, REGEX_INTERVAL, REGEX_NUM, ThreeDots, numberWithExponential } from '../../../util'
 import { AddonModal, ConfirmModal } from '../../../modal'
 import { ElementFinderPopover, ValuePopover } from '../../../popover'
 import { DropdownToggle } from '../../../components'
@@ -46,7 +46,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
         accessor: 'initWait',
         dataType: 'number',
         list: 'interval',
-        pattern: REGEX_FLOAT
+        pattern: REGEX_INTERVAL
       },
       {
         Header: t('action.name'),
@@ -78,7 +78,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
         accessor: 'repeatInterval',
         dataType: 'number',
         list: 'interval',
-        pattern: REGEX_FLOAT
+        pattern: REGEX_INTERVAL
       }
     ],
     [t]
