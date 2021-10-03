@@ -1,0 +1,73 @@
+button:not(.btn):not(.close) {
+  border: none;
+  color: var(--button-color);
+  background: transparent;
+  padding: 10px;
+  width: 44px;
+  height: 44px;
+  line-height: 1;
+  border-radius: 50%;
+  &:hover {
+    color: var(--button-hover-color);
+    background: var(--button-bg-hover-color);
+  }
+  &:focus {
+    color: var(--button-hover-color);
+    background: var(--button-bg-focus-color);
+  }
+  &:active {
+    color: var(--button-hover-color);
+    background: var(--button-bg-active-color);
+  }
+}
+
+@function lightness($color, $lightnessMultiplier) {
+  $color: str-replace($color, 'var(');
+  $color: str-replace($color, ')');
+  $color-h: var(#{$color + '-h'});
+  $color-s: var(#{$color + '-s'});
+  $color-l: var(#{$color + '-l'});
+  @return hsl($color-h, $color-s, calc(#{$color-l} * #{$lightnessMultiplier}));
+}
+
+$buttons: (
+  'primary': #1a73e8
+);
+@each $button, $color in $buttons {
+  button.btn.btn-outline-#{$button} {
+    &:not(disabled),
+    &:not(.disabled) {
+      color: var(--button-#{$button}-color);
+      border-color: var(--button-#{$button}-color);
+      outline-color: var(--button-#{$button}-border-color);
+      box-shadow: var(----box-shadow);
+      background: transparent;
+      &:hover {
+        background: rgba($color, 0.1);
+        color: var(--button-#{$button}-focus-color);
+        border-color: var(--button-#{$button}-color);
+      }
+      &:focus {
+        background: rgba($color, 0.12);
+        color: var(--button-#{$button}-focus-color);
+        border-color: var(--button-#{$button}-focus-color);
+      }
+      &:active {
+        background: rgba($color, 0.1);
+        border-color: var(--button-#{$button}-color);
+        color: var(--button-#{$button}-focus-color);
+        box-shadow: var(----box-shadow);
+      }
+    }
+    &.disabled,
+    &.disabled:hover,
+    &:disabled,
+    &:disabled:hover {
+      opacity: 1;
+      background: transparent;
+      box-shadow: var(----box-shadow);
+      border-color: var(--button-#{$button}-disabled-border-color);
+      color: var(--button-#{$button}-color);
+    }
+  }
+}

@@ -4,23 +4,30 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@dhruv-techapps/acf-common": "^3.1.2",
-    "@dhruv-techapps/core-common": "^3.0.0",
+    "@dhruv-techapps/acf-common": "^3.1.4",
+    "@dhruv-techapps/core-common": "^3.0.5",
     "@dhruv-techapps/core-components": "^3.0.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^4.6.0",
-    "bootstrap-icons": "^1.3.0",
+    "bootstrap-icons": "^1.5.0",
     "env-cmd": "^10.1.0",
-    "firebase": "^8.2.7",
+    "firebase": "^8.9.1",
+    "history": "^5.0.1",
+    "i18next": "^20.4.0",
+    "i18next-http-backend": "^1.3.0",
+    "prop-types": "^15.7.2",
     "react": "^16.14.0",
-    "react-bootstrap": "^1.4.3",
+    "react-bootstrap": "^1.6.1",
     "react-dom": "^16.14.0",
-    "react-hook-form": "^6.15.1",
+    "react-hook-form": "^6.15.8",
+    "react-i18next": "^11.11.4",
     "react-reorder": "^3.0.0-alpha.7",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "react-table": "^7.6.3"
+    "react-table": "^7.7.0",
+    "sitemap": "^7.0.0"
   },
   "scripts": {
     "start": "env-cmd -f .env.localhost react-scripts start",
@@ -30,10 +37,13 @@
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:beta": "env-cmd -f .env.beta react-scripts build",
     "build:stable": "react-scripts build",
-    "deploy:dev": "npm run build:dev && aws s3 sync build/. s3://dev.getautoclicker.com/ --exclude=\"*.svg\" --exclude=\"*.json\" --exclude=\"*.txt\" --exclude=\"firebase-messaging-sw.js/*\" ",
-    "deploy:beta": "npm run build:beta && aws s3 sync build/. s3://beta.getautoclicker.com/ --delete --size-only",
-    "deploy:stable": "npm run build:stable && aws s3 sync build/. s3://stable.getautoclicker.com/ --delete ",
-    "lint": "eslint --cache --format codeframe --ext mjs,jsx,js src"
+    "lint": "eslint --cache --format codeframe --ext jsx,js,json src --fix",
+    "sitemap:dev": "node sitemap-generator.js https://dev.getautoclicker.com/",
+    "sitemap:beta": "node sitemap-generator.js https://beta.getautoclicker.com/",
+    "sitemap:stable": "node sitemap-generator.js https://stable.getautoclicker.com/",
+    "deploy:dev": "npm run sitemap:dev && npm run build:dev && aws s3 sync build/. s3://dev.getautoclicker.com/ --delete ",
+    "deploy:beta": "npm run sitemap:beta && npm run build:beta && aws s3 sync build/. s3://beta.getautoclicker.com/ --delete ",
+    "deploy:stable": "npm run sitemap:stable && npm run build:stable && aws s3 sync build/. s3://stable.getautoclicker.com/ --delete "
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -51,13 +61,17 @@
     ]
   },
   "devDependencies": {
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.0",
+    "eslint-plugin-json": "^2.1.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.3.1",
-    "eslint-plugin-react": "^7.22.0",
-    "eslint-plugin-standard": "^4.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "node-sass": "^4.14.1",
-    "prop-types": "^15.7.2"
+    "prettier": "^2.3.2"
   }
 }

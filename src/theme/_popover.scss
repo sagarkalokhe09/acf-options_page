@@ -1,0 +1,13 @@
+.popover {
+  background: var(--popover-bg-color);
+  box-shadow: var(--box-shadow);
+  border-color: var(--border-color);
+  &-body {
+    color: var(--color);
+  }
+  &-header {
+    border-color: var(--border-color);
+    background: var(--popover-bg-color);
+    color: var(--color);
+  }
+}

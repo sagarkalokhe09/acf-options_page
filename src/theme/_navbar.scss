@@ -1,0 +1,22 @@
+.nav-tabs {
+  border-bottom: none;
+  .nav-link {
+    border-bottom: 3px solid transparent;
+    &.active {
+      background-color: var(--background-color);
+      border: none;
+      color: var(--primary);
+      border-bottom: 3px solid var(--primary);
+    }
+    &:hover {
+      border: none;
+      border-bottom: 3px solid var(--primary);
+    }
+  }
+}
+.tab-content {
+  box-shadow: inset 0 5px 5px -6px #fff;
+}
+.navbar .dropdown-menu {
+  z-index: 1021;
+}

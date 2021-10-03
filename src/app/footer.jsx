@@ -1,58 +1,199 @@
 import React from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import PropTypes from 'prop-types'
-import GTAG from './gtag'
 import { BROWSER } from '@dhruv-techapps/core-common'
+import { useTranslation } from 'react-i18next'
+import { GTAG } from '../util'
 
 const Footer = ({ version }) => {
-  return <Container>
-    <footer className="pt-4 my-md-5 pt-md-5 border-top">
-      <Row>
-        <Col md xs={12}>
-          <img
-            src={`chrome-extension://${process.env[`REACT_APP_${BROWSER}_EXTENSION_ID`]}/assets/icons/icon48.png`}
-            width='48'
-            height='48'
-            className='d-inline-block align-top mr-2'
-            alt='Auto click Auto Fill logo'
-            onError={(e) => (e.currentTarget.src = 'https://getautoclicker.com/favicons/favicon48.png')}
-          />
-          <div className="d-inline-flex flex-column justify-content-center" style={{ height: '48px' }}>
-            {process.env.REACT_APP_NAME}
-            <small className={process.env.REACT_APP_VARIANT}>{process.env.REACT_APP_VARIANT}</small>
-          </div>
-          <small className="d-block my-2 text-muted">© 2017 - 2021</small>
-          <small className="d-block text-muted">v{version}</small>
-        </Col>
-        <Col md xs={6}>
-          <h5>Resources</h5>
-          <ul className="list-unstyled text-small">
-            <li><a className="text-muted" target='_blank' rel="noopener noreferrer" href={process.env.REACT_APP_DOCS + 'getting-started'} onClick={() => { GTAG.event({ category: 'Footer', action: 'Click', label: 'Docs' }) }}>Docs</a></li>
-            <li><a className="text-muted" target='_blank' rel="noopener noreferrer" href={process.env.REACT_APP_BLOG} onClick={() => { GTAG.event({ category: 'Footer', action: 'Click', label: 'Blog' }) }}>Blog</a></li>
-            <li><a className="text-muted" target='_blank' rel="noopener noreferrer" href={process.env.REACT_APP_EXAMPLES} onClick={() => { GTAG.event({ category: 'Footer', action: 'Click', label: 'Examples' }) }}>Examples</a></li>
-            <li><a className="text-muted" target='_blank' rel="noopener noreferrer" href={process.env.REACT_APP_ISSUES} onClick={() => { GTAG.event({ category: 'Footer', action: 'Click', label: 'Issues' }) }}>Issues</a></li>
-            <li><a className="text-muted" target='_blank' rel="noopener noreferrer" href={process.env.REACT_APP_TEST} onClick={() => { GTAG.event({ category: 'Footer', action: 'Click', label: 'Test' }) }}>Test</a></li>
-          </ul>
-        </Col>
-        <Col md xs={6}>
-          <h5>About</h5>
-          <ul className="list-unstyled text-small">
-            <li><a className="text-muted" target='_blank' rel="noopener noreferrer" href="mailto:dhruv.techapps@gmail.com" onClick={() => { GTAG.event({ category: 'Footer', action: 'Click', label: 'Mail' }) }}>Contact</a></li>
-            <li><a className="text-muted" target='_blank' rel="noopener noreferrer" href={process.env.REACT_APP_DISCORD} onClick={() => { GTAG.event({ category: 'Footer', action: 'Click', label: 'Chat' }) }}>Chat</a></li>
-            <li><a className="text-muted" target='_blank' rel="noopener noreferrer" href="https://dhruv-techapps.github.io/policy" onClick={() => { GTAG.event({ category: 'Footer', action: 'Click', label: 'Privacy' }) }}>Privacy</a></li>
-          </ul>
-        </Col>
-        <Col md xs={6}>
-          <h5>Social</h5>
-          <ul className="list-unstyled text-small">
-            <li><a className="text-muted" target='_blank' rel="noopener noreferrer" href={process.env.REACT_APP_DISCORD} onClick={() => { GTAG.event({ category: 'Footer', action: 'Click', label: 'Discord' }) }}>Discord</a></li>
-            <li><a className="text-muted" target='_blank' rel="noopener noreferrer" href={process.env.REACT_APP_TWITTER} onClick={() => { GTAG.event({ category: 'Footer', action: 'Click', label: 'Twitter' }) }}>Twitter</a></li>
-            <li><a className="text-muted" target='_blank' rel="noopener noreferrer" href={process.env.REACT_APP_GITHUB} onClick={() => { GTAG.event({ category: 'Footer', action: 'Click', label: 'Github' }) }}>Github</a></li>
-          </ul>
-        </Col>
-      </Row>
+  const { t } = useTranslation()
+
+  return (
+    <footer className='pt-4 mt-md-5 pt-md-5 border-top'>
+      <Container>
+        <Row>
+          <Col md xs={12}>
+            <img
+              src={`chrome-extension://${process.env[`REACT_APP_${BROWSER}_EXTENSION_ID`]}/assets/icons/icon48.png`}
+              width='48'
+              height='48'
+              className='d-inline-block align-top mr-2'
+              alt='Auto click Auto Fill logo'
+              title='Auto click Auto Fill logo'
+              onError={e => {
+                e.currentTarget.src = 'https://getautoclicker.com/favicons/favicon48.png'
+              }}
+            />
+            <div className='d-inline-flex flex-column justify-content-center' style={{ height: '48px' }}>
+              {process.env.REACT_APP_NAME}
+              <small className={process.env.REACT_APP_VARIANT}>{process.env.REACT_APP_VARIANT}</small>
+            </div>
+            <small className='d-block my-2 text-muted'>© 2017 - 2021</small>
+            <small className='d-block text-muted'>v{version}</small>
+          </Col>
+          <Col md xs={6}>
+            <h5>{t('footer.resources')}</h5>
+            <ul className='list-unstyled text-small'>
+              <li>
+                <a
+                  className='text-muted'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  title='docs'
+                  href={`${process.env.REACT_APP_DOCS}getting-started`}
+                  onClick={() => {
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Docs' })
+                  }}>
+                  {t('footer.docs')}
+                </a>
+              </li>
+              <li>
+                <a
+                  className='text-muted'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  href={process.env.REACT_APP_BLOG}
+                  title='blog'
+                  onClick={() => {
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Blog' })
+                  }}>
+                  {t('footer.blog')}
+                </a>
+              </li>
+              <li>
+                <a
+                  className='text-muted'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  title='examples'
+                  href={process.env.REACT_APP_EXAMPLES}
+                  onClick={() => {
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Examples' })
+                  }}>
+                  {t('footer.examples')}
+                </a>
+              </li>
+              <li>
+                <a
+                  className='text-muted'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  title='issues'
+                  href={process.env.REACT_APP_ISSUES}
+                  onClick={() => {
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Issues' })
+                  }}>
+                  {t('footer.issues')}
+                </a>
+              </li>
+              <li>
+                <a
+                  className='text-muted'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  title='test'
+                  href={process.env.REACT_APP_TEST}
+                  onClick={() => {
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Test' })
+                  }}>
+                  {t('footer.test')}
+                </a>
+              </li>
+            </ul>
+          </Col>
+          <Col md xs={6}>
+            <h5>{t('footer.about')}</h5>
+            <ul className='list-unstyled text-small'>
+              <li>
+                <a
+                  className='text-muted'
+                  target='_blank'
+                  author='Dhruv Techapps'
+                  rel='noopener noreferrer'
+                  title='contact'
+                  href='mailto:dhruv.techapps@gmail.com'
+                  onClick={() => {
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Mail' })
+                  }}>
+                  {t('footer.contact')}
+                </a>
+              </li>
+              <li>
+                <a
+                  className='text-muted'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  title='chat'
+                  href={process.env.REACT_APP_DISCORD}
+                  onClick={() => {
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Chat' })
+                  }}>
+                  {t('footer.chat')}
+                </a>
+              </li>
+              <li>
+                <a
+                  className='text-muted'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  title='privacy'
+                  href='https://dhruv-techapps.github.io/policy'
+                  onClick={() => {
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Privacy' })
+                  }}>
+                  {t('footer.privacy')}
+                </a>
+              </li>
+            </ul>
+          </Col>
+          <Col md xs={6}>
+            <h5>{t('footer.social')}</h5>
+            <ul className='list-unstyled text-small'>
+              <li>
+                <a
+                  className='text-muted'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  href={process.env.REACT_APP_DISCORD}
+                  title='discord'
+                  onClick={() => {
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Discord' })
+                  }}>
+                  {t('footer.discord')}
+                </a>
+              </li>
+              <li>
+                <a
+                  className='text-muted'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  title='twitter'
+                  href={process.env.REACT_APP_TWITTER}
+                  onClick={() => {
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Twitter' })
+                  }}>
+                  {t('footer.twitter')}
+                </a>
+              </li>
+              <li>
+                <a
+                  className='text-muted'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  title='github'
+                  href={process.env.REACT_APP_GITHUB}
+                  onClick={() => {
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Github' })
+                  }}>
+                  {t('footer.github')}
+                </a>
+              </li>
+            </ul>
+          </Col>
+        </Row>
+      </Container>
     </footer>
-  </Container>
+  )
 }
 Footer.propTypes = {
   version: PropTypes.string.isRequired

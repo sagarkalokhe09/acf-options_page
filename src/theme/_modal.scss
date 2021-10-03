@@ -1,0 +1,74 @@
+.modal {
+  &-content {
+    background: var(--modal-bg-color);
+    color: var(--color);
+    .form-group label,
+    input,
+    select {
+      background: var(--modal-bg-color);
+      &:focus,
+      &:active {
+        background: var(--modal-bg-color);
+      }
+    }
+  }
+  &-title {
+    color: var(--color);
+    font-size: 16px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &-header {
+    padding: 12px;
+    border-bottom-color: var(--border-color);
+    button.close {
+      opacity: 1;
+      padding: 0;
+      margin: 0;
+      border-radius: 50%;
+      font-weight: 300;
+      width: 40px;
+      height: 40px;
+      font-size: 36px;
+      color: var(--button-color);
+      background: transparent;
+      text-shadow: none;
+      &:hover {
+        opacity: 1;
+        color: var(--button-hover-color);
+        background: var(--button-bg-hover-color);
+      }
+      &:focus {
+        opacity: 1;
+        color: var(--button-hover-color);
+        background: var(--button-bg-focus-color);
+      }
+      &:active {
+        opacity: 1;
+        color: var(--button-hover-color);
+        background: var(--button-bg-active-color);
+      }
+      span {
+        line-height: 0;
+        display: block;
+      }
+    }
+  }
+  &-footer {
+    border-top-color: var(--border-color);
+  }
+  & #ads-blocker {
+    min-width: 550px;
+    li {
+      margin: 2px 0;
+    }
+    .btn.btn-link {
+      padding: 0;
+    }
+    .tab-content {
+      min-height: 310px;
+    }
+  }
+}
