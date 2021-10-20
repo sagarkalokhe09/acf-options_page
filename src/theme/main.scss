@@ -1,72 +1,81 @@
-@import "~bootstrap/scss/bootstrap";
+/*!
+ * Bootstrap v5.1.2 (https://getbootstrap.com/)
+ * Copyright 2011-2021 The Bootstrap Authors
+ * Copyright 2011-2021 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ */
 
+// scss-docs-start import-stack
+// Configuration
+@import '~bootstrap/scss/functions';
+@import 'variables';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/utilities';
 
-// Default variable overrides
-$body-bg: #000;
-$body-color: #111;
+// Layout & components
+@import '~bootstrap/scss/root';
+@import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/type';
+@import '~bootstrap/scss/containers';
+@import '~bootstrap/scss/grid';
+@import '~bootstrap/scss/tables';
+@import '~bootstrap/scss/forms';
+@import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/transitions';
+@import '~bootstrap/scss/dropdown';
+@import '~bootstrap/scss/button-group';
+@import '~bootstrap/scss/nav';
+@import '~bootstrap/scss/navbar';
+@import '~bootstrap/scss/card';
+@import '~bootstrap/scss/accordion';
+@import '~bootstrap/scss/badge';
+@import '~bootstrap/scss/alert';
+@import '~bootstrap/scss/list-group';
+@import '~bootstrap/scss/close';
+@import '~bootstrap/scss/toasts';
+@import '~bootstrap/scss/modal';
+@import '~bootstrap/scss/tooltip';
+@import '~bootstrap/scss/popover';
+@import '~bootstrap/scss/spinners';
+@import '~bootstrap/scss/placeholders';
 
-// Required
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
-@import "~bootstrap/scss/root";
+// Helpers
+@import '~bootstrap/scss/helpers';
 
-// Optional Bootstrap components here
-@import "~bootstrap/scss/reboot";
-@import "~bootstrap/scss/type";
-// etc
+// Utilities
+@import '~bootstrap/scss/utilities/api';
+// scss-docs-end import-stack
 
-@import './reset';
-@import './color';
-@import './header';
-@import './configs';
-/*
-@import './action-table';
-@import './button';
-@import './card';
-@import './footer';
+@import 'configs';
+@import 'input';
+@import 'header';
+@import 'action';
+@import 'toast';
+@import 'dropdown';
+@import 'popover';
+@import 'dark';
 
-@import './input';
-@import './modal';
-@import './popover';
-@import './reorder-configs.modal';
-@import './switch';
-@import './table';
-@import './dropdown';
-@import './navbar';
-@import './badge';
-@import './toast-handler';
-@import './list';
-*/
+.btn{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
-body {
+.sticky-top {
+  z-index: 999;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
   margin: 0;
-  padding: 0;
-  border: 0;
-  font-family: 'Open Sans', sans-serif;
-  background-color: var(--background-color);
-  color: var(--color);
 }
-
-.container-fluid {
-  max-width: 1440px;
+input::-webkit-calendar-picker-indicator {
+  -webkit-appearance: none;
+  opacity: 0;
+  display: none;
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
-svg {
-  cursor: pointer;
-}
-
-.popover {
-  max-width: 100%;
-}
-
-.dropdown-toggle::after {
-  content: '';
-}
-
-main {
-  position: relative;
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
 }

@@ -1,0 +1,11 @@
+.toast-header {
+  color: $white;
+  background-color: #323232;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  font-size: 1rem;
+  .btn-close {
+    background: transparent escape-svg($btn-close-bg-light) center / $btn-close-width auto no-repeat;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Logger, StorageService } from '@dhruv-techapps/core-common'
+import { Logger } from '@dhruv-techapps/core-common'
+import { StorageService } from '@dhruv-techapps/core-services'
 import { useHistory } from 'react-router-dom'
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { auth } from '../firebase'

@@ -13,21 +13,21 @@ export const ValueExtractorPopover = () => {
       rootClose
       overlay={
         <Popover id='popover-basic'>
-          <Popover.Title>{t('common.examples')}</Popover.Title>
+          <Popover.Header>{t('common.examples')}</Popover.Header>
           <Popover.Body>
             <ul>
               <li>
-                <code>\d+.\d*</code> float number extract $<span className='text-success'>123.00</span> only
+                <code>\d+.\d*</code> float number extract $<span className='text-primary'>123.00</span> only
               </li>
               <li>
-                <code>\d+</code> number extract $<span className='text-success'>123</span>.00 only
+                <code>\d+</code> number extract $<span className='text-primary'>123</span>.00 only
               </li>
               <li>supports regex pattern</li>
             </ul>
           </Popover.Body>
         </Popover>
       }>
-      <InfoCircle className='ml-2 text-info' />
+      <InfoCircle className='ms-2 text-muted' />
     </OverlayTrigger>
   )
 }

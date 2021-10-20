@@ -4,8 +4,10 @@ import { Alert } from 'react-bootstrap'
 
 export const ErrorAlert = ({ heading = 'Error', message }) => (
   <Alert variant='danger'>
-    <Alert.Heading>{heading}</Alert.Heading>
-    <p>{JSON.stringify(message)}</p>
+    <p className='m-0'>
+      <strong className='me-2'>{heading}</strong>
+      {message.message ? message.message : JSON.stringify(message)}
+    </p>
     {/* <Alert.Link href="http://google.com">View more information</Alert.Link> */}
   </Alert>
 )

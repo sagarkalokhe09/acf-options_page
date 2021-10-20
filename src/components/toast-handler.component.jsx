@@ -22,8 +22,8 @@ export const ToastHandler = forwardRef((props, ref) => {
   }))
 
   return (
-    <div className='toast-handler'>
-      {list.map(({ body, header, toastClass, bodyClass, headerClass, delay = 5000, autohide = true, show = true, onClose }, index) => (
+    <div className='toast-container position-fixed bottom-0 start-0 p-3'>
+      {list.map(({ body, toastClass, bodyClass, delay = 5000, autohide = true, show = true, onClose }, index) => (
         <Toast
           key={index}
           onClose={() => {
@@ -34,10 +34,7 @@ export const ToastHandler = forwardRef((props, ref) => {
           delay={delay}
           className={toastClass}
           autohide={autohide}>
-          <Toast.Header className={headerClass}>
-            <strong className='mr-auto'>{header}</strong>
-          </Toast.Header>
-          <Toast.Body className={bodyClass}>{body}</Toast.Body>
+          <Toast.Header className={bodyClass}>{body}</Toast.Header>
         </Toast>
       ))}
     </div>

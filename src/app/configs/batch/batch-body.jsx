@@ -3,9 +3,8 @@ import PropTypes from 'prop-types'
 import { Button, Card, Col, Form, FormControl, Row } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { GTAG, REGEX_FLOAT, REGEX_NUM, convertNumberField, numberWithExponential } from '../../../util'
+import { GTAG, convertNumberField, numberWithExponential, REGEX_NUM, REGEX_INTERVAL } from '../../../util'
 
-const NUMBER_FIELDS = ['repeat', 'repeatInterval']
 const BatchBody = ({ batch, configIndex, setConfigs }) => {
   const { t } = useTranslation()
   const {
@@ -25,7 +24,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
   }, [batch, reset])
 
   const onSubmit = data => {
-    convertNumberField(data, NUMBER_FIELDS)
+    convertNumberField(data)
     reset(data)
     setConfigs(configs =>
       configs.map((config, index) => {
@@ -45,7 +44,17 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
         <Row>
           <Col md='6' sm='12'>
             <Form.Group controlId='batch-repeat'>
-              <FormControl {...register('repeat', { pattern: REGEX_NUM })} isInvalid={!!errors.repeat} placeholder='0' aria-label='0' aria-describedby='batch-repeat' list='repeat' />
+              <FormControl
+                {...register('repeat', { pattern: REGEX_NUM })}
+                type='number'
+                pattern={REGEX_NUM}
+                isInvalid={!!errors.repeat}
+                autoComplete='off'
+                placeholder='0'
+                aria-label='0'
+                aria-describedby='batch-repeat'
+                list='repeat'
+              />
               <Form.Label>{t('batch.repeat')}</Form.Label>
               <Form.Control.Feedback type='invalid'>{errors.repeat && t('error.repeat')}</Form.Control.Feedback>
             </Form.Group>
@@ -53,7 +62,8 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
           <Col md='6' sm='12'>
             <Form.Group controlId='batch-repeat-interval'>
               <FormControl
-                {...register('repeatInterval', { pattern: REGEX_FLOAT })}
+                {...register('repeatInterval', { pattern: REGEX_INTERVAL })}
+                autoComplete='off'
                 isInvalid={!!errors.repeatInterval}
                 placeholder='0'
                 aria-label='0'
@@ -61,7 +71,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
                 aria-describedby='batch-repeat-interval'
               />
               <Form.Label>
-                {t('batch.repeatInterval')}&nbsp;<small className='text-info'>({t('common.sec')})</small>
+                {t('batch.repeatInterval')}&nbsp;<small className='text-muted'>({t('common.sec')})</small>
               </Form.Label>
               <Form.Control.Feedback type='invalid'>{errors.repeatInterval && t('error.interval')}</Form.Control.Feedback>
             </Form.Group>
@@ -69,7 +79,7 @@ const BatchBody = ({ batch, configIndex, setConfigs }) => {
         </Row>
         {isDirty && (
           <div className='d-flex justify-content-end mt-2'>
-            <Button type='submit' variant='outline-primary' disabled={!isValid}>
+            <Button type='submit' variant='primary px-5' disabled={!isValid}>
               {t('common.save')}
             </Button>
           </div>

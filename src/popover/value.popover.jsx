@@ -132,6 +132,6 @@ export const ValuePopover = () => (
         </Popover.Body>
       </Popover>
     }>
-    <InfoCircle className='ml-2 text-info' />
+    <InfoCircle className='ms-2 text-muted' />
   </OverlayTrigger>
 )

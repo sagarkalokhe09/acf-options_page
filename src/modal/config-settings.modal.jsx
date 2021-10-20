@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
 import { LOAD_TYPES, START_TYPES, defaultConfig } from '@dhruv-techapps/acf-common'
 import { Trans, useTranslation } from 'react-i18next'
-import { GTAG } from '../util'
+import { clearEmptyField, GTAG } from '../util'
 import { HotkeyPopover } from '../popover'
 
 const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
@@ -25,16 +25,11 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const [show, setShow] = useState(false)
 
   const onSubmit = data => {
-    const requestData = {}
-    Object.keys(data).forEach(prop => {
-      if (data[prop]) {
-        requestData[prop] = data[prop]
-      }
-    })
+    clearEmptyField(data)
     setConfigs(configs =>
       configs.map((config, index) => {
         if (index === configIndex) {
-          return { ...config, ...requestData }
+          return { ...config, ...data }
         }
         return config
       })
@@ -78,7 +73,7 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
     <Modal show={show} size='lg' onHide={handleClose}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Header closeButton>
-          <Modal.Title>{t('modal.configSettings.title')}</Modal.Title>
+          <Modal.Title as='h6'>{t('modal.configSettings.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Card className='mb-2'>
@@ -137,7 +132,7 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
           </Card>
         </Modal.Body>
         <Modal.Footer>
-          <Button type='submit' disabled={!isValid || !isDirty} variant='outline-primary'>
+          <Button type='submit' disabled={!isValid || !isDirty} variant='primary px-5'>
             {t('common.save')}
           </Button>
         </Modal.Footer>

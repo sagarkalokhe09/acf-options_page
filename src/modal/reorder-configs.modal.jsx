@@ -1,8 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
-import { Alert, Badge, Button, Form, ListGroup, Modal } from 'react-bootstrap'
+import { Badge, Button, Form, ListGroup, Modal } from 'react-bootstrap'
 import Reorder, { reorder } from 'react-reorder'
-import { StorageService } from '@dhruv-techapps/core-common'
-import { Loading } from '@dhruv-techapps/core-components'
+import { StorageService } from '@dhruv-techapps/core-services'
 import { useTranslation } from 'react-i18next'
 import { LOCAL_STORAGE_KEY, defaultConfig } from '@dhruv-techapps/acf-common'
 import { ErrorAlert } from '../components'
@@ -12,7 +11,6 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
   const [configs, setConfigs] = useState([])
   const [error, setError] = useState()
   const [show, setShow] = useState(false)
-  const [loading, setLoading] = useState(true)
   const { t } = useTranslation()
   const onSubmit = () => {
     StorageService.setItem(LOCAL_STORAGE_KEY.CONFIGS, configs)
@@ -20,7 +18,6 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
         setShow(false)
       })
       .catch(setError)
-      .finally(() => setLoading(false))
     GTAG.event({ category: 'Reorder-Configurations', action: 'Click', label: 'Save' })
   }
 
@@ -39,7 +36,6 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
           )
         })
         .catch(setError)
-        .finally(() => setLoading(false))
       GTAG.modalview({ title: 'Reorder Configurations', url: window.location.href, path: '/configurations/reorder' })
       setShow(true)
     }
@@ -58,35 +54,28 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
     <Modal show={show} size='lg' onHide={handleClose} scrollable>
       <Form onSubmit={onSubmit}>
         <Modal.Header>
-          <Modal.Title>{t('modal.reorder.title')}</Modal.Title>
+          <Modal.Title as='h6'>{t('modal.reorder.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ overflow: 'auto', height: 'calc(100vh - 200px)' }}>
-          {loading ? (
-            <Loading className='d-flex justify-content-center m-5' />
-          ) : (
-            <>
-              {error && <ErrorAlert message={error} />}
-              <Alert variant='warning'>{t('modal.reorder.hint')}</Alert>
-              <Reorder reorderId='configurations' draggedClassName='active' placeholderClassName='list-group-item-secondary' onReorder={onReorder} component={ListGroup}>
-                {configs.map((config, index) => (
-                  <ListGroup.Item key={index}>
-                    {config.name}
-                    {!config.enable && (
-                      <Badge pill variant='danger'>
-                        {t('common.disabled')}
-                      </Badge>
-                    )}
-                  </ListGroup.Item>
-                ))}
-              </Reorder>
-            </>
-          )}
+          {error ? <ErrorAlert message={error} /> : <p className='text-muted'>{t('modal.reorder.hint')}</p>}
+          <Reorder reorderId='configurations' draggedClassName='active' placeholderClassName='list-group-item-secondary' onReorder={onReorder} component={ListGroup}>
+            {configs.map((config, index) => (
+              <ListGroup.Item key={index}>
+                {config.name}
+                {!config.enable && (
+                  <Badge pill bg='secondary' className='ms-2'>
+                    {t('common.disabled')}
+                  </Badge>
+                )}
+              </ListGroup.Item>
+            ))}
+          </Reorder>
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>
-          <Button type='button' variant='outline-secondary' onClick={handleClose}>
+          <Button type='button' variant='outline-primary px-5' onClick={handleClose}>
             {t('common.close')}
           </Button>
-          <Button type='submit' variant='outline-primary' className='ml-3'>
+          <Button type='submit' variant='primary px-5' className='ml-3'>
             {t('common.save')}
           </Button>
         </Modal.Footer>

@@ -1,22 +1,5 @@
 header {
-  border-bottom: 1px solid var(--border-color);
-  nav.navbar {
-    margin: 0 0 0 60px;
-    padding: 0;
-  }
-  .navbar-light .navbar-brand h1 {
-    font-size: 22px;
-    font-weight: 500;
-    color: var(--header-color);
-    display: inline-block;
-    line-height: 1.5;
-    margin: 0 0 0 10px;
-  }
-  .dropdown > a {
-    line-height: 2;
-  }
-  #language-nav-dropdown,
-  div[aria-labelledby='language-nav-dropdown'] {
-    text-transform: uppercase;
+  .nav-link:hover {
+    background-color: rgba(32, 33, 36, 0.04);
   }
 }

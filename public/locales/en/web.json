@@ -181,7 +181,7 @@
     "repeat": "Only valid numbers are allowed",
     "interval": "Only valid numbers are allowed",
     "url": "URL is required",
-    "intiWait": "Only valid numbers are allowed",
+    "initWait": "Only valid numbers are allowed",
     "startTime": "Start time should match HH:mm:ss:fff (12:12:12:000) format",
     "json": "Selected Json is not valid",
     "hotKey": "Single letter without {{key}} is not valid",
@@ -230,6 +230,8 @@
     "dev": "DEV",
     "stable": "STABLE",
     "examples": "Examples",
+    "disabled": "Disabled",
+    "clickHere": "Click Here",
     "translate": ""
   },
   "language": {

@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
-import { Badge, Button, Modal } from 'react-bootstrap'
+import { Button, Modal } from 'react-bootstrap'
 import { BROWSER } from '@dhruv-techapps/core-common'
 import { Trans, useTranslation } from 'react-i18next'
 
@@ -28,21 +28,19 @@ const ExtensionNotFoundModel = forwardRef((_, ref) => {
 
   return (
     <Modal show={show} centered backdrop='static' keyboard={false}>
-      <Modal.Header>
-        <Modal.Title>{t('modal.extensionNotFound.title')}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className='mx-auto text-center'>
-        <p>
-          <Trans i18nKey='modal.extensionNotFound.subTitle' components={{ b: <b />, Badge: <Badge variant='danger' className='ml-2 font-weight-light' /> }} values={process.env} />
+      <Modal.Body className='p-4 text-center'>
+        <h5>{t('modal.extensionNotFound.title')}</h5>
+        <p className='mb-0'>
+          <Trans i18nKey='modal.extensionNotFound.subTitle' components={{ b: <span className='text-primary' />, Badge: <span className='text-primary' /> }} values={process.env} />.
+          {t('modal.extensionNotFound.hint')}
         </p>
-        <p>{t('modal.extensionNotFound.hint')}</p>
       </Modal.Body>
-      <Modal.Footer className='justify-content-between'>
-        <Button variant='outline-secondary' className='px-3' size='md' onClick={closeClick}>
+      <Modal.Footer className='flex-nowrap p-0'>
+        <Button variant='link' className='fs-6 text-decoration-none col-6 m-0 rounded-0 border-end' size='lg' onClick={closeClick}>
           {t('common.close')}
         </Button>
-        <Button variant='outline-primary' className='px-3' size='md' onClick={downloadClick}>
-          {t('common.download')}
+        <Button variant='link' className='fs-6 text-decoration-none col-6 m-0 rounded-0' size='lg' onClick={downloadClick}>
+          <strong>{t('common.download')}</strong>
         </Button>
       </Modal.Footer>
     </Modal>

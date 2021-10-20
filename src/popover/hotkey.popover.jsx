@@ -12,7 +12,7 @@ export const HotkeyPopover = () => {
       rootClose
       overlay={
         <Popover id='popover-basic'>
-          <Popover.Title>{t('popover.hotkey.title')}</Popover.Title>
+          <Popover.Header>{t('popover.hotkey.title')}</Popover.Header>
           <Popover.Body>
             <p>{t('popover.hotkey.content')}</p>
             <ul>
@@ -30,7 +30,7 @@ export const HotkeyPopover = () => {
           </Popover.Body>
         </Popover>
       }>
-      <InfoCircle className='ml-2 text-info' />
+      <InfoCircle className='ms-2 text-muted' />
     </OverlayTrigger>
   )
 }

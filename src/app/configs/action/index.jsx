@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Button, Card, Col, Dropdown, Row } from 'react-bootstrap'
 import { LocalStorage } from '@dhruv-techapps/core-common'
 import PropTypes from 'prop-types'
@@ -6,11 +6,13 @@ import { useTranslation } from 'react-i18next'
 import ActionTable from './action-table'
 import { DropdownToggle } from '../../../components'
 import { FilterRight, GTAG, numberWithExponential } from '../../../util'
+import { ThemeContext } from '../../../_providers/ThemeProvider'
 
 const HIDDEN_COLUMN_KEY = 'hiddenColumns'
 const defaultHiddenColumns = ['name', 'initWait', 'repeat', 'repeatInterval']
 
 const Action = props => {
+  const { theme } = useContext(ThemeContext)
   const { t } = useTranslation()
   const [hiddenColumns, setHiddenColumns] = useState(LocalStorage.getItem(HIDDEN_COLUMN_KEY, defaultHiddenColumns))
   const actionTableRef = useRef()
@@ -37,21 +39,19 @@ const Action = props => {
   }, [hiddenColumns])
 
   return (
-    <Card>
-      <Card.Header as='h2'>
+    <Card bg={theme} text={theme === 'light' ? 'dark' : 'white'}>
+      <Card.Header as='h6'>
         <Row>
-          <Col className='d-flex align-items-center'>
-            <small>{t('action.title')}</small>
-          </Col>
-          <Col md='auto' className='d-flex align-items-center'>
-            <Button variant='outline-success' onClick={addAction}>
+          <Col className='d-flex align-items-center'>{t('action.title')}</Col>
+          <Col xs='auto' className='d-flex align-items-center'>
+            <Button variant='outline-primary px-4' onClick={addAction}>
               {t('action.add')}
             </Button>
-            <Dropdown alignRight className='ml-2'>
+            <Dropdown className='ml-2'>
               <Dropdown.Toggle as={DropdownToggle} id='action-dropdown'>
                 <FilterRight width='28' height='28' />
               </Dropdown.Toggle>
-              <Dropdown.Menu>
+              <Dropdown.Menu variant={theme}>
                 <Dropdown.Item onClick={onColumnChange} data-column='name' active={hiddenColumns.indexOf('name') === -1}>
                   {t('action.name')}
                 </Dropdown.Item>

@@ -181,7 +181,7 @@
     "repeat": "Seuls les nombres valides sont autorisés",
     "interval": "Seuls les nombres valides sont autorisés",
     "url": "URL est requis",
-    "intiWait": "Seuls les nombres valides sont autorisés",
+    "initWait": "Seuls les nombres valides sont autorisés",
     "startTime": "Le temps de début devrait correspondre à HH: MM: SS: FFF (12: 12: 12: 12: 000)",
     "json": "JSON sélectionné n'est pas valide",
     "hotKey": "Une seule lettre sans {{key}} n'est pas valide",
