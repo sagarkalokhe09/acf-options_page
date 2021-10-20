@@ -104,7 +104,7 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                       list='retry'
                     />
                     <Form.Label>{t('modal.actionSettings.retry.title')}</Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.retry && t('modal.actionSettings.retry.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.retry && t('error.retry')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md={6} sm={12}>
@@ -120,7 +120,7 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                     <Form.Label>
                       {t('modal.actionSettings.retry.interval')}&nbsp;<small className='text-muted'>({t('common.sec')})</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.retryInterval && t('modal.actionSettings.retry.interval.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.retryInterval && t('error.interval')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col xs={12} className='mb-2'>

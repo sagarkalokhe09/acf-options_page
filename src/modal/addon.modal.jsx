@@ -91,12 +91,12 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                       aria-describedby='addon-element'
                       list='elementFinder'
                       {...register('elementFinder', { required: true })}
-                      isInvalid={!!errors.element}
+                      isInvalid={!!errors.elementFinder}
                     />
                     <Form.Label>
                       {t('modal.addon.elementFinder')} <small className='text-danger'>*</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.element && t('modal.addon.elementFinder.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.elementFinder && t('error.elementFinder')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md={6} sm={12}>
@@ -111,7 +111,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                     <Form.Label>
                       {t('modal.addon.condition')} <small className='text-danger'>*</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.condition && t('modal.addon.condition.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.condition && t('error.condition')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
@@ -130,7 +130,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                     <Form.Label>
                       {t('modal.addon.value')} <small className='text-danger'>*</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.value && t('modal.addon.value.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.value && t('error.value')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md={6} sm={12}>
@@ -147,7 +147,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                     />
                     <Form.Label>{t('modal.addon.valueExtractor')}</Form.Label>
                     <ValueExtractorPopover />
-                    <Form.Control.Feedback type='invalid'>{errors.valueExtractor && t('modal.addon.valueExtractor.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.valueExtractor && t('error.valueExtractor')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
@@ -166,7 +166,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                       list='retry'
                     />
                     <Form.Label>{t('modal.addon.recheck.title')}</Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.recheck && t('modal.addon.recheck.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.recheck && t('error.recheck')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md={6} sm={12}>
@@ -183,7 +183,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                     <Form.Label>
                       {t('modal.addon.recheck.interval')}&nbsp;<small>({t('common.sec')})</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.recheckInterval && t('modal.addon.recheck.intervalError')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.recheckInterval && t('error.interval')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col xs={12} className='mb-2'>

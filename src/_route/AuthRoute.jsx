@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { AuthContext } from '../_providers/AuthProvider'
+import { AuthContext } from '../_providers'
 
 const AuthRoute = ({ component: Component, ...rest }) => {
   const user = useContext(AuthContext)

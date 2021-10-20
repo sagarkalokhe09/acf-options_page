@@ -48,7 +48,6 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
         accessor: 'initWait',
         dataType: 'number',
         list: 'interval',
-        autoComplete: 'off',
         pattern: REGEX_INTERVAL
       },
       {
@@ -61,19 +60,16 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
         Header: t('action.elementFinder'),
         accessor: 'elementFinder',
         list: 'elementFinder',
-        autoComplete: 'off',
         required: true
       },
       {
         Header: t('action.value'),
         list: 'value',
-        autoComplete: 'off',
         accessor: 'value'
       },
       {
         Header: t('action.repeat'),
         style: { width: '100px' },
-        autoComplete: 'off',
         accessor: 'repeat',
         dataType: 'number',
         list: 'repeat',
@@ -82,7 +78,6 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
       {
         Header: t('action.repeatInterval'),
         style: { width: '100px' },
-        autoComplete: 'off',
         accessor: 'repeatInterval',
         dataType: 'number',
         list: 'interval',

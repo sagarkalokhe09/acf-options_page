@@ -109,7 +109,7 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                     />
                     <Form.Label>{t('modal.configSettings.hotkey')}</Form.Label>
                     <HotkeyPopover />
-                    <Form.Control.Feedback type='invalid'>{errors.hotkey && t('error.hotkey')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.hotkey && t('error.hotKey')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md={12} sm={12} hidden={startType === START_TYPES.MANUAL}>
