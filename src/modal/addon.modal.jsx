@@ -1,23 +1,20 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
-import { Alert, Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
+import { Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
 import { ADDON_CONDITIONS, RECHECK_OPTIONS, defaultAddon } from '@dhruv-techapps/acf-common'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { GTAG, REGEX_NUM, convertNumberField } from '../util'
+import { GTAG, REGEX_NUM, convertNumberField, REGEX_INTERVAL } from '../util'
 import { ValueExtractorPopover } from '../popover'
-
-const NUMBER_FIELDS = ['recheck', 'recheckInterval']
 
 const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const { t } = useTranslation()
   const {
     register,
     handleSubmit,
-    errors,
     reset,
-    formState: { isDirty, isValid }
+    formState: { errors, isDirty, isValid }
   } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
@@ -28,7 +25,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const actionIndex = useRef(-1)
 
   const onSubmit = data => {
-    convertNumberField(data, NUMBER_FIELDS)
+    convertNumberField(data)
     reset(data)
     setConfigs(configs =>
       configs.map((config, index) => {
@@ -78,34 +75,33 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
     <Modal show={show} size='lg' onHide={handleClose}>
       <Form onSubmit={handleSubmit(onSubmit)} onReset={onReset}>
         <Modal.Header closeButton>
-          <Modal.Title>{t('modal.addon.title')}</Modal.Title>
+          <Modal.Title as='h6'>{t('modal.addon.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Alert variant='info'>{t('modal.addon.info')}</Alert>
+          <p className='text-muted'>{t('modal.addon.info')}</p>
           <Card>
             <Card.Body>
-              <Row className='mb-2'>
-                <Col>
+              <Row className='mb-3'>
+                <Col md={6} sm={12}>
                   <Form.Group controlId='addon-element'>
                     <Form.Control
                       type='text'
                       placeholder='Element Finder'
                       aria-label='Element Finder'
                       aria-describedby='addon-element'
-                      name='elementFinder'
                       list='elementFinder'
-                      ref={register({ required: true })}
-                      isInvalid={!!errors.element}
+                      {...register('elementFinder', { required: true })}
+                      isInvalid={!!errors.elementFinder}
                     />
                     <Form.Label>
                       {t('modal.addon.elementFinder')} <small className='text-danger'>*</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.element && t('modal.addon.elementFinder.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.elementFinder && t('error.elementFinder')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-                <Col>
+                <Col md={6} sm={12}>
                   <Form.Group controlId='addon-condition'>
-                    <Form.Control as='select' aria-describedby='addon-condition' custom ref={register({ required: true })} isInvalid={!!errors.condition} name='condition'>
+                    <Form.Control as='select' aria-describedby='addon-condition' {...register('condition', { required: true })} isInvalid={!!errors.condition}>
                       {Object.entries(ADDON_CONDITIONS).map((condition, index) => (
                         <option key={index} value={condition[1]}>
                           {condition[0]}
@@ -115,30 +111,29 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                     <Form.Label>
                       {t('modal.addon.condition')} <small className='text-danger'>*</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.condition && t('modal.addon.condition.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.condition && t('error.condition')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
               <Row>
-                <Col>
+                <Col md={6} sm={12}>
                   <Form.Group controlId='addon-value'>
                     <Form.Control
                       type='text'
                       placeholder='Value'
                       aria-label='Value'
                       aria-describedby='addon-value'
-                      ref={register({ required: true })}
+                      {...register('value', { required: true })}
                       isInvalid={!!errors.value}
-                      name='value'
                       list='value'
                     />
                     <Form.Label>
                       {t('modal.addon.value')} <small className='text-danger'>*</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.value && t('modal.addon.value.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.value && t('error.value')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-                <Col>
+                <Col md={6} sm={12}>
                   <Form.Group controlId='addon-value-extractor'>
                     <Form.Control
                       type='text'
@@ -147,12 +142,12 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                       name='valueExtractor'
                       aria-describedby='addon-value-extractor'
                       list='valueExtractor'
-                      ref={register()}
+                      {...register('valueExtractor')}
                       isInvalid={!!errors.valueExtractor}
                     />
-                    <Form.Label>{t('modal.addon.valueExtractor')}&nbsp;</Form.Label>
+                    <Form.Label>{t('modal.addon.valueExtractor')}</Form.Label>
                     <ValueExtractorPopover />
-                    <Form.Control.Feedback type='invalid'>{errors.valueExtractor && t('modal.addon.valueExtractor.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.valueExtractor && t('error.valueExtractor')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
@@ -160,9 +155,18 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
               <Row>
                 <Col md={6} sm={12}>
                   <Form.Group controlId='addon-recheck'>
-                    <FormControl placeholder='0' aria-label='0' name='recheck' aria-describedby='addon-recheck' ref={register({ pattern: REGEX_NUM })} isInvalid={errors.recheck} list='retry' />
+                    <FormControl
+                      placeholder='0'
+                      aria-label='0'
+                      aria-describedby='addon-recheck'
+                      {...register('recheck', { pattern: REGEX_NUM })}
+                      type='number'
+                      pattern={REGEX_NUM}
+                      isInvalid={errors.recheck}
+                      list='retry'
+                    />
                     <Form.Label>{t('modal.addon.recheck.title')}</Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.recheck && t('modal.addon.recheck.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.recheck && t('error.recheck')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md={6} sm={12}>
@@ -173,38 +177,32 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                       name='recheckInterval'
                       aria-describedby='recheck-interval'
                       list='interval'
-                      ref={register({ validate: value => !Number.isNaN(value) })}
+                      {...register('recheckInterval', { pattern: REGEX_INTERVAL })}
                       isInvalid={errors.recheckInterval}
                     />
                     <Form.Label>
-                      {t('modal.addon.recheck.interval')}&nbsp;<small className='text-info'>({t('common.sec')})</small>
+                      {t('modal.addon.recheck.interval')}&nbsp;<small>({t('common.sec')})</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.recheckInterval && t('modal.addon.recheck.intervalError')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.recheckInterval && t('error.interval')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-                <Col xs={12}>
-                  <h6 className='my-2 text-secondary font-weight-light'>
-                    <small>{t('modal.addon.recheck.hint')}</small>
-                  </h6>
+                <Col xs={12} className='mb-2'>
+                  <Form.Text className='text-muted'>{t('modal.addon.recheck.hint')}</Form.Text>
                 </Col>
-                <Col md={4} sm={12}>
-                  <Form.Check type='radio' name='recheckOption' id='recheckOptionStop' value={RECHECK_OPTIONS.STOP} ref={register} label={t('modal.addon.recheck.stop')} />
-                </Col>
-                <Col md={4} sm={12}>
-                  <Form.Check type='radio' name='recheckOption' id='recheckOptionSkip' value={RECHECK_OPTIONS.SKIP} ref={register} label={t('modal.addon.recheck.skip')} />
-                </Col>
-                <Col md={4} sm={12}>
-                  <Form.Check type='radio' name='recheckOption' id='recheckOptionReload' value={RECHECK_OPTIONS.RELOAD} ref={register} label={t('modal.addon.recheck.refresh')} />
+                <Col xs={12} className='d-flex justify-content-between'>
+                  <Form.Check type='radio' id='recheckOptionStop' value={RECHECK_OPTIONS.STOP} {...register('recheckOption')} label={t('modal.addon.recheck.stop')} />
+                  <Form.Check type='radio' id='recheckOptionSkip' value={RECHECK_OPTIONS.SKIP} {...register('recheckOption')} label={t('modal.addon.recheck.skip')} />
+                  <Form.Check type='radio' id='recheckOptionReload' value={RECHECK_OPTIONS.RELOAD} {...register('recheckOption')} label={t('modal.addon.recheck.refresh')} />
                 </Col>
               </Row>
             </Card.Body>
           </Card>
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>
-          <Button type='reset' variant='outline-danger'>
+          <Button type='reset' variant='outline-primary px-5'>
             {t('common.clear')}
           </Button>
-          <Button type='submit' variant='outline-primary' disabled={!isValid || !isDirty} className='ml-3'>
+          <Button type='submit' variant='primary px-5' disabled={!isValid || !isDirty} className='ml-3'>
             {t('common.save')}
           </Button>
         </Modal.Footer>

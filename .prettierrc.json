@@ -6,7 +6,7 @@
   "proseWrap": "always",
   "useTabs": false,
   "jsxSingleQuote": true,
-  "jsxBracketSameLine": true,
+  "bracketSameLine": true,
   "bracketSpacing": true,
   "trailingComma": "none",
   "endOfLine":"auto"

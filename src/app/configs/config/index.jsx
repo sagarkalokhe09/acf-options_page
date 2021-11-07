@@ -1,7 +1,7 @@
-import React, { createRef } from 'react'
+import React, { createRef, useContext } from 'react'
 import PropTypes from 'prop-types'
-
-import { ElementUtil, ExportService, ImportService, Logger } from '@dhruv-techapps/core-common'
+import { ElementUtil, Logger } from '@dhruv-techapps/core-common'
+import { ExportService, ImportService } from '@dhruv-techapps/core-services'
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
 import { Badge, Card, Col, Dropdown, Form, Row } from 'react-bootstrap'
@@ -10,10 +10,13 @@ import Action from '../action'
 import Batch from '../batch'
 import { Format, GTAG, ThreeDots, numberWithExponential } from '../../../util'
 import { DropdownToggle } from '../../../components'
+import { ThemeContext } from '../../../_providers/ThemeProvider'
 
-const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }) => {
+const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef, confirmRef, configsLength, setSelected }) => {
+  const { theme } = useContext(ThemeContext)
   const { t } = useTranslation()
   const importFiled = createRef()
+
   const onChange = e => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
     setConfigs(prevConfigs =>
@@ -32,9 +35,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }
     url = url[2] || 'default'
     ExportService.export(config.name || url || `configuration-${configIndex}`, config).catch(error => {
       toastRef.current.push({
-        body: JSON.stringify(error),
-        header: <strong className='mr-auto'>Export Error</strong>,
-        toastClass: 'bg-danger text-white'
+        body: JSON.stringify(error)
       })
     })
     GTAG.event({ category: 'Action', action: 'Click', label: 'Export' })
@@ -50,17 +51,13 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }
         const importedConfig = JSON.parse(target.result)
         if (Array.isArray(importedConfig)) {
           toastRef.current.push({
-            body: t('error.json'),
-            header: t('toast.configuration.importError.header'),
-            toastClass: 'bg-danger text-white'
+            body: t('error.json')
           })
           GTAG.exception({ description: 'selected Json is not valid', fatal: false })
         } else {
           ImportService.import(Format.configuration(importedConfig), LOCAL_STORAGE_KEY.CONFIGS)
           toastRef.current.push({
             body: t('toast.configuration.importSuccess.body', { name: importedConfig.name || importedConfig.url || 'configuration' }),
-            header: t('toast.configuration.importSuccess.header'),
-            toastClass: 'bg-success text-white',
             delay: 2000,
             onClose: () => {
               window.location.reload()
@@ -70,9 +67,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }
         }
       } catch (error) {
         toastRef.current.push({
-          body: JSON.stringify(error),
-          header: t('toast.configuration.importError.header'),
-          toastClass: 'bg-danger text-white'
+          body: JSON.stringify(error)
         })
         Logger.error(error)
         GTAG.exception({ description: error, fatal: true })
@@ -87,29 +82,65 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }
     configSettingsRef.current.showSettings(config)
   }
 
+  const removeConfig = () => {
+    const { name } = config
+    // setLoading(true)
+    setConfigs(configs => configs.filter((_, index) => index !== configIndex))
+    setSelected(prevSelected => {
+      if (configsLength === 2) {
+        return 0
+      }
+      return prevSelected === 0 ? prevSelected : prevSelected - 1
+    })
+    // setLoading(false)
+    toastRef.current.push({
+      body: t('toast.configuration.remove.body', { name })
+    })
+    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Remove Confirmation' })
+  }
+
+  const removeConfigConfirm = () => {
+    const name = config.name || config.url || `configuration-${configIndex}`
+    confirmRef.current.confirm({
+      title: t('confirm.configuration.remove.title'),
+      message: t('confirm.configuration.remove.message', { name }),
+      headerClass: 'text-danger',
+      confirmFunc: removeConfig
+    })
+    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Remove' })
+  }
+
   return (
-    <Card className='mb-4'>
-      <Card.Header as='h2'>
+    <Card className='mb-4' bg={theme} text={theme === 'dark' && 'white'}>
+      <Card.Header as='h6'>
         <Row>
           <Col className='d-flex align-items-center'>
-            <small>{t('configuration.title')}</small>
-            {!config.enable && (
-              <Badge pill variant='danger ml-2'>
-                {t('common.disabled')}
-              </Badge>
-            )}
+            {t('configuration.title')}
+            <div className='d-flex align-items-center'>
+              {!config.enable && (
+                <Badge pill bg='secondary' className='ms-2 d-none d-md-block'>
+                  {t('common.disabled')}
+                </Badge>
+              )}
+            </div>
           </Col>
-          <Col md='auto' className='d-flex align-items-center'>
-            <Form.Check type='switch' name='enable' id='config-enable' label={t('configuration.enable')} checked={config.enable} onChange={onChange} />
-            <Dropdown className='ml-3' alignRight>
-              <Dropdown.Toggle as={DropdownToggle} id='config-dropdown'>
+          <Col xs='auto' className='d-flex align-items-center'>
+            <Form>
+              <Form.Check type='switch' className='m-0' name='enable' id='config-enable' label={t('configuration.enable')} checked={config.enable} onChange={onChange} />
+            </Form>
+            <Dropdown>
+              <Dropdown.Toggle as={DropdownToggle} id='config-dropdown' className='py-0 pe-0'>
                 <ThreeDots width='24' height='24' />
               </Dropdown.Toggle>
-              <Dropdown.Menu>
+              <Dropdown.Menu variant={theme}>
                 <Dropdown.Item onClick={exportConfig}>{t('configuration.export')}</Dropdown.Item>
                 <Dropdown.Item onClick={() => importFiled.current.click()}>{t('configuration.import')}</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={showSettings}>{t('configuration.settings')}</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={removeConfigConfirm} className={configsLength === 1 ? '' : 'text-danger'} disabled={configsLength === 1}>
+                  {t('configuration.remove')}
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             <div className='custom-file d-none'>
@@ -129,8 +160,11 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef }
 Config.propTypes = {
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
+  setSelected: PropTypes.func.isRequired,
+  configsLength: PropTypes.number.isRequired,
   toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired,
   configSettingsRef: PropTypes.shape({ current: PropTypes.shape({ showSettings: PropTypes.func.isRequired }) }).isRequired,
+  confirmRef: PropTypes.shape({ current: PropTypes.shape({ confirm: PropTypes.func.isRequired }) }).isRequired,
   config: PropTypes.shape({
     enable: PropTypes.bool.isRequired,
     name: PropTypes.string,

@@ -10,7 +10,7 @@ export const StartTimePopover = () => (
     rootClose
     overlay={
       <Popover id='popover-basic'>
-        <Popover.Content>
+        <Popover.Body>
           <p>
             <Trans i18nKey='popover.startTime.content'>
               Try
@@ -21,9 +21,9 @@ export const StartTimePopover = () => (
               <br /> it&apos;s used to schedule webpage / URL at particular day and time.
             </Trans>
           </p>
-        </Popover.Content>
+        </Popover.Body>
       </Popover>
     }>
-    <InfoCircle className='ml-2 text-info' />
+    <InfoCircle className='ms-2 text-muted' />
   </OverlayTrigger>
 )

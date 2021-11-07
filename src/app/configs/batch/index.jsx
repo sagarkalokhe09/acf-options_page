@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Card, Col, Form, Row } from 'react-bootstrap'
 import { ElementUtil } from '@dhruv-techapps/core-common'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import BatchBody from './batch-body'
 import { GTAG, numberWithExponential } from '../../../util'
+import { ThemeContext } from '../../../_providers/ThemeProvider'
 
 const Batch = ({ batch, configIndex, setConfigs }) => {
+  const { theme } = useContext(ThemeContext)
+
   const { t } = useTranslation()
   const onChange = e => {
     const { name, value } = ElementUtil.getNameValue(e.currentTarget)
@@ -23,14 +26,14 @@ const Batch = ({ batch, configIndex, setConfigs }) => {
   }
 
   return (
-    <Card className='mb-4'>
-      <Card.Header as='h2'>
+    <Card className='mb-4' bg={theme} text={theme === 'light' ? 'dark' : 'white'}>
+      <Card.Header as='h6'>
         <Row>
-          <Col>
-            <small>{t('batch.title')}</small>
-          </Col>
-          <Col md='auto'>
-            <Form.Check type='switch' id='batch-refresh' label={t('batch.refresh')} name='refresh' checked={batch.refresh} onChange={onChange} />
+          <Col>{t('batch.title')}</Col>
+          <Col xs='auto' className='d-flex align-items-center justify-content-end'>
+            <Form>
+              <Form.Check type='switch' id='batch-refresh' label={t('batch.refresh')} name='refresh' checked={batch.refresh} onChange={onChange} />
+            </Form>
           </Col>
         </Row>
       </Card.Header>

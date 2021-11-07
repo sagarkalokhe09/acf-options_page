@@ -29,9 +29,7 @@ const AdsBlockerModal = forwardRef((_, ref) => {
   return (
     <Modal show={show} centered backdrop='static' keyboard={false} id='ads-blocker'>
       <Modal.Header className='justify-content-center'>
-        <Modal.Title>
-          <b>Please allow ads on our site</b>
-        </Modal.Title>
+        <Modal.Title as='h6'>Please allow ads on our site</Modal.Title>
       </Modal.Header>
       <Modal.Body className='mx-auto'>
         <p className='d-flex justify-content-center'>Which of these extensions do you have?</p>
@@ -140,7 +138,7 @@ const AdsBlockerModal = forwardRef((_, ref) => {
         </Tab.Container>
       </Modal.Body>
       <Modal.Footer className='justify-content-between'>
-        <Button variant='outline-secondary' className='px-3 mr-3' size='md' onClick={closeClick}>
+        <Button variant='outline-secondary' className='px-3 me-3' size='md' onClick={closeClick}>
           Close
         </Button>
         <Button variant='outline-primary' className='px-3' size='md' onClick={refreshClick}>

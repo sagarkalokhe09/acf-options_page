@@ -1,36 +1,22 @@
 #configs {
   background-color: var(--background-color);
-  position: sticky;
-  top: 0;
-  height: 64px;
-  width: auto;
-  z-index: 1020;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 15px;
+  select,
+  button {
+    height: 54px;
+  }
   .row {
-    margin: 0;
-    border-radius: 48px;
-    border: 1px solid var(--border-color);
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
   }
   select {
-    border: none;
-    border-top-left-radius: 48px;
-    border-bottom-left-radius: 48px;
-    height: 54px;
-    padding-left: 1.75rem;
+    border-top-left-radius: 50rem;
+    border-bottom-left-radius: 50rem;
   }
   button {
-    border: none;
-    height: 54px;
-    border-right: 1px solid var(--border-color);
-    border-left: 1px solid var(--border-color);
     border-radius: 0;
-    padding: 0px 20px;
     &[data-toggle] {
-      border-top-right-radius: 48px;
-      border-bottom-right-radius: 48px;
+      border-top-right-radius: 50rem;
+      border-bottom-right-radius: 50rem;
     }
     &:not(.btn) {
       width: 64px;

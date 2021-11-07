@@ -12,31 +12,35 @@ const Footer = ({ version }) => {
     <footer className='pt-4 mt-md-5 pt-md-5 border-top'>
       <Container>
         <Row>
-          <Col md xs={12}>
+          <Col md xs={12} className='mb-3'>
             <img
               src={`chrome-extension://${process.env[`REACT_APP_${BROWSER}_EXTENSION_ID`]}/assets/icons/icon48.png`}
               width='48'
               height='48'
-              className='d-inline-block align-top mr-2'
+              className='d-inline-block align-top me-2'
               alt='Auto click Auto Fill logo'
               title='Auto click Auto Fill logo'
               onError={e => {
                 e.currentTarget.src = 'https://getautoclicker.com/favicons/favicon48.png'
               }}
             />
-            <div className='d-inline-flex flex-column justify-content-center' style={{ height: '48px' }}>
-              {process.env.REACT_APP_NAME}
-              <small className={process.env.REACT_APP_VARIANT}>{process.env.REACT_APP_VARIANT}</small>
+            <div className='d-inline-flex flex-column'>
+              <h6 className='text-secondary mb-0'>
+                {process.env.REACT_APP_NAME}
+                <span className={`${process.env.REACT_APP_VARIANT} ms-2`}>{process.env.REACT_APP_VARIANT}</span>
+              </h6>
+              <div className='text-muted'>
+                <small>© 2017 - 2021</small>
+                <small className='ms-2'>v{version}</small>
+              </div>
             </div>
-            <small className='d-block my-2 text-muted'>© 2017 - 2021</small>
-            <small className='d-block text-muted'>v{version}</small>
           </Col>
-          <Col md xs={6}>
-            <h5>{t('footer.resources')}</h5>
+          <Col md xs={4}>
+            <h5 className='text-secondary'>{t('footer.resources')}</h5>
             <ul className='list-unstyled text-small'>
               <li>
                 <a
-                  className='text-muted'
+                  className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
                   title='docs'
@@ -49,7 +53,7 @@ const Footer = ({ version }) => {
               </li>
               <li>
                 <a
-                  className='text-muted'
+                  className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
                   href={process.env.REACT_APP_BLOG}
@@ -62,7 +66,7 @@ const Footer = ({ version }) => {
               </li>
               <li>
                 <a
-                  className='text-muted'
+                  className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
                   title='examples'
@@ -75,7 +79,7 @@ const Footer = ({ version }) => {
               </li>
               <li>
                 <a
-                  className='text-muted'
+                  className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
                   title='issues'
@@ -88,25 +92,25 @@ const Footer = ({ version }) => {
               </li>
               <li>
                 <a
-                  className='text-muted'
+                  className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
-                  title='test'
+                  title='practice form'
                   href={process.env.REACT_APP_TEST}
                   onClick={() => {
-                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Test' })
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Practice Form' })
                   }}>
                   {t('footer.test')}
                 </a>
               </li>
             </ul>
           </Col>
-          <Col md xs={6}>
-            <h5>{t('footer.about')}</h5>
+          <Col md xs={4}>
+            <h5 className='text-secondary'>{t('footer.about')}</h5>
             <ul className='list-unstyled text-small'>
               <li>
                 <a
-                  className='text-muted'
+                  className='text-decoration-none'
                   target='_blank'
                   author='Dhruv Techapps'
                   rel='noopener noreferrer'
@@ -120,7 +124,7 @@ const Footer = ({ version }) => {
               </li>
               <li>
                 <a
-                  className='text-muted'
+                  className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
                   title='chat'
@@ -133,7 +137,7 @@ const Footer = ({ version }) => {
               </li>
               <li>
                 <a
-                  className='text-muted'
+                  className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
                   title='privacy'
@@ -146,12 +150,12 @@ const Footer = ({ version }) => {
               </li>
             </ul>
           </Col>
-          <Col md xs={6}>
-            <h5>{t('footer.social')}</h5>
+          <Col md xs={4}>
+            <h5 className='text-secondary'>{t('footer.social')}</h5>
             <ul className='list-unstyled text-small'>
               <li>
                 <a
-                  className='text-muted'
+                  className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
                   href={process.env.REACT_APP_DISCORD}
@@ -164,7 +168,7 @@ const Footer = ({ version }) => {
               </li>
               <li>
                 <a
-                  className='text-muted'
+                  className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
                   title='twitter'
@@ -177,7 +181,7 @@ const Footer = ({ version }) => {
               </li>
               <li>
                 <a
-                  className='text-muted'
+                  className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
                   title='github'

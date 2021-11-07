@@ -35,7 +35,7 @@ export const EditableCell = ({ value: initialValue, data, row: { index }, column
     setValue(initialValue)
   }, [initialValue])
 
-  return <Form.Control ref={input} value={value} name={id} onChange={onChange} onBlur={onBlur} isInvalid={invalid} list={list} />
+  return <Form.Control ref={input} value={value} name={id} onChange={onChange} onBlur={onBlur} isInvalid={invalid} list={list} autoComplete='off' />
 }
 
 EditableCell.propTypes = {

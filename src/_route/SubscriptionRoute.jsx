@@ -7,23 +7,8 @@ import { AuthContext, SubscribeContext } from '../_providers'
 const SubscriptionRoute = ({ component: Component, ...rest }) => {
   const user = useContext(AuthContext)
   const subscription = useContext(SubscribeContext)
-
-  return (
-    <Route
-      {...rest}
-      render={props =>
-        user ? (
-          subscription ? (
-            <Component {...props} />
-          ) : (
-            <Redirect to={{ pathname: '/plan', state: { from: props.location } }} />
-          )
-        ) : (
-          <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
-        )
-      }
-    />
-  )
+  const subscriptionComp = props => (subscription ? <Component {...props} /> : <Redirect to={{ pathname: '/plan', state: { from: props.location } }} />)
+  return <Route {...rest} render={props => (user ? subscriptionComp(props) : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />)} />
 }
 SubscriptionRoute.propTypes = {
   component: PropTypes.element.isRequired,

@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTable } from 'react-table'
 import { Button, Dropdown, Form, Table } from 'react-bootstrap'
@@ -9,10 +9,12 @@ import { CaretDown, CaretUp, GTAG, REGEX_INTERVAL, REGEX_NUM, ThreeDots, numberW
 import { AddonModal, ConfirmModal } from '../../../modal'
 import { ElementFinderPopover, ValuePopover } from '../../../popover'
 import { DropdownToggle } from '../../../components'
+import { ThemeContext } from '../../../_providers/ThemeProvider'
 
 const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, toastRef, actionSettingsRef }, ref) => {
   const { t } = useTranslation()
   const [data, setData] = useState(actions)
+  const { theme } = useContext(ThemeContext)
   const [error, setError] = useState()
   const confirmRef = useRef()
   const didMountRef = useRef(true)
@@ -42,7 +44,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
     () => [
       {
         Header: t('action.initWait'),
-        style: { width: '108px' },
+        style: { width: '100px' },
         accessor: 'initWait',
         dataType: 'number',
         list: 'interval',
@@ -51,7 +53,8 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
       {
         Header: t('action.name'),
         style: { width: '10%' },
-        accessor: 'name'
+        accessor: 'name',
+        autoComplete: 'off'
       },
       {
         Header: t('action.elementFinder'),
@@ -66,7 +69,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
       },
       {
         Header: t('action.repeat'),
-        style: { width: '70px' },
+        style: { width: '100px' },
         accessor: 'repeat',
         dataType: 'number',
         list: 'repeat',
@@ -74,7 +77,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
       },
       {
         Header: t('action.repeatInterval'),
-        style: { width: '95px' },
+        style: { width: '100px' },
         accessor: 'repeatInterval',
         dataType: 'number',
         list: 'interval',
@@ -131,9 +134,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
       )
       didUpdateRef.current = false
       toastRef.current.push({
-        body: t('toast.action.save.body'),
-        header: t('toast.action.save.header'),
-        toastClass: 'bg-success text-white'
+        body: t('toast.action.save.body')
       })
     } else {
       setError(t('error.elementFinder'))
@@ -202,7 +203,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
   }
   return (
     <Form onSubmit={saveActions}>
-      <Table {...getTableProps()} id='actions' bordered>
+      <Table {...getTableProps()} id='actions' bordered hover variant={theme} className='mb-0'>
         <thead>
           {headerGroups.map((headerGroup, headerGroupIndex) => (
             <tr {...headerGroup.getHeaderGroupProps()} key={headerGroupIndex}>
@@ -222,9 +223,9 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
           {rows.map((row, index) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} key={index} className={actions[index] ? '' : 'border border-warning'}>
+              <tr {...row.getRowProps()} key={index} className={actions[index] ? '' : 'edited'}>
                 <td align='center'>
-                  <div className='d-flex flex-column align-items-center'>
+                  <div className='d-flex flex-column align-items-center text-secondary'>
                     <CaretUp width='20' height='20' onClick={e => moveUp(e, row.id)} disabled={index === 0} />
                     <CaretDown width='20' height='20' onClick={e => moveDown(e, row.id)} disabled={index === rows.length - 1} />
                   </div>
@@ -236,11 +237,11 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
                 ))}
                 <td align='center'>
                   {actions[row.id] && (
-                    <Dropdown alignRight>
+                    <Dropdown>
                       <Dropdown.Toggle as={DropdownToggle} id='dropdown-basic'>
                         <ThreeDots width='24' height='24' />
                       </Dropdown.Toggle>
-                      <Dropdown.Menu>
+                      <Dropdown.Menu variant={theme}>
                         <Dropdown.Item onClick={() => showAddon(row)}>{t('action.addon')}</Dropdown.Item>
                         <Dropdown.Item onClick={() => showSettings(row)}>{t('action.settings')}</Dropdown.Item>
                         <Dropdown.Divider />
@@ -248,7 +249,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
                           onClick={() => {
                             removeActionConfirm(row.id)
                           }}
-                          className={data.length === 1 ? 'text-muted' : 'text-danger'}
+                          className={data.length === 1 ? '' : 'text-danger'}
                           disabled={data.length === 1}>
                           {t('action.remove')}
                         </Dropdown.Item>
@@ -263,8 +264,8 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
       </Table>
       {didUpdateRef.current && (
         <div className='d-flex justify-content-end align-items-center my-2 px-2'>
-          <span className='text-danger mr-3'>{error}</span>
-          <Button type='submit' variant='outline-primary'>
+          <span className='text-danger me-3'>{error}</span>
+          <Button type='submit' variant='primary px-5'>
             {t('common.save')}
           </Button>
         </div>

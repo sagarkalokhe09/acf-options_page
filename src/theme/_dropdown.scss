@@ -1,16 +1,9 @@
-.dropdown {
-  &-menu {
-    background: var(--popover-bg-color);
-    box-shadow: var(--box-shadow);
-  }
-  &-item {
-    color: var(--color);
-    &:hover:not(.active) {
-      background: var(--dropdown-hover-color);
-      color: var(--color);
-    }
-  }
-  &-divider {
-    border-color: var(--border-color);
+.dropdown-menu.show {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  & .dropdown-item {
+    border-radius: 0.25rem;
   }
 }

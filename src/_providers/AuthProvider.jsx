@@ -1,13 +1,14 @@
 import React, { createContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Logger, StorageService } from '@dhruv-techapps/core-common'
+import { Logger } from '@dhruv-techapps/core-common'
+import { StorageService } from '@dhruv-techapps/core-services'
+import { useHistory } from 'react-router-dom'
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { auth } from '../firebase'
-import { history } from '../_helpers'
 
 export const AuthContext = createContext()
-
 const AuthProvider = ({ children }) => {
+  const history = useHistory()
   const [user, setUser] = useState(null)
   useEffect(() => {
     auth.onAuthStateChanged(async userAuth => {

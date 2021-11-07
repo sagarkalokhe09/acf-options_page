@@ -1,9 +1,9 @@
-import React, { createRef, useEffect, useRef, useState } from 'react'
+import React, { createRef, useContext, useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Alert, Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap'
-import { Loading } from '@dhruv-techapps/core-components'
+import { Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap'
 import { LOCAL_STORAGE_KEY, defaultAction, defaultConfig } from '@dhruv-techapps/acf-common'
-import { ElementUtil, ExportService, Logger, StorageService } from '@dhruv-techapps/core-common'
+import { ElementUtil, Logger } from '@dhruv-techapps/core-common'
+import { ExportService, StorageService } from '@dhruv-techapps/core-services'
 import { useTranslation } from 'react-i18next'
 import Config from './config'
 import Batch from './batch'
@@ -11,8 +11,11 @@ import Action from './action'
 import { Format, GTAG, ThreeDots, getConfigName } from '../../util'
 import { DropdownToggle, ErrorAlert, GoogleAds } from '../../components'
 import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ConfirmModal, ReorderConfigsModal } from '../../modal'
+import { ThemeContext, ModeContext } from '../../_providers'
 
 const Configs = ({ toastRef }) => {
+  const { theme } = useContext(ThemeContext)
+  const { mode } = useContext(ModeContext)
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
   const [scroll, setScroll] = useState(false)
   const [selected, setSelected] = useState(0)
@@ -104,49 +107,15 @@ const Configs = ({ toastRef }) => {
     const name = getConfigName(undefined, configs.length)
     setConfigs([...configs, { ...defaultConfig, name }])
     toastRef.current.push({
-      body: t('toast.configuration.add.body', { name }),
-      header: t('toast.configuration.add.header'),
-      toastClass: 'bg-success text-white'
+      body: t('toast.configuration.add.body', { name })
     })
     GTAG.event({ category: 'Configuration', action: 'Click', label: 'Add' })
-  }
-
-  const removeConfig = () => {
-    const { name } = configs[selected]
-    setLoading(true)
-    setConfigs(configs.filter((_, index) => index !== selected))
-    setSelected(prevSelected => {
-      if (configs.length === 2) {
-        return 0
-      }
-      return prevSelected === 0 ? prevSelected : prevSelected - 1
-    })
-    setLoading(false)
-    toastRef.current.push({
-      body: t('toast.configuration.remove.body', { name }),
-      header: t('toast.configuration.remove.header'),
-      toastClass: 'bg-danger text-white'
-    })
-    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Remove Confirmation' })
-  }
-
-  const removeConfigConfirm = () => {
-    const name = configs[selected].name || configs[selected].url || `configuration-${selected}`
-    confirmRef.current.confirm({
-      title: t('confirm.configuration.remove.title'),
-      message: t('confirm.configuration.remove.message', { name }),
-      headerClass: 'text-danger',
-      confirmFunc: removeConfig
-    })
-    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Remove' })
   }
 
   const exportAll = () => {
     ExportService.export('All Configurations', configs).catch(_error => {
       toastRef.current.push({
-        body: JSON.stringify(_error),
-        header: t('toast.configuration.exportAll.header'),
-        toastClass: 'bg-danger text-white'
+        body: JSON.stringify(_error)
       })
     })
     GTAG.event({ category: 'Configuration', action: 'Click', label: 'Export All' })
@@ -168,9 +137,7 @@ const Configs = ({ toastRef }) => {
           GTAG.event({ category: 'Configuration', action: 'Click', label: 'Import All' })
         } else {
           toastRef.current.push({
-            body: t('error.json'),
-            header: t('toast.configuration.importAll.header'),
-            toastClass: 'bg-danger text-white'
+            body: t('error.json')
           })
           GTAG.exception({ description: 'selected Json is not valid', fatal: false })
         }
@@ -183,52 +150,50 @@ const Configs = ({ toastRef }) => {
     fr.readAsText(files.item(0))
     return false
   }
-  const className = scroll ? 'shadow' : ' mb-4'
+
   return (
     <>
       {loading ? (
-        <Loading className='d-flex justify-content-center m-5' />
+        <div className='text-center m-5'>
+          <div className='spinner-border' role='status'>
+            <span className='visually-hidden'>Loading...</span>
+          </div>
+        </div>
       ) : (
         <>
           {i18n.language !== 'en' && (
-            <Container fluid className='mt-2'>
-              <Row>
-                <Col>
-                  <Alert variant='info'>
-                    {t('common.translate')}{' '}
-                    <a href='https://github.com/Dhruv-Techapps/acf-i18n/discussions/4' target='_blank' rel='noopener noreferrer'>
-                      {t('common.clickHere')}
-                    </a>
-                  </Alert>
-                </Col>
-              </Row>
-            </Container>
+            <div className='bg-light text-muted text-center my-3'>
+              {t('common.translate')}{' '}
+              <a href='https://github.com/Dhruv-Techapps/acf-i18n/discussions/4' target='_blank' rel='noopener noreferrer'>
+                {t('common.clickHere')}
+              </a>
+            </div>
           )}
-          <div id='configs' className={className}>
-            <Container fluid>
-              <Row>
-                <Col className='px-0'>
+          <div id='configs' className={`${scroll ? 'shadow' : ' mb-4 mt-3'} sticky-top bg-${theme}`}>
+            <Container>
+              <Row className={`rounded-pill ${!scroll && 'border'}`}>
+                <Col>
                   <Form>
                     <Form.Group controlId='selected' className='mb-0'>
-                      <Form.Control as='select' custom onChange={onChange} value={selected} data-type='number'>
+                      <Form.Select onChange={onChange} value={selected} className='ps-4 border-0' data-type='number'>
                         {configs.map((_config, index) => (
-                          <option key={index} value={index}>
-                            {_config.name || getConfigName(_config.url, index)} {!_config.enable && '(Disabled)'} --- {_config.url}
+                          <option key={index} value={index} className={!_config.enable ? 'bg-secondary' : ''} style={{ '--bs-bg-opacity': `.25` }}>
+                            ({_config.name || getConfigName(_config.url, index)}) {_config.url}
                           </option>
                         ))}
-                      </Form.Control>
+                      </Form.Select>
                     </Form.Group>
                   </Form>
                 </Col>
-                <Col md='auto' className='d-flex align-items-center px-0'>
-                  <Button type='button' variant='outline-success' onClick={addConfig}>
+                <Col xs='auto' className='d-flex align-items-center'>
+                  <Button type='button' variant='outline-primary' onClick={addConfig} className='border-top-0 border-bottom-0 border'>
                     {t('configuration.add')}
                   </Button>
-                  <Dropdown alignRight>
+                  <Dropdown>
                     <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown'>
                       <ThreeDots width='24' height='24' />
                     </Dropdown.Toggle>
-                    <Dropdown.Menu>
+                    <Dropdown.Menu variant={theme}>
                       <Dropdown.Item onClick={exportAll}>{t('configuration.exportAll')}</Dropdown.Item>
                       <Dropdown.Item onClick={() => importFiled.current.click()}>{t('configuration.importAll')}</Dropdown.Item>
                       <Dropdown.Divider />
@@ -237,10 +202,6 @@ const Configs = ({ toastRef }) => {
                           reorderConfigsRef.current.showReorder()
                         }}>
                         {t('configuration.reorder')}
-                      </Dropdown.Item>
-                      <Dropdown.Divider />
-                      <Dropdown.Item onClick={removeConfigConfirm} className={configs.length === 1 ? 'text-muted' : 'text-danger'} disabled={configs.length === 1}>
-                        {t('configuration.remove')}
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
@@ -255,12 +216,21 @@ const Configs = ({ toastRef }) => {
             </Container>
           </div>
           <main>
-            <Container fluid>
+            <Container>
               <Row>
                 <Col xs={12}>{error && <ErrorAlert message={error} />}</Col>
               </Row>
-              <Config config={config} configIndex={selected} toastRef={toastRef} setConfigs={setConfigs} configSettingsRef={configSettingsRef} />
-              <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />
+              <Config
+                config={config}
+                configsLength={configs.length}
+                configIndex={selected}
+                confirmRef={confirmRef}
+                setSelected={setSelected}
+                toastRef={toastRef}
+                setConfigs={setConfigs}
+                configSettingsRef={configSettingsRef}
+              />
+              {mode === 'pro' && <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />}
               <Row>
                 <Col xs={12} className='text-center'>
                   <GoogleAds client={process.env.REACT_APP_GOOGLE_ADS_CLIENT} slot={process.env.REACT_APP_GOOGLE_ADS_SLOT} format='auto' className='mb-3' />

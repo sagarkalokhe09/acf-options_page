@@ -12,8 +12,8 @@ export const HotkeyPopover = () => {
       rootClose
       overlay={
         <Popover id='popover-basic'>
-          <Popover.Title>{t('popover.hotkey.title')}</Popover.Title>
-          <Popover.Content>
+          <Popover.Header>{t('popover.hotkey.title')}</Popover.Header>
+          <Popover.Body>
             <p>{t('popover.hotkey.content')}</p>
             <ul>
               <li>Ctrl + A</li>
@@ -27,10 +27,10 @@ export const HotkeyPopover = () => {
                 Single letter without <kbd>Ctrl</kbd>, <kbd>Alt</kbd> or <kbd>Shift</kbd> is not valid
               </Trans>
             </span>
-          </Popover.Content>
+          </Popover.Body>
         </Popover>
       }>
-      <InfoCircle className='ml-2 text-info' />
+      <InfoCircle className='ms-2 text-muted' />
     </OverlayTrigger>
   )
 }

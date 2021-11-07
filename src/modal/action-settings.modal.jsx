@@ -1,22 +1,19 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
-import { Alert, Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
+import { Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
 import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
-import { GTAG, REGEX_NUM, convertNumberField } from '../util'
-
-const NUMBER_FIELDS = ['retry', 'retryInterval']
+import { GTAG, REGEX_NUM, clearEmptyField, convertNumberField, REGEX_INTERVAL } from '../util'
 
 const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const { t } = useTranslation()
   const {
     register,
     handleSubmit,
-    errors,
     reset,
-    formState: { isDirty, isValid }
+    formState: { errors, isDirty, isValid }
   } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
@@ -26,13 +23,8 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const actionIndex = useRef(-1)
 
   const onSubmit = data => {
-    const requestData = {}
-    Object.keys(data).forEach(prop => {
-      if (data[prop]) {
-        requestData[prop] = data[prop]
-      }
-    })
-    convertNumberField(requestData, NUMBER_FIELDS)
+    clearEmptyField(data)
+    convertNumberField(data)
     reset(data)
     setConfigs(configs =>
       configs.map((config, index) => {
@@ -40,7 +32,7 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
           if (!config.actions[actionIndex.current]) {
             config.actions[actionIndex.current] = {}
           }
-          config.actions[actionIndex.current].settings = { ...requestData }
+          config.actions[actionIndex.current].settings = { ...data }
           return { ...config }
         }
         return config
@@ -82,70 +74,72 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
     <Modal show={show} size='lg' onHide={handleClose}>
       <Form onSubmit={handleSubmit(onSubmit)} onReset={onReset}>
         <Modal.Header closeButton>
-          <Modal.Title>{t('modal.actionSettings.title')}</Modal.Title>
+          <Modal.Title as='h6'>{t('modal.actionSettings.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Alert variant='info'>{t('modal.actionSettings.info')}</Alert>
-          <Card className='mb-2'>
+          <p className='text-muted'>{t('modal.actionSettings.info')}</p>
+          <Card className='mb-3'>
             <Card.Body>
               <Row>
                 <Col md={12} sm={12}>
-                  <Form.Check type='switch' id='iframeFirst' name='iframeFirst' ref={register} label={t('modal.actionSettings.iframeFirst')} />
+                  <Form.Check type='switch' id='iframeFirst' {...register('iframeFirst')} label={t('modal.actionSettings.iframeFirst')} />
                   <small className='text-muted'>{t('modal.actionSettings.iframeFirstHint')}</small>
                 </Col>
               </Row>
             </Card.Body>
           </Card>
-          <Card className='mb-2'>
+          <Card>
             <Card.Body>
-              <Row>
-                <Col md={6} sm={12} className='mb-2 mb-md-0'>
+              <Row className='mb-2 mb-md-0'>
+                <Col md={6} sm={12}>
                   <Form.Group controlId='retry'>
-                    <FormControl placeholder='5' aria-label='5' name='retry' aria-describedby='retry' ref={register({ pattern: REGEX_NUM })} isInvalid={errors.retry} list='retry' />
+                    <FormControl
+                      placeholder={t('modal.actionSettings.retry.title')}
+                      aria-label={t('modal.actionSettings.retry.title')}
+                      aria-describedby='retry'
+                      {...register('retry', { pattern: REGEX_NUM })}
+                      type='number'
+                      pattern={REGEX_NUM}
+                      isInvalid={errors.retry}
+                      list='retry'
+                    />
                     <Form.Label>{t('modal.actionSettings.retry.title')}</Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.retry && t('modal.actionSettings.retry.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.retry && t('error.retry')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md={6} sm={12}>
                   <Form.Group controlId='retry-interval'>
                     <FormControl
-                      placeholder='1'
-                      aria-label='1'
-                      name='retryInterval'
+                      placeholder={`${t('modal.actionSettings.retry.interval')} (${t('common.sec')})`}
+                      aria-label={`${t('modal.actionSettings.retry.interval')} (${t('common.sec')})`}
                       list='interval'
                       aria-describedby='retry-interval'
-                      ref={register({ validate: value => !Number.isNaN(value) })}
+                      {...register('retryInterval', { pattern: REGEX_INTERVAL })}
                       isInvalid={errors.retryInterval}
                     />
                     <Form.Label>
-                      {t('modal.actionSettings.retry.interval')}&nbsp;<small className='text-info'>({t('common.sec')})</small>
+                      {t('modal.actionSettings.retry.interval')}&nbsp;<small className='text-muted'>({t('common.sec')})</small>
                     </Form.Label>
-                    <Form.Control.Feedback type='invalid'>{errors.retryInterval && t('modal.actionSettings.retry.interval.error')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{errors.retryInterval && t('error.interval')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-                <Col xs={12}>
-                  <h6 className='my-2 text-secondary font-weight-light'>
-                    <small>{t('modal.actionSettings.retry.hint')}</small>
-                  </h6>
+                <Col xs={12} className='mb-2'>
+                  <Form.Text className='text-muted'>{t('modal.actionSettings.retry.hint')}</Form.Text>
                 </Col>
-                <Col md={4} sm={12}>
-                  <Form.Check type='radio' name='retryOption' id='retryOptionStop' value={RETRY_OPTIONS.STOP} ref={register} label={t('modal.actionSettings.retry.stop')} />
-                </Col>
-                <Col md={4} sm={12}>
-                  <Form.Check type='radio' name='retryOption' id='retryOptionSkip' value={RETRY_OPTIONS.SKIP} ref={register} label={t('modal.actionSettings.retry.skip')} />
-                </Col>
-                <Col md={4} sm={12}>
-                  <Form.Check type='radio' name='retryOption' id='retryOptionReload' value={RETRY_OPTIONS.RELOAD} ref={register} label={t('modal.actionSettings.retry.refresh')} />
+                <Col xs={12} className='d-flex justify-content-between'>
+                  <Form.Check type='radio' id='retryOptionStop' value={RETRY_OPTIONS.STOP} {...register('retryOption')} label={t('modal.actionSettings.retry.stop')} />
+                  <Form.Check type='radio' id='retryOptionSkip' value={RETRY_OPTIONS.SKIP} {...register('retryOption')} label={t('modal.actionSettings.retry.skip')} />
+                  <Form.Check type='radio' id='retryOptionReload' value={RETRY_OPTIONS.RELOAD} {...register('retryOption')} label={t('modal.actionSettings.retry.refresh')} />
                 </Col>
               </Row>
             </Card.Body>
           </Card>
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>
-          <Button type='reset' variant='outline-danger'>
+          <Button type='reset' variant='outline-primary px-5'>
             {t('common.clear')}
           </Button>
-          <Button type='submit' variant='outline-primary' disabled={!isValid || !isDirty} className='ml-3'>
+          <Button type='submit' variant='primary px-5' disabled={!isValid || !isDirty} className='ml-3'>
             {t('common.save')}
           </Button>
         </Modal.Footer>

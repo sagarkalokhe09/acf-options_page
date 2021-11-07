@@ -24,15 +24,15 @@ const ConfirmModal = forwardRef((props, ref) => {
 
   return (
     <Modal show={show} centered backdrop='static' keyboard={false}>
-      <Modal.Body className='mx-auto text-center'>
-        <h4 className={`my-3 ${confirm.current.headerClass}`}>{confirm.current.title || 'Confirm'}</h4>
+      <Modal.Body className='p-4 text-center'>
+        <h4 className='my-3 fw-normal'>{confirm.current.title || 'Confirm'}</h4>
         {confirm.current.message}
       </Modal.Body>
-      <Modal.Footer className='justify-content-between'>
-        <Button variant='outline-secondary' className='px-3 mr-3' size='md' onClick={noClick}>
+      <Modal.Footer className='flex-nowrap p-0'>
+        <Button variant='link' className='fs-6 text-decoration-none col-6 m-0 rounded-0 border-end' size='lg' onClick={noClick}>
           {t('common.no')}
         </Button>
-        <Button variant='outline-primary' className='px-3' size='md' onClick={yesClick}>
+        <Button variant='link' className={`fs-6 text-decoration-none col-6 m-0 rounded-0 ${confirm.current.headerClass}`} size='lg' onClick={yesClick}>
           {t('common.yes')}
         </Button>
       </Modal.Footer>

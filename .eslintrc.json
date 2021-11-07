@@ -13,12 +13,7 @@
     "no-process-exit": "off",
     "object-shorthand": "off",
     "class-methods-use-this": "off",
-    "sort-imports": [
-      "error",
-      {
-        "ignoreDeclarationSort": true
-      }
-    ],
+    "sort-imports": "off",
     "import/prefer-default-export": "off",
     "no-param-reassign": "off",
     "react/no-array-index-key": "off",
