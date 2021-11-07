@@ -4,8 +4,9 @@ import { useForm } from 'react-hook-form'
 import { Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
 import { LOAD_TYPES, START_TYPES, defaultConfig } from '@dhruv-techapps/acf-common'
 import { Trans, useTranslation } from 'react-i18next'
-import { clearEmptyField, GTAG } from '../util'
+import { clearEmptyField, GTAG, REGEX_START_TIME } from '../util'
 import { HotkeyPopover } from '../popover'
+import { StartTimePopover } from '../popover/start-time.popover'
 
 const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const { t } = useTranslation()
@@ -76,7 +77,7 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
           <Modal.Title as='h6'>{t('modal.configSettings.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Card className='mb-2'>
+          <Card className='mb-3'>
             <Card.Body>
               <Row>
                 <Col md={12} sm={12}>
@@ -126,6 +127,28 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                       </li>
                     </ul>
                   </small>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+          <Card className='mb-2'>
+            <Card.Body>
+              <Row>
+                <Col md='12' sm='12'>
+                  <Form.Group controlId='config-start-time'>
+                    <FormControl
+                      {...register('startTime', { pattern: REGEX_START_TIME })}
+                      autoComplete='off'
+                      isInvalid={!!errors.startTime}
+                      placeholder='HH:mm:ss:fff'
+                      aria-label='HH:mm:ss:fff'
+                      list='start-time'
+                      aria-describedby='config-start-time'
+                    />
+                    <Form.Label>{t('configuration.startTime')}&nbsp;</Form.Label>
+                    <StartTimePopover />
+                    <Form.Control.Feedback type='invalid'>{errors.startTime && t('error.startTime')}</Form.Control.Feedback>
+                  </Form.Group>
                 </Col>
               </Row>
             </Card.Body>

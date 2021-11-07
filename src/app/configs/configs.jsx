@@ -11,10 +11,11 @@ import Action from './action'
 import { Format, GTAG, ThreeDots, getConfigName } from '../../util'
 import { DropdownToggle, ErrorAlert, GoogleAds } from '../../components'
 import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ConfirmModal, ReorderConfigsModal } from '../../modal'
-import { ThemeContext } from '../../_providers/ThemeProvider'
+import { ThemeContext, ModeContext } from '../../_providers'
 
 const Configs = ({ toastRef }) => {
   const { theme } = useContext(ThemeContext)
+  const { mode } = useContext(ModeContext)
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
   const [scroll, setScroll] = useState(false)
   const [selected, setSelected] = useState(0)
@@ -229,7 +230,7 @@ const Configs = ({ toastRef }) => {
                 setConfigs={setConfigs}
                 configSettingsRef={configSettingsRef}
               />
-              <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />
+              {mode === 'pro' && <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />}
               <Row>
                 <Col xs={12} className='text-center'>
                   <GoogleAds client={process.env.REACT_APP_GOOGLE_ADS_CLIENT} slot={process.env.REACT_APP_GOOGLE_ADS_SLOT} format='auto' className='mb-3' />

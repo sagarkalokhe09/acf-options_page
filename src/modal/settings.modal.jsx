@@ -7,10 +7,11 @@ import { useForm } from 'react-hook-form'
 import { Trans, useTranslation } from 'react-i18next'
 import { GTAG, REGEX_NUM, VolumeMute, VolumeUp, convertNumberField, REGEX_INTERVAL } from '../util'
 import { ErrorAlert } from '../components/error-alert.components'
-import { AuthContext } from '../_providers/AuthProvider'
+import { AuthContext, ModeContext } from '../_providers'
 
 const SettingsModal = ({ show, handleClose }) => {
   const { t } = useTranslation()
+  const { mode, setMode } = useContext(ModeContext)
   const user = useContext(AuthContext)
   const {
     register,
@@ -50,6 +51,10 @@ const SettingsModal = ({ show, handleClose }) => {
     GTAG.event({ category: 'Settings', action: 'Click', label: 'Save' })
   }
 
+  const toggleMode = () => {
+    setMode(prevMode => (prevMode === 'light' ? 'pro' : 'light'))
+  }
+  console.log(mode)
   return (
     <Modal show={show} onHide={handleClose} size='lg'>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -69,9 +74,13 @@ const SettingsModal = ({ show, handleClose }) => {
               <Card className='mb-3'>
                 <Card.Body>
                   <Row>
-                    <Col md={12} sm={12}>
+                    <Col md={6} sm={12}>
                       <Form.Check type='switch' id='checkiFrames' {...register('checkiFrames')} label={t('modal.settings.checkIFrames')} />
                       <small className='text-muted'>{t('modal.settings.checkIFramesHint')}</small>
+                    </Col>
+                    <Col md={6} sm={12}>
+                      <Form.Check type='switch' id='mode' checked={mode === 'pro'} onChange={toggleMode} label={t('modal.settings.advance')} />
+                      <small className='text-muted'>{t('modal.settings.advanceHint')}</small>
                     </Col>
                   </Row>
                 </Card.Body>

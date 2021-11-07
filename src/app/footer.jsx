@@ -95,10 +95,10 @@ const Footer = ({ version }) => {
                   className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
-                  title='test'
+                  title='practice form'
                   href={process.env.REACT_APP_TEST}
                   onClick={() => {
-                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Test' })
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Practice Form' })
                   }}>
                   {t('footer.test')}
                 </a>
