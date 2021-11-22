@@ -102,6 +102,13 @@ function App() {
               </datalist>
               <datalist id='value'>
                 <option value='Query::param'>Query::param</option>
+                <option value='Copy::'>Copy::</option>
+                <option value='Copy::[\d]+'>Copy::[\d]+</option>
+                <option value='Copy::[\w]+'>Copy::[\w]+</option>
+                <option value='Copy::[a-z]{3}'>Copy::[\w]+</option>
+                <option value='Copy::[A-Z]{6}'>Copy::[\w]+</option>
+                <option value='Copy::[.]{6}'>Copy::[\w]+</option>
+                <option value='Paste::'>Paste::</option>
                 <option value='Random::[.]{6}'>Random::[.]{REGEX_STRING}</option>
                 <option value='Random::[.]{6,12}'>Random::[.]{REGEX_RANGE_STRING}</option>
                 <option value='Random::[a-z]{6}'>Random::[a-z]{REGEX_STRING}</option>

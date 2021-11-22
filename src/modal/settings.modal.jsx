@@ -54,7 +54,6 @@ const SettingsModal = ({ show, handleClose }) => {
   const toggleMode = () => {
     setMode(prevMode => (prevMode === 'light' ? 'pro' : 'light'))
   }
-  console.log(mode)
   return (
     <Modal show={show} onHide={handleClose} size='lg'>
       <Form onSubmit={handleSubmit(onSubmit)}>
