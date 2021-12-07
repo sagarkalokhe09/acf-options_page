@@ -82,7 +82,7 @@ const Header = () => {
                   <NavDropdown
                     title={user.photoURL ? <Image alt={user.displayName} title={user.displayName} src={user.photoURL} roundedCircle width='30' height='30' /> : user.displayName}
                     id='user-nav-dropdown'
-                    className='px-4 py-3'>
+                    className='px-4 py-2'>
                     <NavDropdown.Item href='#logout' title='logout' onClick={logout}>
                       {t('header.logout')}
                     </NavDropdown.Item>

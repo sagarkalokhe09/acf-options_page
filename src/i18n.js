@@ -29,7 +29,7 @@ i18n
       loadPath: `${process.env.REACT_APP_I18N}/{{lng}}/{{ns}}.json`,
       addPath: '/locales/add/{{lng}}/{{ns}}',
       allowMultiLoading: true,
-      reloadInterval: process.env.NODE_ENV === 'development' ? 60000 : false,
+      reloadInterval: process.env.NODE_ENV === 'development' ? 600000 : false,
       crossDomain: true
     },
     interpolation: {
