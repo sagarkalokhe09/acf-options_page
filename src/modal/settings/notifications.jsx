@@ -22,24 +22,24 @@ const SettingNotifications = ({ notifications, setSettings }) => {
         </Card.Title>
         <Row>
           <Col md={6} sm={12}>
-            <Form.Check type='switch' name='onError' defaultChecked={notifications.onError} onChange={onUpdate} label={t('modal.settings.notification.error')} />
-            <Form.Check type='switch' name='onAction' defaultChecked={notifications.onAction} onChange={onUpdate} label={t('modal.settings.notification.action')} />
-            <Form.Check type='switch' name='onBatch' defaultChecked={notifications.onBatch} onChange={onUpdate} label={t('modal.settings.notification.batch')} />
-            <Form.Check type='switch' name='onConfig' defaultChecked={notifications.onConfig} onChange={onUpdate} label={t('modal.settings.notification.config')} />
+            <Form.Check type='switch' name='onError' checked={notifications.onError} onChange={onUpdate} label={t('modal.settings.notification.error')} />
+            <Form.Check type='switch' name='onAction' checked={notifications.onAction} onChange={onUpdate} label={t('modal.settings.notification.action')} />
+            <Form.Check type='switch' name='onBatch' checked={notifications.onBatch} onChange={onUpdate} label={t('modal.settings.notification.batch')} />
+            <Form.Check type='switch' name='onConfig' checked={notifications.onConfig} onChange={onUpdate} label={t('modal.settings.notification.config')} />
           </Col>
           <Col className='d-flex justify-content-around flex-column' md={6} sm={12}>
             <Form.Check
               type='switch'
               onChange={onUpdate}
               name='sound'
-              defaultChecked={notifications.sound}
+              checked={notifications.sound}
               label={
                 <span>
                   {t('modal.settings.notification.sound')} {notifications.sound ? <VolumeUp /> : <VolumeMute />}
                 </span>
               }
             />
-            <Form.Check type='switch' disabled={!user} onChange={onUpdate} defaultChecked={notifications.discord} name='discord' label={t('modal.settings.notification.discord.title')} />
+            <Form.Check type='switch' disabled={!user} onChange={onUpdate} checked={notifications.discord} name='discord' label={t('modal.settings.notification.discord.title')} />
             <Form.Text>
               <Trans i18nKey='modal.settings.notification.discord.hint'>
                 You need to login and join our

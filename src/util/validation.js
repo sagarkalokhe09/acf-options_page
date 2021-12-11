@@ -18,14 +18,21 @@ export const clearEmptyField = data => {
   })
 }
 
-document.addEventListener('change', e => {
+document.addEventListener('keyup', e => {
   const ele = e.target
-  const { value, pattern } = ele
+  const { value, pattern, required } = ele
+  let isValid = true
   if (pattern) {
     if (!REGEX[pattern].test(value)) {
-      ele.classList.add(IN_VALID_CLASS)
-    } else {
-      ele.classList.remove(IN_VALID_CLASS)
+      isValid = false
     }
+  }
+  if (isValid && required && !value) {
+    isValid = false
+  }
+  if (isValid) {
+    ele.classList.remove(IN_VALID_CLASS)
+  } else {
+    ele.classList.add(IN_VALID_CLASS)
   }
 })

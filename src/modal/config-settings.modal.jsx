@@ -1,49 +1,22 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import PropTypes from 'prop-types'
-import { useForm } from 'react-hook-form'
-import { Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
+import { Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
 import { LOAD_TYPES, START_TYPES, defaultConfig } from '@dhruv-techapps/acf-common'
 import { Trans, useTranslation } from 'react-i18next'
-import { clearEmptyField, GTAG, REGEX_START_TIME } from '../util'
+import { GTAG } from '../util'
 import { HotkeyPopover } from '../popover'
 import { StartTimePopover } from '../popover/start-time.popover'
+import { getElementProps } from '../util/element'
 
-const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
+const ConfigSettingsModal = forwardRef(({ config, configIndex, setConfigs }, ref) => {
   const { t } = useTranslation()
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors, isDirty, isValid }
-  } = useForm({
-    mode: 'onBlur',
-    defaultValues: defaultConfig,
-    reValidateMode: 'onChange',
-    shouldFocusError: true
-  })
-  const startType = watch('startType')
   const [show, setShow] = useState(false)
-
-  const onSubmit = data => {
-    clearEmptyField(data)
-    setConfigs(configs =>
-      configs.map((config, index) => {
-        if (index === configIndex) {
-          return { ...config, ...data }
-        }
-        return config
-      })
-    )
-    setShow(false)
-    GTAG.event({ category: 'Config-Settings', Config: 'Click', label: 'Save' })
-  }
+  const [message, setMessage] = useState()
 
   useImperativeHandle(ref, () => ({
-    showSettings(config) {
+    showSettings() {
       GTAG.modalview({ title: 'Config Settings', url: window.location.href, path: '/settings/config' })
       setShow(true)
-      reset(config)
     }
   }))
 
@@ -63,16 +36,34 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
     if (e.shiftKey) {
       value += 'Shift + '
     }
-    if (e.keyCode >= 65 && e.keyCode < 91) {
-      value += String.fromCharCode(e.keyCode)
+    if (value) {
+      if (e.keyCode >= 65 && e.keyCode < 91) {
+        value += String.fromCharCode(e.keyCode)
+        e.currentTarget.value = value
+      }
     }
-    e.currentTarget.value = value
     return false
+  }
+
+  const onUpdate = e => {
+    const update = getElementProps(e)
+    if (update) {
+      setConfigs(configs =>
+        configs.map((_config, index) => {
+          if (index === configIndex) {
+            return { ..._config, ...update }
+          }
+          return _config
+        })
+      )
+      setMessage(t('modal.configSettings.saveMessage'))
+      setTimeout(setMessage, 1500)
+    }
   }
 
   return (
     <Modal show={show} size='lg' onHide={handleClose}>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.configSettings.title')}</Modal.Title>
         </Modal.Header>
@@ -82,8 +73,26 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
               <Row>
                 <Col md={12} sm={12}>
                   {t('modal.configSettings.start')}&nbsp;
-                  <Form.Check inline type='radio' id='startAuto' value={START_TYPES.AUTO} {...register('startType')} label={t('modal.configSettings.auto')} />
-                  <Form.Check inline type='radio' id='startManual' value={START_TYPES.MANUAL} {...register('startType')} label={t('modal.configSettings.manual')} />
+                  <Form.Check
+                    inline
+                    type='radio'
+                    id='startAuto'
+                    name='startType'
+                    value={START_TYPES.AUTO}
+                    onChange={onUpdate}
+                    checked={config.startType === START_TYPES.AUTO}
+                    label={t('modal.configSettings.auto')}
+                  />
+                  <Form.Check
+                    inline
+                    type='radio'
+                    id='startManual'
+                    name='startType'
+                    onChange={onUpdate}
+                    value={START_TYPES.MANUAL}
+                    checked={config.startType === START_TYPES.MANUAL}
+                    label={t('modal.configSettings.manual')}
+                  />
                   <small>
                     <ul className='mb-0 mt-2'>
                       <li>
@@ -98,25 +107,35 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
               </Row>
               <hr />
               <Row>
-                <Col md={12} sm={12} hidden={startType === START_TYPES.AUTO}>
+                <Col md={12} sm={12} hidden={config.startType === START_TYPES.AUTO}>
                   <Form.Group controlId='hotkey'>
-                    <FormControl
-                      placeholder={defaultConfig.hotkey}
-                      aria-label={defaultConfig.hotkey}
-                      aria-describedby='hotkey'
-                      onKeyDown={onKeyDown}
-                      {...register('hotkey', { pattern: /^(Ctrl \+ |Alt \+ |Shift \+ )+\D$/ })}
-                      isInvalid={errors.hotkey}
-                    />
+                    <FormControl placeholder={defaultConfig.hotkey} onKeyDown={onKeyDown} defaultValue={config.hotkey} name='hotkey' onBlur={onUpdate} pattern='HOT_KEY' />
                     <Form.Label>{t('modal.configSettings.hotkey')}</Form.Label>
                     <HotkeyPopover />
-                    <Form.Control.Feedback type='invalid'>{errors.hotkey && t('error.hotKey')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-                <Col md={12} sm={12} hidden={startType === START_TYPES.MANUAL}>
+                <Col md={12} sm={12} hidden={config.startType === START_TYPES.MANUAL}>
                   {t('modal.configSettings.extensionLoad')}&nbsp;
-                  <Form.Check inline type='radio' id='loadTypeWindow' value={LOAD_TYPES.WINDOW} {...register('loadType')} label={t('modal.configSettings.window')} />
-                  <Form.Check inline type='radio' id='loadTypeDocument' value={LOAD_TYPES.DOCUMENT} {...register('loadType')} label={t('modal.configSettings.document')} />
+                  <Form.Check
+                    inline
+                    type='radio'
+                    id='loadTypeWindow'
+                    value={LOAD_TYPES.WINDOW}
+                    onChange={onUpdate}
+                    checked={config.loadType === LOAD_TYPES.WINDOW}
+                    name='loadType'
+                    label={t('modal.configSettings.window')}
+                  />
+                  <Form.Check
+                    inline
+                    type='radio'
+                    id='loadTypeDocument'
+                    value={LOAD_TYPES.DOCUMENT}
+                    onChange={onUpdate}
+                    checked={config.loadType === LOAD_TYPES.DOCUMENT}
+                    name='loadType'
+                    label={t('modal.configSettings.document')}
+                  />
                   <small>
                     <ul className='mb-0 mt-2'>
                       <li>
@@ -136,29 +155,21 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
               <Row>
                 <Col md='12' sm='12'>
                   <Form.Group controlId='config-start-time'>
-                    <FormControl
-                      {...register('startTime', { pattern: REGEX_START_TIME })}
-                      autoComplete='off'
-                      isInvalid={!!errors.startTime}
-                      placeholder='HH:mm:ss:fff'
-                      aria-label='HH:mm:ss:fff'
-                      list='start-time'
-                      aria-describedby='config-start-time'
-                    />
+                    <FormControl name='startTime' pattern='START_TIME' autoComplete='off' defaultValue={config.startTime} onBlur={onUpdate} placeholder='HH:mm:ss:fff' list='start-time' />
                     <Form.Label>{t('configuration.startTime')}&nbsp;</Form.Label>
                     <StartTimePopover />
-                    <Form.Control.Feedback type='invalid'>{errors.startTime && t('error.startTime')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>{t('error.startTime')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
             </Card.Body>
           </Card>
         </Modal.Body>
-        <Modal.Footer>
-          <Button type='submit' disabled={!isValid || !isDirty} variant='primary px-5'>
-            {t('common.save')}
-          </Button>
-        </Modal.Footer>
+        {message && (
+          <Modal.Footer>
+            <span className='text-success'>{message}</span>
+          </Modal.Footer>
+        )}
       </Form>
     </Modal>
   )
@@ -166,7 +177,14 @@ const ConfigSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
 
 ConfigSettingsModal.propTypes = {
   configIndex: PropTypes.number.isRequired,
+  config: PropTypes.shape({
+    startType: PropTypes.string,
+    hotkey: PropTypes.string,
+    loadType: PropTypes.string,
+    startTime: PropTypes.string
+  }).isRequired,
   setConfigs: PropTypes.func.isRequired
 }
+ConfigSettingsModal.displayName = 'ConfigSettingsModal'
 const memo = React.memo(ConfigSettingsModal)
 export { memo as ConfigSettingsModal }

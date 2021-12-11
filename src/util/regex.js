@@ -8,4 +8,5 @@ REGEX.NUMBER = /^-?\d+$/
 REGEX.FLOAT = /^([\d]+[.])?[\d]+$/
 REGEX.INTERVAL = /^(([\d]+[.])?[\d]+e)?([\d]+[.])?[\d]+$/
 REGEX.START_TIME = /^\d{2}:\d{2}:\d{2}:\d{3}$/
+REGEX.HOT_KEY = /^(Ctrl \+ |Alt \+ |Shift \+ )+\D$/
 export { REGEX }

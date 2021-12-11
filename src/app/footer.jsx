@@ -70,11 +70,11 @@ const Footer = ({ version }) => {
                   target='_blank'
                   rel='noopener noreferrer'
                   title='examples'
-                  href={process.env.REACT_APP_EXAMPLES}
+                  href={process.env.REACT_APP_CONFIGS}
                   onClick={() => {
-                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Examples' })
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Configurations' })
                   }}>
-                  {t('footer.examples')}
+                  {t('footer.Configurations')}
                 </a>
               </li>
               <li>

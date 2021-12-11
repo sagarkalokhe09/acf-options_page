@@ -1,6 +1,6 @@
-import React, { createRef, useContext } from 'react'
+import React, { createRef, useContext, useState } from 'react'
 import PropTypes from 'prop-types'
-import { ElementUtil, Logger } from '@dhruv-techapps/core-common'
+import { Logger } from '@dhruv-techapps/core-common'
 import { ExportService, ImportService } from '@dhruv-techapps/core-services'
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
@@ -11,23 +11,28 @@ import Batch from '../batch'
 import { Format, GTAG, ThreeDots, numberWithExponential } from '../../../util'
 import { DropdownToggle } from '../../../components'
 import { ThemeContext } from '../../../_providers/ThemeProvider'
+import { getElementProps } from '../../../util/element'
 
 const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef, confirmRef, configsLength, setSelected }) => {
   const { theme } = useContext(ThemeContext)
   const { t } = useTranslation()
   const importFiled = createRef()
+  const [message, setMessage] = useState()
 
-  const onChange = e => {
-    const { name, value } = ElementUtil.getNameValue(e.currentTarget)
-    setConfigs(prevConfigs =>
-      prevConfigs.map((prevConfig, index) => {
-        if (index === configIndex) {
-          return { ...prevConfigs[configIndex], [name]: value }
-        }
-        return prevConfig
-      })
-    )
-    GTAG.event({ category: 'Action', action: 'Change', label: name, value })
+  const onUpdate = e => {
+    const update = getElementProps(e)
+    if (update) {
+      setConfigs(prevConfigs =>
+        prevConfigs.map((prevConfig, index) => {
+          if (index === configIndex) {
+            return { ...prevConfig, ...update }
+          }
+          return prevConfig
+        })
+      )
+      setMessage(t('configuration.saveMessage'))
+      setTimeout(setMessage, 1500)
+    }
   }
 
   const exportConfig = () => {
@@ -123,10 +128,11 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef, 
                 </Badge>
               )}
             </div>
+            <small className='text-success ms-3'>{message}</small>
           </Col>
           <Col xs='auto' className='d-flex align-items-center'>
             <Form>
-              <Form.Check type='switch' className='m-0' name='enable' id='config-enable' label={t('configuration.enable')} checked={config.enable} onChange={onChange} />
+              <Form.Check type='switch' className='m-0' name='enable' id='config-enable' label={t('configuration.enable')} checked={config.enable} onChange={onUpdate} />
             </Form>
             <Dropdown>
               <Dropdown.Toggle as={DropdownToggle} id='config-dropdown' className='py-0 pe-0'>
@@ -152,7 +158,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef, 
           </Col>
         </Row>
       </Card.Header>
-      <ConfigBody config={config} configIndex={configIndex} setConfigs={setConfigs} />
+      <ConfigBody config={config} configIndex={configIndex} setConfigs={setConfigs} onUpdate={onUpdate} />
     </Card>
   )
 }

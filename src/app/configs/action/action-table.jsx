@@ -1,7 +1,7 @@
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTable } from 'react-table'
-import { Button, Dropdown, Form, Table } from 'react-bootstrap'
+import { Dropdown, Form, Table } from 'react-bootstrap'
 import { defaultAction } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
 import { EditableCell } from './editable-cell'
@@ -11,35 +11,16 @@ import { ElementFinderPopover, ValuePopover } from '../../../popover'
 import { DropdownToggle } from '../../../components'
 import { ThemeContext } from '../../../_providers/ThemeProvider'
 
-const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, toastRef, actionSettingsRef }, ref) => {
+const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, actionSettingsRef, setMessage, setError }, ref) => {
   const { t } = useTranslation()
   const [data, setData] = useState(actions)
   const { theme } = useContext(ThemeContext)
-  const [error, setError] = useState()
+
   const confirmRef = useRef()
   const didMountRef = useRef(true)
   const didUpdateRef = useRef(false)
-
-  useImperativeHandle(ref, () => ({
-    addAction() {
-      setData([...data, { ...defaultAction, focus: true }])
-      didUpdateRef.current = true
-    }
-  }))
-
-  useEffect(() => {
-    if (didMountRef.current) {
-      didMountRef.current = false
-      return
-    }
-    setData(actions)
-  }, [actions])
-
-  // Set our editable cell renderer as the default Cell renderer
-  const defaultColumn = {
-    Cell: EditableCell
-  }
-
+  const defaultColumn = { Cell: EditableCell }
+  const initialState = { hiddenColumns }
   const columns = React.useMemo(
     () => [
       {
@@ -87,7 +68,59 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
     [t]
   )
 
-  const initialState = { hiddenColumns }
+  const validateActions = () => {
+    let isValid = true
+    data.forEach((action, index) => {
+      document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`).classList.remove('is-invalid')
+      if (!action.elementFinder) {
+        document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`).classList.add('is-invalid')
+        isValid = false
+      }
+    })
+    return isValid
+  }
+
+  const saveActions = () => {
+    setError()
+    if (validateActions()) {
+      setConfigs(configs =>
+        configs.map((config, index) => {
+          if (index === configIndex) {
+            config.actions = [...data]
+            return config
+          }
+          return config
+        })
+      )
+      didUpdateRef.current = false
+      setMessage(t('action.saveMessage'))
+      setTimeout(setMessage, 1500)
+    } else {
+      setError(t('error.elementFinder'))
+    }
+    GTAG.event({ category: 'Action', action: 'Click', label: 'Save' })
+  }
+
+  useImperativeHandle(ref, () => ({
+    addAction() {
+      setData([...data, { ...defaultAction, focus: true }])
+      didUpdateRef.current = true
+    }
+  }))
+
+  useEffect(() => {
+    if (didMountRef.current) {
+      didMountRef.current = false
+      return
+    }
+    setData(actions)
+  }, [actions])
+
+  useEffect(() => {
+    if (didUpdateRef.current) {
+      saveActions()
+    }
+  }, [data])
 
   const updateAction = (rowIndex, columnId, value) => {
     setData(prevActions =>
@@ -105,41 +138,6 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
     setData(prevActions => prevActions.filter((_, index) => index !== rowIndex))
     didUpdateRef.current = true
     GTAG.event({ category: 'Action', action: 'Click', label: 'Remove' })
-  }
-
-  const validateActions = () => {
-    let isValid = true
-    data.forEach((action, index) => {
-      document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`).classList.remove('is-invalid')
-      if (!action.elementFinder) {
-        document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`).classList.add('is-invalid')
-        isValid = false
-      }
-    })
-    return isValid
-  }
-
-  const saveActions = e => {
-    e.preventDefault()
-    setError()
-    if (validateActions()) {
-      setConfigs(configs =>
-        configs.map((config, index) => {
-          if (index === configIndex) {
-            config.actions = [...data]
-            return config
-          }
-          return config
-        })
-      )
-      didUpdateRef.current = false
-      toastRef.current.push({
-        body: t('toast.action.save.body')
-      })
-    } else {
-      setError(t('error.elementFinder'))
-    }
-    GTAG.event({ category: 'Action', action: 'Click', label: 'Save' })
   }
 
   const removeActionConfirm = rowIndex => {
@@ -194,6 +192,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
       GTAG.event({ category: 'Action', action: 'Move', label: 'Up' })
     }
   }
+
   const moveDown = (e, rowId) => {
     if (e.currentTarget.getAttribute('disabled') === null) {
       setData(prevActions => [...arrayMove(prevActions, +rowId, +rowId + 1)])
@@ -201,8 +200,9 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
       GTAG.event({ category: 'Action', action: 'Move', label: 'Down' })
     }
   }
+
   return (
-    <Form onSubmit={saveActions}>
+    <Form>
       <Table {...getTableProps()} id='actions' bordered hover variant={theme} className='mb-0'>
         <thead>
           {headerGroups.map((headerGroup, headerGroupIndex) => (
@@ -262,14 +262,6 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
           })}
         </tbody>
       </Table>
-      {didUpdateRef.current && (
-        <div className='d-flex justify-content-end align-items-center my-2 px-2'>
-          <span className='text-danger me-3'>{error}</span>
-          <Button type='submit' variant='primary px-5'>
-            {t('common.save')}
-          </Button>
-        </div>
-      )}
       <ConfirmModal ref={confirmRef} />
     </Form>
   )
@@ -292,6 +284,8 @@ ActionTable.propTypes = {
   actionSettingsRef: PropTypes.shape({ current: PropTypes.shape({ showSettings: PropTypes.func.isRequired }) }).isRequired,
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
+  setMessage: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
   hiddenColumns: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 export default ActionTable

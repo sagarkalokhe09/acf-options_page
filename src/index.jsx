@@ -4,7 +4,6 @@ import * as serviceWorker from './serviceWorker'
 import './index.scss'
 import { GTAG, disableContextMenu } from './util'
 import App from './App'
-// import i18n (needs to be bundled ;))
 import './i18n'
 
 window.react_env = process.env

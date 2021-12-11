@@ -17,6 +17,8 @@ const Action = props => {
   const [hiddenColumns, setHiddenColumns] = useState(LocalStorage.getItem(HIDDEN_COLUMN_KEY, defaultHiddenColumns))
   const actionTableRef = useRef()
   const didMountRef = useRef(true)
+  const [message, setMessage] = useState()
+  const [error, setError] = useState()
 
   const onColumnChange = e => {
     const column = e.currentTarget.getAttribute('data-column')
@@ -42,7 +44,11 @@ const Action = props => {
     <Card bg={theme} text={theme === 'light' ? 'dark' : 'white'}>
       <Card.Header as='h6'>
         <Row>
-          <Col className='d-flex align-items-center'>{t('action.title')}</Col>
+          <Col className='d-flex align-items-center'>
+            {t('action.title')}
+            <small className='text-success ms-3'>{message}</small>
+            <small className='text-danger ms-3'>{error}</small>
+          </Col>
           <Col xs='auto' className='d-flex align-items-center'>
             <Button variant='outline-primary px-4' onClick={addAction}>
               {t('action.add')}
@@ -70,7 +76,7 @@ const Action = props => {
         </Row>
       </Card.Header>
       <Card.Body className='p-0'>
-        <ActionTable ref={actionTableRef} {...props} hiddenColumns={hiddenColumns} />
+        <ActionTable ref={actionTableRef} {...props} hiddenColumns={hiddenColumns} setMessage={setMessage} setError={setError} />
       </Card.Body>
     </Card>
   )

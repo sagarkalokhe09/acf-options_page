@@ -13,7 +13,7 @@ import { SettingRetry } from './settings/retry'
 const SettingsModal = ({ show, handleClose }) => {
   const { t } = useTranslation()
   const { mode, setMode } = useContext(ModeContext)
-  const [settings, setSettings] = useState()
+  const [settings, setSettings] = useState(defaultSettings)
   const [loading, setLoading] = useState(true)
   const [apiError, setApiError] = useState()
   const [message, setMessage] = useState()
@@ -72,11 +72,11 @@ const SettingsModal = ({ show, handleClose }) => {
                 <Card.Body>
                   <Row>
                     <Col md={6} sm={12}>
-                      <Form.Check type='switch' name='checkiFrames' onChange={onUpdate} defaultChecked={settings.checkiFrames} label={t('modal.settings.checkIFrames')} />
+                      <Form.Check type='switch' name='checkiFrames' onChange={onUpdate} checked={settings.checkiFrames} label={t('modal.settings.checkIFrames')} />
                       <small className='text-muted'>{t('modal.settings.checkIFramesHint')}</small>
                     </Col>
                     <Col md={6} sm={12}>
-                      <Form.Check type='switch' defaultChecked={mode === 'pro'} onChange={toggleMode} label={t('modal.settings.advance')} />
+                      <Form.Check type='switch' checked={mode === 'pro'} onChange={toggleMode} label={t('modal.settings.advance')} />
                       <small className='text-muted'>{t('modal.settings.advanceHint')}</small>
                     </Col>
                   </Row>

@@ -17,4 +17,13 @@ const getElementProps = e => {
   return { [name]: value }
 }
 
-export { getElementProps }
+const updateForm = (formId, data) => {
+  const form = document.querySelector(`#${formId}`)
+  if (form) {
+    Array.from(form.elements).forEach(element => {
+      element.value = data[element.name] || ''
+    })
+  }
+}
+
+export { getElementProps, updateForm }

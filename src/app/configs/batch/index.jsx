@@ -1,43 +1,50 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Card, Col, Form, Row } from 'react-bootstrap'
-import { ElementUtil } from '@dhruv-techapps/core-common'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import BatchBody from './batch-body'
-import { GTAG, numberWithExponential } from '../../../util'
+import { numberWithExponential } from '../../../util'
 import { ThemeContext } from '../../../_providers/ThemeProvider'
+import { getElementProps } from '../../../util/element'
 
 const Batch = ({ batch, configIndex, setConfigs }) => {
   const { theme } = useContext(ThemeContext)
-
+  const [message, setMessage] = useState()
   const { t } = useTranslation()
-  const onChange = e => {
-    const { name, value } = ElementUtil.getNameValue(e.currentTarget)
-    setConfigs(configs =>
-      configs.map((config, index) => {
-        if (index === configIndex) {
-          config.batch = { ...config.batch, [name]: value }
+
+  const onUpdate = e => {
+    const update = getElementProps(e)
+    if (update) {
+      setConfigs(configs =>
+        configs.map((config, index) => {
+          if (index === configIndex) {
+            config.batch = { ...config.batch, ...update }
+            return config
+          }
           return config
-        }
-        return config
-      })
-    )
-    GTAG.event({ category: 'Batch', action: 'Change', label: 'Refresh', value: value })
+        })
+      )
+      setMessage(t('batch.saveMessage'))
+      setTimeout(setMessage, 1500)
+    }
   }
 
   return (
     <Card className='mb-4' bg={theme} text={theme === 'light' ? 'dark' : 'white'}>
       <Card.Header as='h6'>
         <Row>
-          <Col>{t('batch.title')}</Col>
+          <Col>
+            {t('batch.title')}
+            <small className='text-success ms-3'>{message}</small>
+          </Col>
           <Col xs='auto' className='d-flex align-items-center justify-content-end'>
             <Form>
-              <Form.Check type='switch' id='batch-refresh' label={t('batch.refresh')} name='refresh' checked={batch.refresh} onChange={onChange} />
+              <Form.Check type='switch' id='batch-refresh' label={t('batch.refresh')} name='refresh' checked={batch.refresh} onChange={onUpdate} />
             </Form>
           </Col>
         </Row>
       </Card.Header>
-      {!batch.refresh && <BatchBody batch={batch} configIndex={configIndex} setConfigs={setConfigs} />}
+      {!batch.refresh && <BatchBody batch={batch} configIndex={configIndex} onUpdate={onUpdate} />}
     </Card>
   )
 }
