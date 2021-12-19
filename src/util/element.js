@@ -21,7 +21,11 @@ const updateForm = (formId, data) => {
   const form = document.querySelector(`#${formId}`)
   if (form) {
     Array.from(form.elements).forEach(element => {
-      element.value = data[element.name] || ''
+      if (element.type === 'radio') {
+        element.checked = data[element.name] === element.value
+      } else if (element.type !== 'checkbox') {
+        element.value = data[element.name] || ''
+      }
     })
   }
 }

@@ -84,7 +84,7 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
             <Card.Body>
               <Row>
                 <Col md={12} sm={12}>
-                  <Form.Check type='switch' name='iframeFirst' value={settings.iframeFirst} onChange={onUpdate} label={t('modal.actionSettings.iframeFirst')} />
+                  <Form.Check type='switch' name='iframeFirst' value={settings.iframeFirst} checked={settings.iframeFirst} onChange={onUpdate} label={t('modal.actionSettings.iframeFirst')} />
                   <small className='text-muted'>{t('modal.actionSettings.iframeFirstHint')}</small>
                 </Col>
               </Row>

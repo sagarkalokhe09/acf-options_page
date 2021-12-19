@@ -1,17 +1,24 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Card, Col, Form, FormControl, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { numberWithExponential } from '../../../util'
 import { ThemeContext, ModeContext } from '../../../_providers'
+import { updateForm } from '../../../util/element'
+
+const FORM_ID = 'config-body'
 
 const ConfigBody = ({ config, onUpdate }) => {
   const { theme } = useContext(ThemeContext)
   const { mode } = useContext(ModeContext)
   const { t } = useTranslation()
 
+  useEffect(() => {
+    updateForm(FORM_ID, config)
+  }, [config])
+
   return (
-    <Form>
+    <Form id={FORM_ID}>
       <Card.Body bg={theme.toLowerCase()} text={theme.toLowerCase() === 'light' ? 'dark' : 'white'}>
         <Row>
           <Col md='12' sm='12' className='mb-3'>

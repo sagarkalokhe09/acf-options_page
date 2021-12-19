@@ -64,6 +64,11 @@ function App() {
                 <option value='1'>1</option>
                 <option value='2'>2</option>
               </datalist>
+              <datalist id='recheck'>
+                <option value='-2'>&infin; Infinity</option>
+                <option value='1'>1</option>
+                <option value='2'>2</option>
+              </datalist>
               <datalist id='repeat'>
                 <option value='-2'>&infin; Infinity</option>
                 <option value='1'>1</option>

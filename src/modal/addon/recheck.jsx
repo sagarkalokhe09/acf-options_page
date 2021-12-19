@@ -10,7 +10,7 @@ const AddonRecheck = ({ addon: { recheck, recheckInterval, recheckOption }, onUp
     <Row>
       <Col md={6} sm={12}>
         <Form.Group controlId='addon-recheck'>
-          <FormControl placeholder='0' onBlur={onUpdate} defaultValue={recheck} type='number' pattern='NUMBER' list='retry' name='retry' />
+          <FormControl placeholder='0' onBlur={onUpdate} defaultValue={recheck} type='number' pattern='NUMBER' list='recheck' name='recheck' />
           <Form.Label>{t('modal.addon.recheck.title')}</Form.Label>
           <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
         </Form.Group>
