@@ -5,7 +5,6 @@ import { LOAD_TYPES, START_TYPES, defaultConfig } from '@dhruv-techapps/acf-comm
 import { Trans, useTranslation } from 'react-i18next'
 import { GTAG } from '../util'
 import { HotkeyPopover } from '../popover'
-import { StartTimePopover } from '../popover/start-time.popover'
 import { getElementProps } from '../util/element'
 
 const ConfigSettingsModal = forwardRef(({ config, configIndex, setConfigs }, ref) => {
@@ -154,12 +153,15 @@ const ConfigSettingsModal = forwardRef(({ config, configIndex, setConfigs }, ref
             <Card.Body>
               <Row>
                 <Col md='12' sm='12'>
-                  <Form.Group controlId='config-start-time'>
-                    <FormControl name='startTime' pattern='START_TIME' autoComplete='off' defaultValue={config.startTime} onBlur={onUpdate} placeholder='HH:mm:ss:fff' list='start-time' />
-                    <Form.Label>{t('configuration.startTime')}&nbsp;</Form.Label>
-                    <StartTimePopover />
-                    <Form.Control.Feedback type='invalid'>{t('error.startTime')}</Form.Control.Feedback>
-                  </Form.Group>
+                  <b className='me-2'>Start Time :</b>
+                  <Trans i18nKey='popover.startTime.content'>
+                    Try
+                    <a href='https://scheduleurl.com/docs/1.0/getting-started/download/' target='_blank' rel='noopener noreferrer'>
+                      Schedule URL
+                    </a>
+                    our new browser extension.
+                    <br /> it&apos;s used to schedule webpage / URL at particular day and time.
+                  </Trans>
                 </Col>
               </Row>
             </Card.Body>

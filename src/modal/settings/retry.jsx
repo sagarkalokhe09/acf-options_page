@@ -7,7 +7,7 @@ import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common'
 const SettingRetry = ({ settings, onUpdate }) => {
   const { t } = useTranslation()
   return (
-    <Card className='mb-3'>
+    <Card>
       <Card.Body>
         <Row className='mb-2 mb-md-0'>
           <Col md={6} sm={12}>

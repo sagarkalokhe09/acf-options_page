@@ -69,12 +69,12 @@ const Footer = ({ version }) => {
                   className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
-                  title='examples'
+                  title='configuration'
                   href={process.env.REACT_APP_CONFIGS}
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Configurations' })
                   }}>
-                  {t('footer.Configurations')}
+                  {t('footer.configuration')}
                 </a>
               </li>
               <li>

@@ -27,3 +27,5 @@ console.error = (function () {
     GTAG.exception({ description: args[0], fatal: true })
   }
 })()
+
+serviceWorker.unregister()
