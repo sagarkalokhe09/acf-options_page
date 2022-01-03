@@ -2,44 +2,43 @@
 import React, { Suspense, useEffect, useRef, useState } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { ManifestService } from '@dhruv-techapps/core-services'
+import { Col, Container, Row } from 'react-bootstrap'
 import Header from './app/header'
 import Footer from './app/footer'
-import { ToastHandler } from './components'
 import Configs from './app/configs/configs'
-import { AdsBlockerModal, ExtensionNotFoundModel } from './modal'
+import { ToastHandler, ErrorAlert, ExtensionNotFound } from './components'
+import { AdsBlockerModal, BlogModal } from './modal'
+import { ModeProvider, ThemeProvider, AuthProvider } from './_providers'
 import { GTAG } from './util'
-import AuthProvider from './_providers/AuthProvider'
-import ThemeProvider from './_providers/ThemeProvider'
-import { ModeProvider } from './_providers'
+
+const EXTENSION_NOT_FOUND = 'extension_not_found'
 
 function App() {
   const toastRef = useRef()
-  const extensionNotFoundRef = useRef()
   const adsBlockerRef = useRef()
+  const blogRef = useRef()
   const [manifest, setManifest] = useState({})
+  const [error, setError] = useState()
 
   useEffect(() => {
     ManifestService.values(['name', 'version'])
-      .then(setManifest)
-      .catch(error => {
-        if (error.message === 'Could not establish connection. Receiving end does not exist.' || error.message === "Cannot read properties of undefined (reading 'sendMessage')") {
-          GTAG.exception({ description: error.message, fatal: true })
-          setTimeout(() => {
-            if (extensionNotFoundRef.current) {
-              extensionNotFoundRef.current.show()
-            }
-          }, 1000)
+      .then(data => {
+        setManifest(data)
+        setTimeout(() => {
+          if (!window.adsLoaded) {
+            adsBlockerRef.current.show()
+          }
+        }, 1000)
+      })
+      .catch(_error => {
+        if (_error.message === 'Could not establish connection. Receiving end does not exist.' || _error.message === "Cannot read properties of undefined (reading 'sendMessage')") {
+          GTAG.exception({ description: _error.message, fatal: true })
+          setError({ message: EXTENSION_NOT_FOUND })
+        } else {
+          setError(_error.message)
         }
       })
     window.document.title = process.env.REACT_APP_NAME
-  }, [])
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (!window.adsLoaded) {
-        adsBlockerRef.current.show()
-      }
-    }, 1000)
   }, [])
 
   const REGEX_RANGE_STRING = '{6,12}'
@@ -52,12 +51,20 @@ function App() {
           <AuthProvider>
             <div>
               <Suspense fallback='loading'>
-                <Header />
-                <Configs toastRef={toastRef} />
+                <Header error={error} />
+                {error ? (
+                  <Container className='d-flex align-items-center justify-content-center' style={{ width: '100vh', height: 'calc(100vh - 330px)' }}>
+                    <Row>
+                      <Col xs={12}>{error.message === EXTENSION_NOT_FOUND ? <ExtensionNotFound /> : <ErrorAlert message={error} />}</Col>
+                    </Row>
+                  </Container>
+                ) : (
+                  <Configs toastRef={toastRef} blogRef={blogRef} />
+                )}
                 <Footer version={manifest.version || ''} />
                 <ToastHandler ref={toastRef} />
                 <AdsBlockerModal ref={adsBlockerRef} />
-                <ExtensionNotFoundModel ref={extensionNotFoundRef} />
+                <BlogModal ref={blogRef} />
               </Suspense>
               <datalist id='retry'>
                 <option value='-2'>&infin; Infinity</option>

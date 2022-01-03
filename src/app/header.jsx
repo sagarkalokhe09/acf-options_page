@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Container, Image, Nav, NavDropdown, Navbar } from 'react-bootstrap'
 import { BROWSER } from '@dhruv-techapps/core-common'
 import { StorageService } from '@dhruv-techapps/core-services'
@@ -10,7 +11,7 @@ import { AuthContext } from '../_providers/AuthProvider'
 import { auth } from '../firebase'
 import { ThemeContext } from '../_providers/ThemeProvider'
 
-const Header = () => {
+const Header = ({ error }) => {
   const { theme, setTheme } = useContext(ThemeContext)
   const [showSettings, setShowSettings] = useState(false)
   const [languages, setLanguages] = useState([])
@@ -74,32 +75,36 @@ const Header = () => {
               <Nav.Link onClick={toggleTheme} className='px-4 py-3'>
                 {theme !== 'light' ? <Sun width='24' height='24' title={t('header.theme.dark')} /> : <Moon width='24' height='24' title={t('header.theme.light')} />}
               </Nav.Link>
-              <Nav.Link onClick={openSettings} className='px-4 py-3'>
-                <GearFill width='24' height='24' title={t('header.settings')} />
-              </Nav.Link>
-              {user ? (
+              {!error.message && (
                 <>
-                  <NavDropdown
-                    title={user.photoURL ? <Image alt={user.displayName} title={user.displayName} src={user.photoURL} roundedCircle width='30' height='30' /> : user.displayName}
-                    id='user-nav-dropdown'
-                    className='px-4 py-2'>
-                    <NavDropdown.Item href='#logout' title='logout' onClick={logout}>
-                      {t('header.logout')}
-                    </NavDropdown.Item>
+                  <Nav.Link onClick={openSettings} className='px-4 py-3'>
+                    <GearFill width='24' height='24' title={t('header.settings')} />
+                  </Nav.Link>
+                  {user ? (
+                    <>
+                      <NavDropdown
+                        title={user.photoURL ? <Image alt={user.displayName} title={user.displayName} src={user.photoURL} roundedCircle width='30' height='30' /> : user.displayName}
+                        id='user-nav-dropdown'
+                        className='px-4 py-2'>
+                        <NavDropdown.Item href='#logout' title='logout' onClick={logout}>
+                          {t('header.logout')}
+                        </NavDropdown.Item>
+                      </NavDropdown>
+                    </>
+                  ) : (
+                    <Nav.Link onClick={login} className='px-4 py-3 fw-bolder'>
+                      {t('header.login')}
+                    </Nav.Link>
+                  )}
+                  <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase px-4 py-2 fw-bolder'>
+                    {languages.map((language, index) => (
+                      <NavDropdown.Item key={index} title={language} onClick={() => changeLanguage(language)} className='text-secondary'>
+                        {t(`language.${language}`)}
+                      </NavDropdown.Item>
+                    ))}
                   </NavDropdown>
                 </>
-              ) : (
-                <Nav.Link onClick={login} className='px-4 py-3 fw-bolder'>
-                  {t('header.login')}
-                </Nav.Link>
               )}
-              <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase px-4 py-2 fw-bolder'>
-                {languages.map((language, index) => (
-                  <NavDropdown.Item key={index} title={language} onClick={() => changeLanguage(language)} className='text-secondary'>
-                    {t(`language.${language}`)}
-                  </NavDropdown.Item>
-                ))}
-              </NavDropdown>
               <SettingsModal show={showSettings} handleClose={handleClose} />
             </Nav>
           </Navbar>
@@ -107,5 +112,11 @@ const Header = () => {
       </nav>
     </header>
   )
+}
+Header.defaultProps = {
+  error: {}
+}
+Header.propTypes = {
+  error: PropTypes.shape({ message: PropTypes.string })
 }
 export default Header

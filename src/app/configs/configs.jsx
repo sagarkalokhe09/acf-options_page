@@ -13,7 +13,7 @@ import { DropdownToggle, ErrorAlert, GoogleAds } from '../../components'
 import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ConfirmModal, ReorderConfigsModal } from '../../modal'
 import { ThemeContext, ModeContext } from '../../_providers'
 
-const Configs = ({ toastRef }) => {
+const Configs = ({ toastRef, blogRef }) => {
   const { theme } = useContext(ThemeContext)
   const { mode } = useContext(ModeContext)
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
@@ -73,6 +73,8 @@ const Configs = ({ toastRef }) => {
             _configs[selectedConfigIndex].actions.push(action)
           }
         }
+      } else if (object.version) {
+        blogRef.current.showBlog(object.version)
       }
     }
     return selectedConfigIndex
@@ -267,6 +269,7 @@ const Configs = ({ toastRef }) => {
   )
 }
 Configs.propTypes = {
-  toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired
+  toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired,
+  blogRef: PropTypes.shape({ current: PropTypes.shape({ showBlog: PropTypes.func.isRequired }) }).isRequired
 }
 export default Configs
