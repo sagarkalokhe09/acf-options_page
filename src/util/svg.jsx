@@ -11,3 +11,7 @@ export { ReactComponent as PatchQuestionFill } from 'bootstrap-icons/icons/patch
 export { ReactComponent as FilterRight } from 'bootstrap-icons/icons/filter.svg'
 export { ReactComponent as ChevronDown } from 'bootstrap-icons/icons/chevron-down.svg'
 export { ReactComponent as ChevronUp } from 'bootstrap-icons/icons/chevron-up.svg'
+export { ReactComponent as Instagram } from 'bootstrap-icons/icons/instagram.svg'
+export { ReactComponent as Discord } from 'bootstrap-icons/icons/discord.svg'
+export { ReactComponent as Twitter } from 'bootstrap-icons/icons/twitter.svg'
+export { ReactComponent as Github } from 'bootstrap-icons/icons/github.svg'

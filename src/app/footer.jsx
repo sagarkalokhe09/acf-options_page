@@ -3,7 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { BROWSER } from '@dhruv-techapps/core-common'
 import { useTranslation } from 'react-i18next'
-import { GTAG } from '../util'
+import { GTAG, Discord, Instagram, Twitter, Github } from '../util'
 
 const Footer = ({ version }) => {
   const { t } = useTranslation()
@@ -158,11 +158,26 @@ const Footer = ({ version }) => {
                   className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
+                  title='instagram'
+                  href={process.env.REACT_APP_INSTAGRAM}
+                  onClick={() => {
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Instagram' })
+                  }}>
+                  <Instagram className='me-2' />
+                  {t('footer.instagram')}
+                </a>
+              </li>
+              <li>
+                <a
+                  className='text-decoration-none'
+                  target='_blank'
+                  rel='noopener noreferrer'
                   href={process.env.REACT_APP_DISCORD}
                   title='discord'
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Discord' })
                   }}>
+                  <Discord className='me-2' />
                   {t('footer.discord')}
                 </a>
               </li>
@@ -176,6 +191,7 @@ const Footer = ({ version }) => {
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Twitter' })
                   }}>
+                  <Twitter className='me-2' />
                   {t('footer.twitter')}
                 </a>
               </li>
@@ -189,6 +205,7 @@ const Footer = ({ version }) => {
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Github' })
                   }}>
+                  <Github className='me-2' />
                   {t('footer.github')}
                 </a>
               </li>

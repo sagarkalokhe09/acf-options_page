@@ -2,20 +2,24 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
 import { LOAD_TYPES, START_TYPES, defaultConfig } from '@dhruv-techapps/acf-common'
+import { LocalStorage } from '@dhruv-techapps/core-common'
 import { Trans, useTranslation } from 'react-i18next'
 import { GTAG } from '../util'
 import { HotkeyPopover } from '../popover'
 import { getElementProps } from '../util/element'
+import { StartTimePopover } from '../popover/start-time.popover'
 
 const ConfigSettingsModal = forwardRef(({ config, configIndex, setConfigs }, ref) => {
   const { t } = useTranslation()
   const [show, setShow] = useState(false)
   const [message, setMessage] = useState()
+  const [dev, setDev] = useState(false)
 
   useImperativeHandle(ref, () => ({
     showSettings() {
       GTAG.modalview({ title: 'Config Settings', url: window.location.href, path: '/settings/config' })
       setShow(true)
+      setDev(LocalStorage.getItem('DEV'))
     }
   }))
 
@@ -153,15 +157,26 @@ const ConfigSettingsModal = forwardRef(({ config, configIndex, setConfigs }, ref
             <Card.Body>
               <Row>
                 <Col md='12' sm='12'>
-                  <b className='me-2'>Start Time :</b>
-                  <Trans i18nKey='popover.startTime.content'>
-                    Try
-                    <a href='https://scheduleurl.com/docs/1.0/getting-started/download/' target='_blank' rel='noopener noreferrer'>
-                      Schedule URL
-                    </a>
-                    our new browser extension.
-                    <br /> it&apos;s used to schedule webpage / URL at particular day and time.
-                  </Trans>
+                  {dev ? (
+                    <Form.Group controlId='config-start-time'>
+                      <FormControl name='startTime' pattern='START_TIME' autoComplete='off' defaultValue={config.startTime} onBlur={onUpdate} placeholder='HH:mm:ss:fff' list='start-time' />
+                      <Form.Label>{t('configuration.startTime')}&nbsp;</Form.Label>
+                      <StartTimePopover />
+                      <Form.Control.Feedback type='invalid'>{t('error.startTime')}</Form.Control.Feedback>
+                    </Form.Group>
+                  ) : (
+                    <>
+                      <b className='me-2'>Start Time :</b>
+                      <Trans i18nKey='popover.startTime.content'>
+                        Try
+                        <a href='https://scheduleurl.com/docs/1.0/getting-started/download/' target='_blank' rel='noopener noreferrer'>
+                          Schedule URL
+                        </a>
+                        our new browser extension.
+                        <br /> it&apos;s used to schedule webpage / URL at particular day and time.
+                      </Trans>
+                    </>
+                  )}
                 </Col>
               </Row>
             </Card.Body>
