@@ -288,4 +288,5 @@ ActionTable.propTypes = {
   setError: PropTypes.func.isRequired,
   hiddenColumns: PropTypes.arrayOf(PropTypes.string).isRequired
 }
+ActionTable.displayName = 'ActionTable'
 export default ActionTable

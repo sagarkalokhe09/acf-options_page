@@ -7,9 +7,10 @@ import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { auth } from '../firebase'
 
 export const AuthContext = createContext()
-const AuthProvider = ({ children }) => {
+function AuthProvider({ children }) {
   const history = useHistory()
   const [user, setUser] = useState(null)
+
   useEffect(() => {
     auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {

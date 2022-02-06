@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Form } from 'react-bootstrap'
 
 // Create an editable cell renderer
-export const EditableCell = ({ value: initialValue, data, row: { index }, column: { id, required, pattern, validate, dataType, list }, updateAction }) => {
+export function EditableCell({ value: initialValue, data, row: { index }, column: { id, required, pattern, validate, dataType, list }, updateAction }) {
   // We need to keep and update the state of the cell normally
   // We need to keep and update the state of the cell normally
   const [value, setValue] = React.useState(initialValue)

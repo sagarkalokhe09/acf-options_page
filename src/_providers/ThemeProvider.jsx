@@ -1,9 +1,9 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState, useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 export const ThemeContext = createContext()
 
-const ThemeProvider = ({ children }) => {
+function ThemeProvider({ children }) {
   const [theme, setTheme] = useState('light')
   useEffect(() => {
     setTheme(localStorage.getItem('theme') || 'light')
@@ -15,7 +15,8 @@ const ThemeProvider = ({ children }) => {
     localStorage.setItem('theme', theme)
   }, [theme])
 
-  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>
+  const themeMemo = useMemo(() => ({ theme, setTheme }), [])
+  return <ThemeContext.Provider value={themeMemo}>{children}</ThemeContext.Provider>
 }
 
 ThemeProvider.propTypes = {

@@ -1,9 +1,9 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState, useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 export const ModeContext = createContext()
 
-const ModeProvider = ({ children }) => {
+function ModeProvider({ children }) {
   const [mode, setMode] = useState('light')
   useEffect(() => {
     setMode(localStorage.getItem('mode') || 'light')
@@ -12,8 +12,8 @@ const ModeProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('mode', mode)
   }, [mode])
-
-  return <ModeContext.Provider value={{ mode, setMode }}>{children}</ModeContext.Provider>
+  const modeMemo = useMemo(() => ({ mode, setMode }), [])
+  return <ModeContext.Provider value={modeMemo}>{children}</ModeContext.Provider>
 }
 
 ModeProvider.propTypes = {

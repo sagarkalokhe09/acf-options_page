@@ -4,7 +4,7 @@ import { Card, Col, Form, FormControl, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common'
 
-const SettingRetry = ({ settings, onUpdate }) => {
+function SettingRetry({ settings, onUpdate }) {
   const { t } = useTranslation()
   return (
     <Card>

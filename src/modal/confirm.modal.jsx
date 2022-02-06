@@ -39,4 +39,5 @@ const ConfirmModal = forwardRef((props, ref) => {
     </Modal>
   )
 })
+ConfirmModal.displayName = 'ConfirmModal'
 export { ConfirmModal }

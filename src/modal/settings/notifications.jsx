@@ -6,7 +6,7 @@ import { VolumeMute, VolumeUp } from '../../util'
 import { AuthContext } from '../../_providers'
 import { getElementProps } from '../../util/element'
 
-const SettingNotifications = ({ notifications, setSettings }) => {
+function SettingNotifications({ notifications, setSettings }) {
   const { t } = useTranslation()
   const user = useContext(AuthContext)
   const onUpdate = e => {

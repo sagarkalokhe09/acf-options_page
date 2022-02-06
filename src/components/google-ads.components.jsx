@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 
-export const GoogleAds = ({ client, slot, format, className }) => {
+export function GoogleAds({ client, slot, format, className }) {
   useEffect(() => {
     if (window.location.href.match('.getautoclicker.com') !== null) {
       // eslint-disable-next-line no-extra-semi
@@ -11,7 +11,7 @@ export const GoogleAds = ({ client, slot, format, className }) => {
   if (window.location.href.match('.getautoclicker.com') !== null) {
     return <ins className={`${className} adsbygoogle`} style={{ display: 'block' }} data-ad-client={client} data-ad-slot={slot} data-ad-format={format} data-full-width-responsive='true' />
   }
-  return <></>
+  return null
 }
 GoogleAds.defaultProps = {
   className: ''

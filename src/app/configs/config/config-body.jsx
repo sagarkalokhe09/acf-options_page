@@ -8,7 +8,7 @@ import { updateForm } from '../../../util/element'
 
 const FORM_ID = 'config-body'
 
-const ConfigBody = ({ config, onUpdate }) => {
+function ConfigBody({ config, onUpdate }) {
   const { theme } = useContext(ThemeContext)
   const { mode } = useContext(ModeContext)
   const { t } = useTranslation()

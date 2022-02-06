@@ -3,7 +3,7 @@ import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import { InfoCircle } from '../util'
 
-export const HotkeyPopover = () => {
+export function HotkeyPopover() {
   const { t } = useTranslation()
   return (
     <OverlayTrigger

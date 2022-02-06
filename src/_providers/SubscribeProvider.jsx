@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 export const SubscribeContext = createContext()
 
-const SubscribeProvider = ({ children }) => {
+function SubscribeProvider({ children }) {
   const [subscription] = useState(null)
   useEffect(() => {}, [])
 

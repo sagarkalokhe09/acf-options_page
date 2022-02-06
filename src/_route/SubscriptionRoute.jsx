@@ -4,7 +4,7 @@ import { Redirect, Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { AuthContext, SubscribeContext } from '../_providers'
 
-const SubscriptionRoute = ({ component: Component, ...rest }) => {
+function SubscriptionRoute({ component: Component, ...rest }) {
   const user = useContext(AuthContext)
   const subscription = useContext(SubscribeContext)
   const subscriptionComp = props => (subscription ? <Component {...props} /> : <Redirect to={{ pathname: '/plan', state: { from: props.location } }} />)

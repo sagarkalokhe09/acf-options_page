@@ -7,7 +7,7 @@ import { updateForm } from '../../../util/element'
 
 const FORM_ID = 'batch-body'
 
-const BatchBody = ({ batch, onUpdate }) => {
+function BatchBody({ batch, onUpdate }) {
   const { t } = useTranslation()
 
   useEffect(() => {

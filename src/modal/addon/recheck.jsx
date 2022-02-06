@@ -4,7 +4,7 @@ import { Col, Form, FormControl, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { RECHECK_OPTIONS } from '@dhruv-techapps/acf-common'
 
-const AddonRecheck = ({ addon: { recheck, recheckInterval, recheckOption }, onUpdate }) => {
+function AddonRecheck({ addon: { recheck, recheckInterval, recheckOption }, onUpdate }) {
   const { t } = useTranslation()
   return (
     <Row>

@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import { BROWSER } from '@dhruv-techapps/core-common'
 import { Trans, useTranslation } from 'react-i18next'
 
-export const ExtensionNotFound = () => {
+export function ExtensionNotFound() {
   const { t } = useTranslation()
 
   const downloadClick = () => {

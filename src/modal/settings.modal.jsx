@@ -10,7 +10,7 @@ import { getElementProps } from '../util/element'
 import { SettingNotifications } from './settings/notifications'
 import { SettingRetry } from './settings/retry'
 
-const SettingsModal = ({ show, handleClose }) => {
+function SettingsModal({ show, handleClose }) {
   const { t } = useTranslation()
   const { mode, setMode } = useContext(ModeContext)
   const [settings, setSettings] = useState(defaultSettings)

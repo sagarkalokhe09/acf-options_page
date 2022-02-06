@@ -5,7 +5,7 @@ import { BROWSER } from '@dhruv-techapps/core-common'
 import { useTranslation } from 'react-i18next'
 import { GTAG, Discord, Instagram, Twitter, Github } from '../util'
 
-const Footer = ({ version }) => {
+function Footer({ version }) {
   const { t } = useTranslation()
 
   return (

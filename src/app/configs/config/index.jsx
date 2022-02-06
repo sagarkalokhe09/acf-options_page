@@ -13,7 +13,7 @@ import { DropdownToggle } from '../../../components'
 import { ThemeContext } from '../../../_providers/ThemeProvider'
 import { getElementProps } from '../../../util/element'
 
-const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef, confirmRef, configsLength, setSelected }) => {
+function Config({ config, configIndex, toastRef, setConfigs, configSettingsRef, confirmRef, configsLength, setSelected }) {
   const { theme } = useContext(ThemeContext)
   const { t } = useTranslation()
   const importFiled = createRef()
@@ -115,6 +115,16 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef, 
     GTAG.event({ category: 'Configuration', action: 'Click', label: 'Remove' })
   }
 
+  const duplicateConfig = () => {
+    const configCopy = { ...config, name: `${config.name} - Duplicate`, batch: { ...config.batch }, actions: config.actions.map(action => ({ ...action, addon: { ...action.addon } })) }
+    setConfigs(configs => [{ ...configCopy }, ...configs])
+    setSelected(0)
+    toastRef.current.push({
+      body: t('toast.configuration.add.body', { name: configCopy.name })
+    })
+    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Add' })
+  }
+
   return (
     <Card className='mb-4' bg={theme} text={theme === 'dark' && 'white'}>
       <Card.Header as='h6'>
@@ -141,6 +151,7 @@ const Config = ({ config, configIndex, toastRef, setConfigs, configSettingsRef, 
               <Dropdown.Menu variant={theme}>
                 <Dropdown.Item onClick={exportConfig}>{t('configuration.export')}</Dropdown.Item>
                 <Dropdown.Item onClick={() => importFiled.current.click()}>{t('configuration.import')}</Dropdown.Item>
+                <Dropdown.Item onClick={duplicateConfig}>{t('configuration.duplicate')}</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={showSettings}>{t('configuration.settings')}</Dropdown.Item>
                 <Dropdown.Divider />

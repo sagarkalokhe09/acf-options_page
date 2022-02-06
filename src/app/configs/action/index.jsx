@@ -11,7 +11,7 @@ import { ThemeContext } from '../../../_providers/ThemeProvider'
 const HIDDEN_COLUMN_KEY = 'hiddenColumns'
 const defaultHiddenColumns = ['name', 'initWait', 'repeat', 'repeatInterval']
 
-const Action = props => {
+function Action(props) {
   const { theme } = useContext(ThemeContext)
   const { t } = useTranslation()
   const [hiddenColumns, setHiddenColumns] = useState(LocalStorage.getItem(HIDDEN_COLUMN_KEY, defaultHiddenColumns))

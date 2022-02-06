@@ -10,10 +10,10 @@ import Batch from './batch'
 import Action from './action'
 import { Format, GTAG, ThreeDots, getConfigName } from '../../util'
 import { DropdownToggle, ErrorAlert, GoogleAds } from '../../components'
-import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ConfirmModal, ReorderConfigsModal } from '../../modal'
+import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ConfirmModal, ReorderConfigsModal, RemoveConfigsModal } from '../../modal'
 import { ThemeContext, ModeContext } from '../../_providers'
 
-const Configs = ({ toastRef, blogRef }) => {
+function Configs({ toastRef, blogRef }) {
   const { theme } = useContext(ThemeContext)
   const { mode } = useContext(ModeContext)
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
@@ -27,6 +27,7 @@ const Configs = ({ toastRef, blogRef }) => {
   const actionSettingsRef = useRef()
   const configSettingsRef = useRef()
   const reorderConfigsRef = useRef()
+  const removeConfigsRef = useRef()
   const confirmRef = useRef()
   const importFiled = createRef()
 
@@ -96,6 +97,7 @@ const Configs = ({ toastRef, blogRef }) => {
       didMountRef.current = false
       return
     }
+
     StorageService.setItem(LOCAL_STORAGE_KEY.CONFIGS, configs)
       .catch(setError)
       .finally(() => setLoading(false))
@@ -107,7 +109,8 @@ const Configs = ({ toastRef, blogRef }) => {
 
   const addConfig = () => {
     const name = getConfigName(undefined, configs.length)
-    setConfigs([...configs, { ...defaultConfig, name }])
+    setConfigs([{ ...defaultConfig, name }, ...configs])
+    setSelected(0)
     toastRef.current.push({
       body: t('toast.configuration.add.body', { name })
     })
@@ -154,7 +157,7 @@ const Configs = ({ toastRef, blogRef }) => {
   }
 
   return (
-    <>
+    <div>
       {loading ? (
         <div className='text-center m-5'>
           <div className='spinner-border' role='status'>
@@ -215,6 +218,14 @@ const Configs = ({ toastRef, blogRef }) => {
                             }}>
                             {t('configuration.reorder')}
                           </Dropdown.Item>
+                          <Dropdown.Item
+                            className={configs.length === 1 ? '' : 'text-danger'}
+                            disabled={configs.length === 1}
+                            onClick={() => {
+                              removeConfigsRef.current.showReorder()
+                            }}>
+                            {t('configuration.removeConfigs')}
+                          </Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>
                       <div className='custom-file d-none'>
@@ -260,12 +271,13 @@ const Configs = ({ toastRef, blogRef }) => {
                 <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
                 <ConfigSettingsModal ref={configSettingsRef} config={config} configIndex={selected} setConfigs={setConfigs} />
                 <ReorderConfigsModal ref={reorderConfigsRef} />
+                <RemoveConfigsModal ref={removeConfigsRef} />
               </main>
             </>
           )}
         </>
       )}
-    </>
+    </div>
   )
 }
 Configs.propTypes = {

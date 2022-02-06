@@ -3,7 +3,7 @@ import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { InfoCircle } from '../util'
 
-export const ValueExtractorPopover = () => {
+export function ValueExtractorPopover() {
   const { t } = useTranslation()
 
   return (

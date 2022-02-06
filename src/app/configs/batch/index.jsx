@@ -7,7 +7,7 @@ import { numberWithExponential } from '../../../util'
 import { ThemeContext } from '../../../_providers/ThemeProvider'
 import { getElementProps } from '../../../util/element'
 
-const Batch = ({ batch, configIndex, setConfigs }) => {
+function Batch({ batch, configIndex, setConfigs }) {
   const { theme } = useContext(ThemeContext)
   const [message, setMessage] = useState()
   const { t } = useTranslation()

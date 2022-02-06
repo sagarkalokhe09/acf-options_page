@@ -11,7 +11,7 @@ import { AuthContext } from '../_providers/AuthProvider'
 import { auth } from '../firebase'
 import { ThemeContext } from '../_providers/ThemeProvider'
 
-const Header = ({ error }) => {
+function Header({ error }) {
   const { theme, setTheme } = useContext(ThemeContext)
   const [showSettings, setShowSettings] = useState(false)
   const [languages, setLanguages] = useState([])
@@ -81,16 +81,14 @@ const Header = ({ error }) => {
                     <GearFill width='24' height='24' title={t('header.settings')} />
                   </Nav.Link>
                   {user ? (
-                    <>
-                      <NavDropdown
-                        title={user.photoURL ? <Image alt={user.displayName} title={user.displayName} src={user.photoURL} roundedCircle width='30' height='30' /> : user.displayName}
-                        id='user-nav-dropdown'
-                        className='px-4 py-2'>
-                        <NavDropdown.Item href='#logout' title='logout' onClick={logout}>
-                          {t('header.logout')}
-                        </NavDropdown.Item>
-                      </NavDropdown>
-                    </>
+                    <NavDropdown
+                      title={user.photoURL ? <Image alt={user.displayName} title={user.displayName} src={user.photoURL} roundedCircle width='30' height='30' /> : user.displayName}
+                      id='user-nav-dropdown'
+                      className='px-4 py-2'>
+                      <NavDropdown.Item href='#logout' title='logout' onClick={logout}>
+                        {t('header.logout')}
+                      </NavDropdown.Item>
+                    </NavDropdown>
                   ) : (
                     <Nav.Link onClick={login} className='px-4 py-3 fw-bolder'>
                       {t('header.login')}
