@@ -15,3 +15,4 @@ export { ReactComponent as Instagram } from 'bootstrap-icons/icons/instagram.svg
 export { ReactComponent as Discord } from 'bootstrap-icons/icons/discord.svg'
 export { ReactComponent as Twitter } from 'bootstrap-icons/icons/twitter.svg'
 export { ReactComponent as Github } from 'bootstrap-icons/icons/github.svg'
+export { ReactComponent as FunnelFill } from 'bootstrap-icons/icons/funnel-fill.svg'

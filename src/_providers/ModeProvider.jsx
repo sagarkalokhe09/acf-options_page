@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState, useMemo } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
 export const ModeContext = createContext()
@@ -12,8 +12,8 @@ function ModeProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('mode', mode)
   }, [mode])
-  const modeMemo = useMemo(() => ({ mode, setMode }), [])
-  return <ModeContext.Provider value={modeMemo}>{children}</ModeContext.Provider>
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
+  return <ModeContext.Provider value={{ mode, setMode }}>{children}</ModeContext.Provider>
 }
 
 ModeProvider.propTypes = {

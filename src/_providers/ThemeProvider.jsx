@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState, useMemo } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
 export const ThemeContext = createContext()
@@ -15,8 +15,8 @@ function ThemeProvider({ children }) {
     localStorage.setItem('theme', theme)
   }, [theme])
 
-  const themeMemo = useMemo(() => ({ theme, setTheme }), [])
-  return <ThemeContext.Provider value={themeMemo}>{children}</ThemeContext.Provider>
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
+  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>
 }
 
 ThemeProvider.propTypes = {

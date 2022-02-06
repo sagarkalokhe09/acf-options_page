@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import ActionTable from './action-table'
 import { DropdownToggle } from '../../../components'
-import { FilterRight, GTAG, numberWithExponential } from '../../../util'
+import { FunnelFill, GTAG, numberWithExponential } from '../../../util'
 import { ThemeContext } from '../../../_providers/ThemeProvider'
 
 const HIDDEN_COLUMN_KEY = 'hiddenColumns'
@@ -55,7 +55,7 @@ function Action(props) {
             </Button>
             <Dropdown className='ml-2'>
               <Dropdown.Toggle as={DropdownToggle} id='action-dropdown'>
-                <FilterRight width='28' height='28' />
+                <FunnelFill width='28' height='28' fill='rgba(0, 0, 0, 0.55)' />
               </Dropdown.Toggle>
               <Dropdown.Menu variant={theme}>
                 <Dropdown.Item onClick={onColumnChange} data-column='name' active={hiddenColumns.indexOf('name') === -1}>
