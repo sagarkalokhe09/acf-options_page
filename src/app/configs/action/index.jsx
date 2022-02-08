@@ -55,7 +55,7 @@ function Action(props) {
             </Button>
             <Dropdown className='ml-2'>
               <Dropdown.Toggle as={DropdownToggle} id='action-dropdown'>
-                <FunnelFill width='28' height='28' fill='rgba(0, 0, 0, 0.55)' />
+                <FunnelFill width='28' height='28' />
               </Dropdown.Toggle>
               <Dropdown.Menu variant={theme}>
                 <Dropdown.Item onClick={onColumnChange} data-column='name' active={hiddenColumns.indexOf('name') === -1}>
