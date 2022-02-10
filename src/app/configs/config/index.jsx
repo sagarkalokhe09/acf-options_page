@@ -151,13 +151,14 @@ function Config({ config, configIndex, toastRef, setConfigs, configSettingsRef, 
               <Dropdown.Menu variant={theme}>
                 <Dropdown.Item onClick={exportConfig}>{t('configuration.export')}</Dropdown.Item>
                 <Dropdown.Item onClick={() => importFiled.current.click()}>{t('configuration.import')}</Dropdown.Item>
-                <Dropdown.Item onClick={duplicateConfig}>{t('configuration.duplicate')}</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={showSettings}>{t('configuration.settings')}</Dropdown.Item>
+                <Dropdown.Item onClick={duplicateConfig}>{t('configuration.duplicate')}</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={removeConfigConfirm} className={configsLength === 1 ? '' : 'text-danger'} disabled={configsLength === 1}>
                   {t('configuration.remove')}
                 </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={showSettings}>{t('configuration.settings')}</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             <div className='custom-file d-none'>

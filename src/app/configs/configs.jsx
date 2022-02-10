@@ -213,18 +213,19 @@ function Configs({ toastRef, blogRef }) {
                           <Dropdown.Item onClick={() => importFiled.current.click()}>{t('configuration.importAll')}</Dropdown.Item>
                           <Dropdown.Divider />
                           <Dropdown.Item
-                            onClick={() => {
-                              reorderConfigsRef.current.showReorder()
-                            }}>
-                            {t('configuration.reorder')}
-                          </Dropdown.Item>
-                          <Dropdown.Item
                             className={configs.length === 1 ? '' : 'text-danger'}
                             disabled={configs.length === 1}
                             onClick={() => {
                               removeConfigsRef.current.showReorder()
                             }}>
                             {t('configuration.removeConfigs')}
+                          </Dropdown.Item>
+                          <Dropdown.Divider />
+                          <Dropdown.Item
+                            onClick={() => {
+                              reorderConfigsRef.current.showReorder()
+                            }}>
+                            {t('configuration.reorder')}
                           </Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>
