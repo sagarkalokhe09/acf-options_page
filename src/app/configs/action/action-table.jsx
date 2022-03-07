@@ -6,12 +6,12 @@ import { defaultAction } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
 import { EditableCell } from './editable-cell'
 import { CaretDown, CaretUp, GTAG, REGEX_INTERVAL, REGEX_NUM, ThreeDots, numberWithExponential } from '../../../util'
-import { AddonModal, ConfirmModal } from '../../../modal'
+import { ConfirmModal } from '../../../modal'
 import { ElementFinderPopover, ValuePopover } from '../../../popover'
 import { DropdownToggle } from '../../../components'
 import { ThemeContext } from '../../../_providers/ThemeProvider'
 
-const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, actionSettingsRef, setMessage, setError }, ref) => {
+const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, actionSettingsRef, actionConditionRef, setMessage, setError }, ref) => {
   const { t } = useTranslation()
   const [data, setData] = useState(actions)
   const { theme } = useContext(ThemeContext)
@@ -168,6 +168,11 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
     addonRef.current.showAddon(row.id, row.original.addon)
   }
 
+  const showCondition = row => {
+    GTAG.event({ category: 'Action', action: 'Click', label: 'Show Condition' })
+    actionConditionRef.current.showCondition(row.id, actions, row.original.statement)
+  }
+
   const showSettings = row => {
     GTAG.event({ category: 'Action', action: 'Click', label: 'Show Settings' })
     actionSettingsRef.current.showSettings(row.id, row.original.settings)
@@ -243,6 +248,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
                       </Dropdown.Toggle>
                       <Dropdown.Menu variant={theme}>
                         <Dropdown.Item onClick={() => showAddon(row)}>{t('action.addon')}</Dropdown.Item>
+                        {index !== 0 && <Dropdown.Item onClick={() => showCondition(row)}>{t('modal.actionCondition.title')}</Dropdown.Item>}
                         <Dropdown.Item onClick={() => showSettings(row)}>{t('action.settings')}</Dropdown.Item>
                         <Dropdown.Divider />
                         <Dropdown.Item
@@ -275,13 +281,13 @@ ActionTable.propTypes = {
       name: PropTypes.string,
       value: PropTypes.string,
       repeat: PropTypes.number,
-      repeatInterval: numberWithExponential,
-      addon: AddonModal.type.propTypes.addon
+      repeatInterval: numberWithExponential
     }).isRequired
   ).isRequired,
   toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired,
   addonRef: PropTypes.shape({ current: PropTypes.shape({ showAddon: PropTypes.func.isRequired }) }).isRequired,
   actionSettingsRef: PropTypes.shape({ current: PropTypes.shape({ showSettings: PropTypes.func.isRequired }) }).isRequired,
+  actionConditionRef: PropTypes.shape({ current: PropTypes.shape({ showCondition: PropTypes.func.isRequired }) }).isRequired,
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
   setMessage: PropTypes.func.isRequired,

@@ -97,13 +97,13 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                 </Col>
                 <Col md={6} sm={12}>
                   <Form.Group controlId='addon-condition'>
-                    <Form.Control as='select' value={addon.condition} onChange={onUpdate} name='condition' required>
+                    <Form.Select value={addon.condition} onChange={onUpdate} name='condition' required>
                       {Object.entries(ADDON_CONDITIONS).map((condition, index) => (
                         <option key={index} value={condition[1]}>
                           {condition[0]}
                         </option>
                       ))}
-                    </Form.Control>
+                    </Form.Select>
                     <Form.Label>
                       {t('modal.addon.condition')} <small className='text-danger'>*</small>
                     </Form.Label>

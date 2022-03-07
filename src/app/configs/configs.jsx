@@ -10,7 +10,7 @@ import Batch from './batch'
 import Action from './action'
 import { Format, GTAG, ThreeDots, getConfigName } from '../../util'
 import { DropdownToggle, ErrorAlert, GoogleAds } from '../../components'
-import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ConfirmModal, ReorderConfigsModal, RemoveConfigsModal } from '../../modal'
+import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ConfirmModal, ReorderConfigsModal, RemoveConfigsModal, ActionConditionModal } from '../../modal'
 import { ThemeContext, ModeContext } from '../../_providers'
 
 function Configs({ toastRef, blogRef }) {
@@ -25,6 +25,7 @@ function Configs({ toastRef, blogRef }) {
   const didMountRef = useRef(true)
   const addonRef = useRef()
   const actionSettingsRef = useRef()
+  const actionConditionRef = useRef()
   const configSettingsRef = useRef()
   const reorderConfigsRef = useRef()
   const removeConfigsRef = useRef()
@@ -265,11 +266,13 @@ function Configs({ toastRef, blogRef }) {
                     setConfigs={setConfigs}
                     addonRef={addonRef}
                     actionSettingsRef={actionSettingsRef}
+                    actionConditionRef={actionConditionRef}
                   />
                 </Container>
                 <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
                 <ConfirmModal ref={confirmRef} />
                 <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
+                <ActionConditionModal ref={actionConditionRef} configIndex={selected} setConfigs={setConfigs} />
                 <ConfigSettingsModal ref={configSettingsRef} config={config} configIndex={selected} setConfigs={setConfigs} />
                 <ReorderConfigsModal ref={reorderConfigsRef} />
                 <RemoveConfigsModal ref={removeConfigsRef} />

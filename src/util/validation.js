@@ -1,7 +1,7 @@
 import { REGEX } from './regex'
 
 export const IN_VALID_CLASS = 'is-invalid'
-export const NUMBER_FIELDS = ['retry', 'retryInterval', 'recheck', 'recheckInterval', 'repeat', 'repeatInterval', 'initWait']
+export const NUMBER_FIELDS = ['retry', 'retryInterval', 'recheck', 'recheckInterval', 'repeat', 'repeatInterval', 'initWait', 'actionIndex']
 export const convertNumberField = data => {
   Object.keys(data).forEach(field => {
     if (data[field] && typeof data[field] === 'string' && NUMBER_FIELDS.indexOf(field) !== -1 && data[field].indexOf('e') === -1) {
