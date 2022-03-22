@@ -206,7 +206,7 @@ function Configs({ toastRef, blogRef }) {
                         {t('configuration.add')}
                       </Button>
                       <Dropdown>
-                        <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown'>
+                        <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown' ariaLabel='Configurations more option'>
                           <ThreeDots width='24' height='24' />
                         </Dropdown.Toggle>
                         <Dropdown.Menu variant={theme}>

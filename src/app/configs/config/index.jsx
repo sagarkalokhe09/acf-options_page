@@ -145,7 +145,7 @@ function Config({ config, configIndex, toastRef, setConfigs, configSettingsRef, 
               <Form.Check type='switch' className='m-0' name='enable' id='config-enable' label={t('configuration.enable')} checked={config.enable} onChange={onUpdate} />
             </Form>
             <Dropdown>
-              <Dropdown.Toggle as={DropdownToggle} id='config-dropdown' className='py-0 pe-0'>
+              <Dropdown.Toggle as={DropdownToggle} id='config-dropdown' className='py-0 pe-0' ariaLabel='Configuration more option'>
                 <ThreeDots width='24' height='24' />
               </Dropdown.Toggle>
               <Dropdown.Menu variant={theme}>

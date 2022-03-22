@@ -27,6 +27,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
         Header: t('action.initWait'),
         style: { width: '100px' },
         accessor: 'initWait',
+        ariaLabel: 'initWait',
         dataType: 'number',
         list: 'interval',
         pattern: REGEX_INTERVAL
@@ -35,23 +36,27 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
         Header: t('action.name'),
         style: { width: '10%' },
         accessor: 'name',
+        ariaLabel: 'name',
         autoComplete: 'off'
       },
       {
         Header: t('action.elementFinder'),
         accessor: 'elementFinder',
+        ariaLabel: 'elementFinder',
         list: 'elementFinder',
         required: true
       },
       {
         Header: t('action.value'),
         list: 'value',
-        accessor: 'value'
+        accessor: 'value',
+        ariaLabel: 'value'
       },
       {
         Header: t('action.repeat'),
         style: { width: '100px' },
         accessor: 'repeat',
+        ariaLabel: 'repeat',
         dataType: 'number',
         list: 'repeat',
         pattern: REGEX_NUM
@@ -60,6 +65,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
         Header: t('action.repeatInterval'),
         style: { width: '100px' },
         accessor: 'repeatInterval',
+        ariaLabel: 'repeatInterval',
         dataType: 'number',
         list: 'interval',
         pattern: REGEX_INTERVAL
@@ -243,7 +249,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
                 <td align='center'>
                   {actions[row.id] && (
                     <Dropdown>
-                      <Dropdown.Toggle as={DropdownToggle} id='dropdown-basic'>
+                      <Dropdown.Toggle as={DropdownToggle} id='dropdown-basic' ariaLabel='Action more option'>
                         <ThreeDots width='24' height='24' />
                       </Dropdown.Toggle>
                       <Dropdown.Menu variant={theme}>

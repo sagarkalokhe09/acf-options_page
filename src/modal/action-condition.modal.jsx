@@ -1,19 +1,21 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
+import { Button, Col, Form, Modal, Row, Table } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { ACTION_CONDITION_OPR, ACTION_RUNNING, defaultActionCondition } from '@dhruv-techapps/acf-common'
 import { GTAG } from '../util'
 import { getElementProps, updateForm } from '../util/element'
 import { ActionAndStatus } from './action-condition/action-and-status'
 import { Plus } from '../util/svg'
+import { ThemeContext } from '../_providers'
 
 const FORM_ID = 'actionCondition'
 
 const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const { t } = useTranslation()
   const [show, setShow] = useState(false)
+  const { theme } = useContext(ThemeContext)
   const [conditions, setConditions] = useState([{ ...defaultActionCondition }])
   const [then, setThen] = useState()
   const [message, setMessage] = useState()
@@ -102,7 +104,7 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
       <Modal.Body>
         <p className='text-muted'>{t('modal.actionCondition.info')}</p>
         <h4 className='text-center mb-3'>IF</h4>
-        <table role='table' className='mb-0 table table-light table-bordered table-hover'>
+        <Table role='table' className='mb-0' variant={theme}>
           <thead>
             <tr>
               <th>OPR</th>
@@ -120,7 +122,7 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
               <ActionAndStatus onUpdate={onUpdate} key={index} actions={actions.current} condition={_condition} conditionIndex={index} setConditions={setConditions} updateRef={updateRef} />
             ))}
           </tbody>
-        </table>
+        </Table>
         <h4 className='text-center mt-3'>THEN</h4>
         <Form id={FORM_ID}>
           <Row className='mt-3'>

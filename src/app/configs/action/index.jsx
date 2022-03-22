@@ -54,7 +54,7 @@ function Action(props) {
               {t('action.add')}
             </Button>
             <Dropdown className='ml-2'>
-              <Dropdown.Toggle as={DropdownToggle} id='action-dropdown'>
+              <Dropdown.Toggle as={DropdownToggle} id='action-dropdown' ariaLabel='Filter Action Column'>
                 <FunnelFill width='28' height='28' />
               </Dropdown.Toggle>
               <Dropdown.Menu variant={theme}>

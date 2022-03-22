@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Form } from 'react-bootstrap'
 
 // Create an editable cell renderer
-export function EditableCell({ value: initialValue, data, row: { index }, column: { id, required, pattern, validate, dataType, list }, updateAction }) {
+export function EditableCell({ value: initialValue, data, row: { index }, column: { id, required, pattern, validate, dataType, ariaLabel, list }, updateAction }) {
   // We need to keep and update the state of the cell normally
   // We need to keep and update the state of the cell normally
   const [value, setValue] = React.useState(initialValue)
@@ -35,7 +35,9 @@ export function EditableCell({ value: initialValue, data, row: { index }, column
     setValue(initialValue)
   }, [initialValue])
 
-  return <Form.Control ref={input} value={value} name={id} onChange={onChange} onBlur={onBlur} isInvalid={invalid} list={list} autoComplete='off' />
+  console.log(ariaLabel)
+
+  return <Form.Control ref={input} aria-label={ariaLabel} value={value} name={id} onChange={onChange} onBlur={onBlur} isInvalid={invalid} list={list} autoComplete='off' />
 }
 
 EditableCell.propTypes = {
@@ -46,6 +48,7 @@ EditableCell.propTypes = {
   }).isRequired,
   column: PropTypes.shape({
     id: PropTypes.string.isRequired,
+    ariaLabel: PropTypes.string,
     required: PropTypes.bool,
     pattern: PropTypes.instanceOf(RegExp),
     validate: PropTypes.func,
