@@ -35,8 +35,6 @@ export function EditableCell({ value: initialValue, data, row: { index }, column
     setValue(initialValue)
   }, [initialValue])
 
-  console.log(ariaLabel)
-
   return <Form.Control ref={input} aria-label={ariaLabel} value={value} name={id} onChange={onChange} onBlur={onBlur} isInvalid={invalid} list={list} autoComplete='off' />
 }
 

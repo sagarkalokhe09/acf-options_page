@@ -127,8 +127,22 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
         <Form id={FORM_ID}>
           <Row className='mt-3'>
             <Col xs={12} className='d-flex justify-content-around'>
-              <Form.Check type='radio' value={ACTION_RUNNING.SKIP} onChange={() => onUpdateThen(ACTION_RUNNING.SKIP)} name='then' label={t('modal.actionCondition.skip')} />
-              <Form.Check type='radio' value={ACTION_RUNNING.PROCEED} onChange={() => onUpdateThen(ACTION_RUNNING.PROCEED)} name='then' label={t('modal.actionCondition.proceed')} />
+              <Form.Check
+                type='radio'
+                checked={then === ACTION_RUNNING.SKIP}
+                value={ACTION_RUNNING.SKIP}
+                onChange={() => onUpdateThen(ACTION_RUNNING.SKIP)}
+                name='then'
+                label={t('modal.actionCondition.skip')}
+              />
+              <Form.Check
+                type='radio'
+                checked={then === ACTION_RUNNING.PROCEED}
+                value={ACTION_RUNNING.PROCEED}
+                onChange={() => onUpdateThen(ACTION_RUNNING.PROCEED)}
+                name='then'
+                label={t('modal.actionCondition.proceed')}
+              />
             </Col>
           </Row>
         </Form>

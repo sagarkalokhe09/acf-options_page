@@ -107,7 +107,7 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                       list='interval'
                       onBlur={onUpdate}
                       name='retryInterval'
-                      defaultValue={settings.retry}
+                      defaultValue={settings.retryInterval}
                       pattern='INTERVAL'
                     />
                     <Form.Label>
