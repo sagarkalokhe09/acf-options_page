@@ -126,7 +126,7 @@ function Config({ config, configIndex, toastRef, setConfigs, configSettingsRef, 
   }
 
   return (
-    <Card className='mb-4' bg={theme} text={theme === 'dark' && 'white'}>
+    <Card bg={theme} text={theme === 'dark' && 'white'}>
       <Card.Header as='h6'>
         <Row>
           <Col className='d-flex align-items-center'>

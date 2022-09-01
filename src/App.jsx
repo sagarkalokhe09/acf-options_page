@@ -15,7 +15,7 @@ const EXTENSION_NOT_FOUND = 'extension_not_found'
 
 function App() {
   const toastRef = useRef()
-  const adsBlockerRef = useRef()
+  // const adsBlockerRef = useRef()
   const blogRef = useRef()
   const [manifest, setManifest] = useState({})
   const [error, setError] = useState()
@@ -24,11 +24,11 @@ function App() {
     ManifestService.values(['name', 'version'])
       .then(data => {
         setManifest(data)
-        setTimeout(() => {
+        /* setTimeout(() => {
           if (!window.adsLoaded) {
             adsBlockerRef.current.show()
           }
-        }, 1000)
+        }, 1000) */
       })
       .catch(_error => {
         if (_error.message === 'Could not establish connection. Receiving end does not exist.' || _error.message === "Cannot read properties of undefined (reading 'sendMessage')") {
@@ -63,7 +63,7 @@ function App() {
                 )}
                 <Footer version={manifest.version || ''} />
                 <ToastHandler ref={toastRef} />
-                <AdsBlockerModal ref={adsBlockerRef} />
+                {/* <AdsBlockerModal ref={adsBlockerRef} /> */}
                 <BlogModal ref={blogRef} />
               </Suspense>
               <datalist id='retry'>
