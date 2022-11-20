@@ -7,7 +7,7 @@ import Header from './app/header'
 import Footer from './app/footer'
 import Configs from './app/configs/configs'
 import { ToastHandler, ErrorAlert, ExtensionNotFound } from './components'
-import { AdsBlockerModal, BlogModal } from './modal'
+import { BlogModal } from './modal'
 import { ModeProvider, ThemeProvider, AuthProvider } from './_providers'
 import { GTAG } from './util'
 
