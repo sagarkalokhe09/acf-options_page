@@ -5,7 +5,7 @@ import { BROWSER } from '@dhruv-techapps/core-common'
 import { StorageService } from '@dhruv-techapps/core-services'
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
-import { GTAG, GearFill, Moon, Sun } from '../util'
+import { GTAG, GearFill, Moon, Sun, ChatFill } from '../util'
 import { SettingsModal } from '../modal'
 import { AuthContext } from '../_providers/AuthProvider'
 import { auth } from '../firebase'
@@ -72,6 +72,9 @@ function Header({ error }) {
           <Navbar className='p-0'>
             <Nav className='me-auto' />
             <Nav>
+              <Nav.Link target='_blank' href={process.env.REACT_APP_GOOGLE_GROUP} className='px-4 py-3'>
+                <ChatFill width='24' height='24' title={t('header.theme.dark')} />
+              </Nav.Link>
               <Nav.Link onClick={toggleTheme} className='px-4 py-3'>
                 {theme !== 'light' ? <Sun width='24' height='24' title={t('header.theme.dark')} /> : <Moon width='24' height='24' title={t('header.theme.light')} />}
               </Nav.Link>

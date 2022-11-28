@@ -30,7 +30,7 @@ function Footer({ version }) {
                 <span className={`${process.env.REACT_APP_VARIANT} ms-2`}>{process.env.REACT_APP_VARIANT}</span>
               </h6>
               <div className='text-muted'>
-                <small>© 2017 - 2021</small>
+                <small>© 2017 - 2022</small>
                 <small className='ms-2'>v{version}</small>
               </div>
             </div>
@@ -69,12 +69,12 @@ function Footer({ version }) {
                   className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
-                  title='configuration'
-                  href={process.env.REACT_APP_CONFIGS}
+                  title='issues'
+                  href={process.env.REACT_APP_ISSUES}
                   onClick={() => {
-                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Configurations' })
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Issues' })
                   }}>
-                  {t('footer.configuration')}
+                  {t('footer.issues')}
                 </a>
               </li>
               <li>
@@ -82,12 +82,12 @@ function Footer({ version }) {
                   className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
-                  title='issues'
-                  href={process.env.REACT_APP_ISSUES}
+                  title='configuration'
+                  href={process.env.REACT_APP_CONFIGS}
                   onClick={() => {
-                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Issues' })
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Configurations' })
                   }}>
-                  {t('footer.issues')}
+                  {t('footer.configuration')}
                 </a>
               </li>
               <li>
@@ -112,25 +112,11 @@ function Footer({ version }) {
                 <a
                   className='text-decoration-none'
                   target='_blank'
-                  author='Dhruv Techapps'
-                  rel='noopener noreferrer'
-                  title='contact'
-                  href='mailto:dhruv.techapps@gmail.com'
-                  onClick={() => {
-                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Mail' })
-                  }}>
-                  {t('footer.contact')}
-                </a>
-              </li>
-              <li>
-                <a
-                  className='text-decoration-none'
-                  target='_blank'
                   rel='noopener noreferrer'
                   title='chat'
-                  href={process.env.REACT_APP_DISCORD}
+                  href={process.env.REACT_APP_GOOGLE_GROUP}
                   onClick={() => {
-                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Chat' })
+                    GTAG.event({ category: 'Footer', action: 'Click', label: 'Google Group' })
                   }}>
                   {t('footer.chat')}
                 </a>
@@ -141,7 +127,7 @@ function Footer({ version }) {
                   target='_blank'
                   rel='noopener noreferrer'
                   title='privacy'
-                  href='https://dhruv-techapps.github.io/policy'
+                  href='https://getautoclicker.com/policy/'
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Privacy' })
                   }}>
