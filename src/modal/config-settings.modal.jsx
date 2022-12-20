@@ -2,7 +2,6 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
 import { LOAD_TYPES, START_TYPES, defaultConfig } from '@dhruv-techapps/acf-common'
-import { LocalStorage } from '@dhruv-techapps/core-common'
 import { Trans, useTranslation } from 'react-i18next'
 import { GTAG } from '../util'
 import { HotkeyPopover } from '../popover'
@@ -19,7 +18,7 @@ const ConfigSettingsModal = forwardRef(({ config, configIndex, setConfigs }, ref
     showSettings() {
       GTAG.modalview({ title: 'Config Settings', url: window.location.href, path: '/settings/config' })
       setShow(true)
-      setDev(LocalStorage.getItem('DEV'))
+      setDev(localStorage.getItem('DEV'))
     }
   }))
 

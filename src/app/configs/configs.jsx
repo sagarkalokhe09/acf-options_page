@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap'
 import { LOCAL_STORAGE_KEY, defaultAction, defaultConfig } from '@dhruv-techapps/acf-common'
 import { ElementUtil, Logger } from '@dhruv-techapps/core-common'
-import { ExportService, StorageService } from '@dhruv-techapps/core-services'
+import { StorageService } from '@dhruv-techapps/core-services'
 import { useTranslation } from 'react-i18next'
 import Config from './config'
 import Batch from './batch'
@@ -12,6 +12,7 @@ import { Format, GTAG, ThreeDots, getConfigName } from '../../util'
 import { DropdownToggle, ErrorAlert, CarbonAds } from '../../components'
 import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ConfirmModal, ReorderConfigsModal, RemoveConfigsModal, ActionConditionModal } from '../../modal'
 import { ThemeContext, ModeContext } from '../../_providers'
+import { download } from '../../_helpers'
 
 function Configs({ toastRef, blogRef }) {
   const { theme } = useContext(ThemeContext)
@@ -83,11 +84,11 @@ function Configs({ toastRef, blogRef }) {
   }
 
   useEffect(() => {
-    StorageService.getItem(LOCAL_STORAGE_KEY.CONFIGS, [{ ...defaultConfig }])
-      .then(_configs => {
-        _configs = _configs === null || _configs === 'null' || _configs === 'undefined' ? [{ ...defaultConfig }] : _configs
-        setSelected(checkQueryParams(_configs))
-        setConfigs(_configs)
+    StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.CONFIGS)
+      .then(result => {
+        const configurations = result.configs && result.configs.length > 0 ? result.configs : [{ ...defaultConfig }]
+        setSelected(checkQueryParams(configurations))
+        setConfigs(configurations)
       })
       .catch(setError)
       .finally(() => setLoading(false))
@@ -99,7 +100,7 @@ function Configs({ toastRef, blogRef }) {
       return
     }
 
-    StorageService.setItem(LOCAL_STORAGE_KEY.CONFIGS, configs)
+    StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.CONFIGS]: configs })
       .catch(setError)
       .finally(() => setLoading(false))
   }, [configs])
@@ -119,11 +120,7 @@ function Configs({ toastRef, blogRef }) {
   }
 
   const exportAll = () => {
-    ExportService.export('All Configurations', configs).catch(_error => {
-      toastRef.current.push({
-        body: JSON.stringify(_error)
-      })
-    })
+    download('All Configurations', configs)
     GTAG.event({ category: 'Configuration', action: 'Click', label: 'Export All' })
   }
 
@@ -149,7 +146,7 @@ function Configs({ toastRef, blogRef }) {
         }
         setLoading(false)
       } catch (_error) {
-        Logger.error(_error)
+        Logger.colorError(_error)
         GTAG.exception({ description: _error, fatal: true })
       }
     }
@@ -185,7 +182,7 @@ function Configs({ toastRef, blogRef }) {
             </Container>
           ) : (
             <>
-              <div id='configs' className={`${scroll ? 'shadow' : ' mb-4 mt-3'} sticky-top bg-${theme}`}>
+              <div id='configs' className={`${scroll ? 'shadow' : ' mb-4 mt-3'} sticky-top`}>
                 <Container>
                   <Row className={`rounded-pill ${!scroll && 'border'}`}>
                     <Col>
@@ -243,8 +240,7 @@ function Configs({ toastRef, blogRef }) {
               <main>
                 <Container>
                   <Config
-                    config={config}
-                    configsLength={configs.length}
+                    configs={configs}
                     configIndex={selected}
                     confirmRef={confirmRef}
                     setSelected={setSelected}
@@ -253,7 +249,7 @@ function Configs({ toastRef, blogRef }) {
                     configSettingsRef={configSettingsRef}
                   />
                   {mode === 'pro' && <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />}
-                  <CarbonAds code='CEAI5KJ7' placement='getautoclickercom' />
+                  {process.env.REACT_APP_VARIANT !== 'LOCAL' && <CarbonAds code='CEAI5KJ7' placement='getautoclickercom' />}
                   <Action
                     actions={config.actions}
                     configEnable={config.enable}

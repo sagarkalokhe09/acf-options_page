@@ -14,10 +14,6 @@
     font-weight: 500;
   }
 
-  .btn-close {
-    background: transparent escape-svg($btn-close-bg-light) center / $btn-close-width auto no-repeat;
-  }
-
   .text-muted,
   .form-text {
     color: #9aa0a6 !important;
@@ -42,7 +38,7 @@
   }
 
   .list-group-item {
-    background-color: $dark;
+    background-color: #000;
     border-color: #5f6368;
     color: #e8eaed;
   }
@@ -61,14 +57,14 @@
   input:not(.form-check-input),
   select {
     color: #e8eaed;
-    background-color: $dark;
+    background-color: #000;
     border-color: #5f6368 !important;
   }
 
   .form-label {
     color: #e8eaed;
     border-color: #5f6368 !important;
-    background-color: $dark;
+    background-color: #000;
   }
 
   .border,
@@ -90,5 +86,9 @@
   .card,
   .modal-content {
     background-color: #303134;
+  }
+
+  #configs{
+    background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity))!important;
   }
 }

@@ -11,7 +11,11 @@ function ThemeProvider({ children }) {
 
   useEffect(() => {
     document.body.className = ''
-    document.body.classList.add(`bg-${theme}`)
+    if (theme === 'dark') {
+      document.body.classList.add(`bg-dark`)
+    } else {
+      document.body.classList.remove(`bg-dark`)
+    }
     localStorage.setItem('theme', theme)
   }, [theme])
 

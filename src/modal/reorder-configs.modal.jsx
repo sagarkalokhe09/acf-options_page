@@ -12,10 +12,12 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
   const [error, setError] = useState()
   const [show, setShow] = useState(false)
   const { t } = useTranslation()
-  const onSubmit = () => {
-    StorageService.setItem(LOCAL_STORAGE_KEY.CONFIGS, configs)
+  const onSubmit = e => {
+    e.preventDefault()
+    StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.CONFIGS]: configs })
       .then(() => {
         setShow(false)
+        window.location.reload()
       })
       .catch(setError)
     GTAG.event({ category: 'Reorder-Configurations', action: 'Click', label: 'Save' })
@@ -23,10 +25,10 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
 
   useImperativeHandle(ref, () => ({
     showReorder() {
-      StorageService.getItem(LOCAL_STORAGE_KEY.CONFIGS, [{ ...defaultConfig, name: '' }])
-        .then(prevConfigs => {
+      StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.CONFIGS)
+        .then(result => {
           setConfigs(
-            prevConfigs.map((prevConfig, prevConfigIndex) => {
+            (result.configs || [{ ...defaultConfig, name: '' }]).map((prevConfig, prevConfigIndex) => {
               if (!prevConfig.name) {
                 const url = prevConfig.url.split('/')
                 prevConfig.name = url[2] || `config-${prevConfigIndex}`

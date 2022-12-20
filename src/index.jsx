@@ -5,8 +5,9 @@ import './index.scss'
 import { GTAG, disableContextMenu } from './util'
 import App from './App'
 import './i18n'
+import { BROWSER } from './_helpers'
 
-window.react_env = process.env
+window.EXTENSION_ID = process.env[`REACT_APP_${BROWSER}_EXTENSION_ID`]
 
 GTAG.pageview({ title: 'Home', url: window.location.href, path: '/' })
 

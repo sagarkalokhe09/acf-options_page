@@ -14,8 +14,8 @@ function AuthProvider({ children }) {
   useEffect(() => {
     auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
-        StorageService.setItem(LOCAL_STORAGE_KEY.DISCORD, { uid: userAuth.uid })
-          .catch(Logger.error)
+        StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.DISCORD]: { uid: userAuth.uid } })
+          .catch(Logger.colorError)
           .finally(() => {
             setUser(userAuth)
             history.push('/')

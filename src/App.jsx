@@ -21,14 +21,9 @@ function App() {
   const [error, setError] = useState()
 
   useEffect(() => {
-    ManifestService.values(['name', 'version'])
+    ManifestService.values(window.EXTENSION_ID, ['name', 'version'])
       .then(data => {
         setManifest(data)
-        /* setTimeout(() => {
-          if (!window.adsLoaded) {
-            adsBlockerRef.current.show()
-          }
-        }, 1000) */
       })
       .catch(_error => {
         if (_error.message === 'Could not establish connection. Receiving end does not exist.' || _error.message === "Cannot read properties of undefined (reading 'sendMessage')") {

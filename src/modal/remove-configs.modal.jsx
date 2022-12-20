@@ -12,16 +12,18 @@ const RemoveConfigsModal = forwardRef((_, ref) => {
   const [error, setError] = useState()
   const [show, setShow] = useState(false)
   const { t } = useTranslation()
-  const onSubmit = () => {
+  const onSubmit = e => {
+    e.preventDefault()
     const filteredConfigs = configs
       .filter(config => !config.checked)
       .map(config => {
         delete config.checked
         return config
       })
-    StorageService.setItem(LOCAL_STORAGE_KEY.CONFIGS, filteredConfigs)
+    StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.CONFIGS]: filteredConfigs })
       .then(() => {
         setShow(false)
+        window.location.reload()
       })
       .catch(setError)
     GTAG.event({ category: 'Remove-Configurations', action: 'Click', label: 'Save' })
@@ -29,10 +31,10 @@ const RemoveConfigsModal = forwardRef((_, ref) => {
 
   useImperativeHandle(ref, () => ({
     showReorder() {
-      StorageService.getItem(LOCAL_STORAGE_KEY.CONFIGS, [{ ...defaultConfig, name: '' }])
-        .then(prevConfigs => {
+      StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.CONFIGS)
+        .then(result => {
           setConfigs(
-            prevConfigs.map((prevConfig, prevConfigIndex) => {
+            (result.configs || [{ ...defaultConfig, name: '' }]).map((prevConfig, prevConfigIndex) => {
               if (!prevConfig.name) {
                 const url = prevConfig.url.split('/')
                 prevConfig.name = url[2] || `config-${prevConfigIndex}`
@@ -64,6 +66,8 @@ const RemoveConfigsModal = forwardRef((_, ref) => {
     )
   }
 
+  const checkedConfigLength = () => configs.filter(config => config.checked).length + 1
+
   return (
     <Modal show={show} size='lg' onHide={handleClose} scrollable>
       <Form onSubmit={onSubmit}>
@@ -81,6 +85,7 @@ const RemoveConfigsModal = forwardRef((_, ref) => {
                   onChange={remove}
                   className={config.checked && 'text-danger'}
                   name={index}
+                  disabled={!config.checked && configs.length === checkedConfigLength()}
                   id={`configuration-checkbox-${index}`}
                   label={
                     <>

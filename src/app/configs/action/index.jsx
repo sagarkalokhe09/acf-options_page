@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Button, Card, Col, Dropdown, Row } from 'react-bootstrap'
-import { LocalStorage } from '@dhruv-techapps/core-common'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
+import { LocalStorage } from '../../../_helpers'
 import ActionTable from './action-table'
 import { DropdownToggle } from '../../../components'
 import { FunnelFill, GTAG, numberWithExponential } from '../../../util'
@@ -41,7 +41,7 @@ function Action(props) {
   }, [hiddenColumns])
 
   return (
-    <Card bg={theme} text={theme === 'light' ? 'dark' : 'white'}>
+    <Card bg={theme} text={theme === 'light' ? 'dark' : 'white'} className='mt-3'>
       <Card.Header as='h6'>
         <Row>
           <Col className='d-flex align-items-center'>

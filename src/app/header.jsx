@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Container, Image, Nav, NavDropdown, Navbar } from 'react-bootstrap'
-import { BROWSER } from '@dhruv-techapps/core-common'
 import { StorageService } from '@dhruv-techapps/core-services'
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
@@ -38,7 +37,7 @@ function Header({ error }) {
 
   const logout = () => {
     auth.signOut().then(() => {
-      StorageService.removeItem(LOCAL_STORAGE_KEY.DISCORD)
+      StorageService.remove(window.EXTENSION_ID, LOCAL_STORAGE_KEY.DISCORD)
       window.location.reload()
     })
   }
@@ -57,7 +56,7 @@ function Header({ error }) {
         <Container fluid className='px-5 justify-content-center justify-content-md-between'>
           <Navbar.Brand>
             <img
-              src={`chrome-extension://${process.env[`REACT_APP_${BROWSER}_EXTENSION_ID`]}/assets/icons/icon32.png`}
+              src='https://getautoclicker.com/favicons/favicon32.png'
               width='32'
               height='32'
               className='d-inline-block align-top me-2'

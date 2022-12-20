@@ -19,14 +19,16 @@ function SettingsModal({ show, handleClose }) {
   const [message, setMessage] = useState()
 
   useEffect(() => {
-    StorageService.getItem(LOCAL_STORAGE_KEY.SETTINGS, defaultSettings)
-      .then(setSettings)
+    StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.SETTINGS)
+      .then(result => {
+        setSettings(result.settings || defaultSettings)
+      })
       .catch(setApiError)
       .finally(() => setLoading(false))
   }, [])
 
   const save = data => {
-    StorageService.setItem(LOCAL_STORAGE_KEY.SETTINGS, data)
+    StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.SETTINGS]: data })
       .then(() => {
         setMessage(t('modal.settings.saveMessage'))
         setTimeout(setMessage, 1500)

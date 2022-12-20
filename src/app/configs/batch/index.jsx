@@ -30,7 +30,7 @@ function Batch({ batch, configIndex, setConfigs }) {
   }
 
   return (
-    <Card className='mt-3' bg={theme} text={theme === 'light' ? 'dark' : 'white'}>
+    <Card className='mb-3' bg={theme} text={theme === 'light' ? 'dark' : 'white'}>
       <Card.Header as='h6'>
         <Row>
           <Col>

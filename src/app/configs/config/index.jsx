@@ -1,7 +1,7 @@
 import React, { createRef, useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Logger } from '@dhruv-techapps/core-common'
-import { ExportService, ImportService } from '@dhruv-techapps/core-services'
+import { StorageService } from '@dhruv-techapps/core-services'
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
 import { Badge, Card, Col, Dropdown, Form, Row } from 'react-bootstrap'
@@ -12,8 +12,11 @@ import { Format, GTAG, ThreeDots, numberWithExponential } from '../../../util'
 import { DropdownToggle } from '../../../components'
 import { ThemeContext } from '../../../_providers/ThemeProvider'
 import { getElementProps } from '../../../util/element'
+import { download } from '../../../_helpers'
 
-function Config({ config, configIndex, toastRef, setConfigs, configSettingsRef, confirmRef, configsLength, setSelected }) {
+function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef, confirmRef, setSelected }) {
+  const config = configs[configIndex]
+  const configsLength = configs.length
   const { theme } = useContext(ThemeContext)
   const { t } = useTranslation()
   const importFiled = createRef()
@@ -38,11 +41,8 @@ function Config({ config, configIndex, toastRef, setConfigs, configSettingsRef, 
   const exportConfig = () => {
     let url = config.url.split('/')
     url = url[2] || 'default'
-    ExportService.export(config.name || url || `configuration-${configIndex}`, config).catch(error => {
-      toastRef.current.push({
-        body: JSON.stringify(error)
-      })
-    })
+    const name = config.name || url || `configuration-${configIndex}`
+    download(name, config)
     GTAG.event({ category: 'Action', action: 'Click', label: 'Export' })
   }
 
@@ -53,28 +53,37 @@ function Config({ config, configIndex, toastRef, setConfigs, configSettingsRef, 
     const fr = new FileReader()
     fr.onload = function ({ target }) {
       try {
-        const importedConfig = JSON.parse(target.result)
+        let importedConfig = JSON.parse(target.result)
         if (Array.isArray(importedConfig)) {
           toastRef.current.push({
             body: t('error.json')
           })
           GTAG.exception({ description: 'selected Json is not valid', fatal: false })
         } else {
-          ImportService.import(Format.configuration(importedConfig), LOCAL_STORAGE_KEY.CONFIGS)
-          toastRef.current.push({
-            body: t('toast.configuration.importSuccess.body', { name: importedConfig.name || importedConfig.url || 'configuration' }),
-            delay: 2000,
-            onClose: () => {
-              window.location.reload()
-            }
+          importedConfig = Format.configuration(importedConfig)
+          const importedIndex = configs.findIndex(_config => _config.url === importedConfig.url)
+          if (importedIndex === -1) {
+            configs.push(importedConfig)
+          } else {
+            configs[importedIndex] = importedConfig
+          }
+
+          StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.CONFIGS]: configs }).then(() => {
+            toastRef.current.push({
+              body: t('toast.configuration.importSuccess.body', { name: importedConfig.name || importedConfig.url || 'configuration' }),
+              delay: 2000,
+              onClose: () => {
+                window.location.reload()
+              }
+            })
+            GTAG.event({ category: 'Action', action: 'Click', label: 'Import' })
           })
-          GTAG.event({ category: 'Action', action: 'Click', label: 'Import' })
         }
       } catch (error) {
         toastRef.current.push({
           body: JSON.stringify(error)
         })
-        Logger.error(error)
+        Logger.colorError(error)
         GTAG.exception({ description: error, fatal: true })
       }
     }
@@ -90,7 +99,7 @@ function Config({ config, configIndex, toastRef, setConfigs, configSettingsRef, 
   const removeConfig = () => {
     const { name } = config
     // setLoading(true)
-    setConfigs(configs => configs.filter((_, index) => index !== configIndex))
+    setConfigs(_configs => _configs.filter((_, index) => index !== configIndex))
     setSelected(prevSelected => {
       if (configsLength === 2) {
         return 0
@@ -117,7 +126,7 @@ function Config({ config, configIndex, toastRef, setConfigs, configSettingsRef, 
 
   const duplicateConfig = () => {
     const configCopy = { ...config, name: `${config.name} - Duplicate`, batch: { ...config.batch }, actions: config.actions.map(action => ({ ...action, addon: { ...action.addon } })) }
-    setConfigs(configs => [{ ...configCopy }, ...configs])
+    setConfigs(_configs => [{ ...configCopy }, ..._configs])
     setSelected(0)
     toastRef.current.push({
       body: t('toast.configuration.add.body', { name: configCopy.name })
@@ -126,7 +135,7 @@ function Config({ config, configIndex, toastRef, setConfigs, configSettingsRef, 
   }
 
   return (
-    <Card bg={theme} text={theme === 'dark' && 'white'}>
+    <Card bg={theme} text={theme === 'dark' && 'white'} className='mb-3'>
       <Card.Header as='h6'>
         <Row>
           <Col className='d-flex align-items-center'>
@@ -179,19 +188,20 @@ Config.propTypes = {
   configIndex: PropTypes.number.isRequired,
   setConfigs: PropTypes.func.isRequired,
   setSelected: PropTypes.func.isRequired,
-  configsLength: PropTypes.number.isRequired,
   toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired,
   configSettingsRef: PropTypes.shape({ current: PropTypes.shape({ showSettings: PropTypes.func.isRequired }) }).isRequired,
   confirmRef: PropTypes.shape({ current: PropTypes.shape({ confirm: PropTypes.func.isRequired }) }).isRequired,
-  config: PropTypes.shape({
-    enable: PropTypes.bool.isRequired,
-    name: PropTypes.string,
-    url: PropTypes.string,
-    initWait: numberWithExponential,
-    startTime: PropTypes.string,
-    batch: Batch.type.propTypes.batch,
-    actions: Action.type.propTypes.actions,
-    startManually: PropTypes.bool
-  }).isRequired
+  configs: PropTypes.arrayOf(
+    PropTypes.shape({
+      enable: PropTypes.bool.isRequired,
+      name: PropTypes.string,
+      url: PropTypes.string,
+      initWait: numberWithExponential,
+      startTime: PropTypes.string,
+      batch: Batch.type.propTypes.batch,
+      actions: Action.type.propTypes.actions,
+      startManually: PropTypes.bool
+    }).isRequired
+  ).isRequired
 }
 export default React.memo(Config)
