@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { numberWithExponential } from '../../../util'
 import { ThemeContext, ModeContext } from '../../../_providers'
 import { updateForm } from '../../../util/element'
+import { APP_LINK } from '../../../constants'
 
 const FORM_ID = 'config-body'
 
@@ -23,7 +24,7 @@ function ConfigBody({ config, onUpdate }) {
         <Row>
           <Col md='12' sm='12' className='mb-3'>
             <Form.Group controlId='config-url'>
-              <FormControl name='url' required defaultValue={config.url} autoComplete='off' onBlur={onUpdate} placeholder={process.env.BASE} />
+              <FormControl name='url' required defaultValue={config.url} autoComplete='off' onBlur={onUpdate} placeholder={APP_LINK.TEST} />
               <Form.Label>
                 {t('configuration.url')}&nbsp;<small className='text-danger'>*</small>
               </Form.Label>

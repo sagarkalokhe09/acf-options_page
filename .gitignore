@@ -24,4 +24,5 @@ yarn-error.log*
 debug.log
 /public/sitemap.xml
 .eslintcache
-.env*
+.env
+.env.*

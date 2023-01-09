@@ -1,14 +1,15 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { Card, Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
+import { useMsal } from '@azure/msal-react'
 import { VolumeMute, VolumeUp } from '../../util'
-import { AuthContext } from '../../_providers'
 import { getElementProps } from '../../util/element'
 
 function SettingNotifications({ notifications, setSettings }) {
   const { t } = useTranslation()
-  const user = useContext(AuthContext)
+  const { accounts } = useMsal()
+
   const onUpdate = e => {
     const update = getElementProps(e)
     setSettings(settings => ({ ...settings, notifications: { ...settings.notifications, ...update } }))
@@ -39,7 +40,7 @@ function SettingNotifications({ notifications, setSettings }) {
                 </span>
               }
             />
-            <Form.Check type='switch' disabled={!user} onChange={onUpdate} checked={notifications.discord} name='discord' label={t('modal.settings.notification.discord.title')} />
+            <Form.Check type='switch' disabled={accounts.length === 0} onChange={onUpdate} checked={notifications.discord} name='discord' label={t('modal.settings.notification.discord.title')} />
             <Form.Text>
               <Trans i18nKey='modal.settings.notification.discord.hint'>
                 You need to login and join our

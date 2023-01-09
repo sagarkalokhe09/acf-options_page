@@ -1,5 +1,6 @@
 import React from 'react'
 import { OverlayTrigger, Popover, Table } from 'react-bootstrap'
+import { APP_LINK } from '../constants'
 import { InfoCircle } from '../util'
 
 export function ElementFinderPopover() {
@@ -22,7 +23,7 @@ export function ElementFinderPopover() {
               <tbody>
                 <tr>
                   <td>
-                    <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#get-element-by-id`} target='_blank' rel='noopener noreferrer'>
+                    <a href={`${APP_LINK.DOCS}action/element-finder/#get-element-by-id`} target='_blank' rel='noopener noreferrer'>
                       getElementById
                     </a>
                   </td>
@@ -35,7 +36,7 @@ export function ElementFinderPopover() {
                 </tr>
                 <tr>
                   <td>
-                    <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#get-elements-by-classname`} target='_blank' rel='noopener noreferrer'>
+                    <a href={`${APP_LINK.DOCS}action/element-finder/#get-elements-by-classname`} target='_blank' rel='noopener noreferrer'>
                       getElementsByClassName
                     </a>
                   </td>
@@ -46,7 +47,7 @@ export function ElementFinderPopover() {
                 </tr>
                 <tr>
                   <td>
-                    <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#get-elements-by-name`} target='_blank' rel='noopener noreferrer'>
+                    <a href={`${APP_LINK.DOCS}action/element-finder/#get-elements-by-name`} target='_blank' rel='noopener noreferrer'>
                       getElementsByName
                     </a>
                   </td>
@@ -57,7 +58,7 @@ export function ElementFinderPopover() {
                 </tr>
                 <tr>
                   <td>
-                    <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#get-elements-by-tag-name`} target='_blank' rel='noopener noreferrer'>
+                    <a href={`${APP_LINK.DOCS}action/element-finder/#get-elements-by-tag-name`} target='_blank' rel='noopener noreferrer'>
                       getElementsByTagName
                     </a>
                   </td>
@@ -68,7 +69,7 @@ export function ElementFinderPopover() {
                 </tr>
                 <tr>
                   <td>
-                    <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#query-selector`} target='_blank' rel='noopener noreferrer'>
+                    <a href={`${APP_LINK.DOCS}action/element-finder/#query-selector`} target='_blank' rel='noopener noreferrer'>
                       querySelector
                     </a>
                   </td>
@@ -92,7 +93,7 @@ export function ElementFinderPopover() {
                 </tr>
                 <tr>
                   <td>
-                    <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#query-selector-all`} target='_blank' rel='noopener noreferrer'>
+                    <a href={`${APP_LINK.DOCS}action/element-finder/#query-selector-all`} target='_blank' rel='noopener noreferrer'>
                       querySelectorAll
                     </a>
                   </td>
@@ -103,7 +104,7 @@ export function ElementFinderPopover() {
                 </tr>
                 <tr>
                   <td>
-                    <a href={`${process.env.REACT_APP_DOCS}action/element-finder/#xpath`} target='_blank' rel='noopener noreferrer'>
+                    <a href={`${APP_LINK.DOCS}action/element-finder/#xpath`} target='_blank' rel='noopener noreferrer'>
                       XPath
                     </a>
                   </td>

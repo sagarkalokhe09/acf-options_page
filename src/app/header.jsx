@@ -1,25 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Container, Image, Nav, NavDropdown, Navbar } from 'react-bootstrap'
-import { StorageService } from '@dhruv-techapps/core-services'
-import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
+import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
+import { useMsal } from '@azure/msal-react'
+import { Logger } from '@dhruv-techapps/core-common'
 import { GTAG, GearFill, Moon, Sun, ChatFill } from '../util'
 import { SettingsModal } from '../modal'
-import { AuthContext } from '../_providers/AuthProvider'
-import { auth } from '../firebase'
 import { ThemeContext } from '../_providers/ThemeProvider'
+import { APP_LANGUAGES, APP_NAME, SOCIAL_LINKS } from '../constants'
+import { loginRequest } from '../authConfig'
 
 function Header({ error }) {
   const { theme, setTheme } = useContext(ThemeContext)
   const [showSettings, setShowSettings] = useState(false)
   const [languages, setLanguages] = useState([])
   const { t, i18n } = useTranslation()
-
+  const { instance, accounts } = useMsal()
   useEffect(() => {
-    setLanguages(process.env.REACT_APP_LANGUAGES.split(','))
+    setLanguages(APP_LANGUAGES)
   }, [])
-  const user = useContext(AuthContext)
   const handleClose = () => {
     setShowSettings(false)
     GTAG.event({ category: 'Settings', action: 'Click', label: 'Close' })
@@ -32,13 +31,15 @@ function Header({ error }) {
 
   const login = () => {
     GTAG.event({ category: 'Settings', action: 'Click', label: 'Login' })
-    window.open('popup.html', 'name', 'height=800,width=475')
+    instance.loginRedirect(loginRequest).catch(e => {
+      Logger.log(e)
+    })
   }
 
   const logout = () => {
-    auth.signOut().then(() => {
-      StorageService.remove(window.EXTENSION_ID, LOCAL_STORAGE_KEY.DISCORD)
-      window.location.reload()
+    instance.logoutPopup({
+      postLogoutRedirectUri: '/',
+      mainWindowRedirectUri: '/'
     })
   }
 
@@ -66,12 +67,12 @@ function Header({ error }) {
                 e.currentTarget.src = 'https://getautoclicker.com/favicons/favicon32.png'
               }}
             />
-            <h1 className='h4 d-inline-flex ms-2 my-0 fw-normal'>{process.env.REACT_APP_NAME}</h1>
+            <h1 className='h4 d-inline-flex ms-2 my-0 fw-normal'>{APP_NAME}</h1>
           </Navbar.Brand>
           <Navbar className='p-0'>
             <Nav className='me-auto' />
             <Nav>
-              <Nav.Link target='_blank' href={process.env.REACT_APP_GOOGLE_GROUP} className='px-4 py-3'>
+              <Nav.Link target='_blank' href={SOCIAL_LINKS.GOOGLE_GROUP} className='px-4 py-3'>
                 <ChatFill width='24' height='24' title={t('header.theme.dark')} />
               </Nav.Link>
               <Nav.Link onClick={toggleTheme} className='px-4 py-3'>
@@ -82,11 +83,8 @@ function Header({ error }) {
                   <Nav.Link onClick={openSettings} className='px-4 py-3'>
                     <GearFill width='24' height='24' title={t('header.settings')} />
                   </Nav.Link>
-                  {user ? (
-                    <NavDropdown
-                      title={user.photoURL ? <Image alt={user.displayName} title={user.displayName} src={user.photoURL} roundedCircle width='30' height='30' /> : user.displayName}
-                      id='user-nav-dropdown'
-                      className='px-4 py-2'>
+                  {accounts.length !== 0 ? (
+                    <NavDropdown title={accounts[0].name} id='user-nav-dropdown' className='px-4 py-2'>
                       <NavDropdown.Item href='#logout' title='logout' onClick={logout}>
                         {t('header.logout')}
                       </NavDropdown.Item>

@@ -3,6 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { GTAG, Discord, Instagram, Twitter, Github } from '../util'
+import { APP_LINK, APP_NAME, SOCIAL_LINKS } from '../constants'
 
 function Footer({ version }) {
   const { t } = useTranslation()
@@ -22,7 +23,7 @@ function Footer({ version }) {
             />
             <div className='d-inline-flex flex-column'>
               <h6 className='text-secondary mb-0'>
-                {process.env.REACT_APP_NAME}
+                {APP_NAME}
                 <span className={`${process.env.REACT_APP_VARIANT} ms-2`}>{process.env.REACT_APP_VARIANT}</span>
               </h6>
               <div className='text-muted'>
@@ -40,7 +41,7 @@ function Footer({ version }) {
                   target='_blank'
                   rel='noopener noreferrer'
                   title='docs'
-                  href={`${process.env.REACT_APP_DOCS}getting-started`}
+                  href={`${APP_LINK.DOCS}getting-started`}
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Docs' })
                   }}>
@@ -52,7 +53,7 @@ function Footer({ version }) {
                   className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
-                  href={process.env.REACT_APP_BLOG}
+                  href={APP_LINK.BLOG}
                   title='blog'
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Blog' })
@@ -66,7 +67,7 @@ function Footer({ version }) {
                   target='_blank'
                   rel='noopener noreferrer'
                   title='issues'
-                  href={process.env.REACT_APP_ISSUES}
+                  href={APP_LINK.ISSUES}
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Issues' })
                   }}>
@@ -79,7 +80,7 @@ function Footer({ version }) {
                   target='_blank'
                   rel='noopener noreferrer'
                   title='configuration'
-                  href={process.env.REACT_APP_CONFIGS}
+                  href={APP_LINK.CONFIGS}
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Configurations' })
                   }}>
@@ -92,7 +93,7 @@ function Footer({ version }) {
                   target='_blank'
                   rel='noopener noreferrer'
                   title='practice form'
-                  href={process.env.REACT_APP_TEST}
+                  href={APP_LINK.TEST}
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Practice Form' })
                   }}>
@@ -110,7 +111,7 @@ function Footer({ version }) {
                   target='_blank'
                   rel='noopener noreferrer'
                   title='chat'
-                  href={process.env.REACT_APP_GOOGLE_GROUP}
+                  href={SOCIAL_LINKS.GOOGLE_GROUP}
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Google Group' })
                   }}>
@@ -141,7 +142,7 @@ function Footer({ version }) {
                   target='_blank'
                   rel='noopener noreferrer'
                   title='instagram'
-                  href={process.env.REACT_APP_INSTAGRAM}
+                  href={SOCIAL_LINKS.INSTAGRAM}
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Instagram' })
                   }}>
@@ -154,7 +155,7 @@ function Footer({ version }) {
                   className='text-decoration-none'
                   target='_blank'
                   rel='noopener noreferrer'
-                  href={process.env.REACT_APP_DISCORD}
+                  href={SOCIAL_LINKS.DISCORD}
                   title='discord'
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Discord' })
@@ -169,7 +170,7 @@ function Footer({ version }) {
                   target='_blank'
                   rel='noopener noreferrer'
                   title='twitter'
-                  href={process.env.REACT_APP_TWITTER}
+                  href={SOCIAL_LINKS.TWITTER}
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Twitter' })
                   }}>
@@ -183,7 +184,7 @@ function Footer({ version }) {
                   target='_blank'
                   rel='noopener noreferrer'
                   title='github'
-                  href={process.env.REACT_APP_GITHUB}
+                  href={SOCIAL_LINKS.GITHUB}
                   onClick={() => {
                     GTAG.event({ category: 'Footer', action: 'Click', label: 'Github' })
                   }}>
