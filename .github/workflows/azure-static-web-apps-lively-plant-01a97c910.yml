@@ -1,13 +1,6 @@
 name: Azure Static Web Apps CI/CD
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - master
   workflow_dispatch:
 
 jobs:
@@ -49,7 +42,7 @@ jobs:
           #i18n
           REACT_APP_I18N: https://raw.githubusercontent.com/Dhruv-Techapps/acf-i18n/main/locales
           #Azure
-          AZURE_APP_CLIENT_ID: ${{secrets.AZURE_APP_CLIENT_ID}}
+          REACT_APP_AZURE_APP_CLIENT_ID: ${{secrets.REACT_APP_AZURE_APP_CLIENT_ID}}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
