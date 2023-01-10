@@ -27,6 +27,7 @@
     "dev": "env-cmd -f .env.dev react-scripts start",
     "beta": "env-cmd -f .env.beta react-scripts start",
     "stable": "env-cmd -f .env.stable react-scripts start",
+    "build": "react-scripts build",
     "build:dev": "env-cmd -f .env.dev react-scripts build",
     "build:beta": "env-cmd -f .env.beta react-scripts build",
     "build:stable": "env-cmd -f .env.stable react-scripts build",
