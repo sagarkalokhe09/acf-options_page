@@ -14,7 +14,7 @@ import { b2cPolicies } from './policies'
  */
 export const msalConfig = {
   auth: {
-    clientId: process.env.CLIENT_ID,
+    clientId: process.env.AZURE_APP_CLIENT_ID,
     authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose sign-up/sign-in user-flow as your default.
     knownAuthorities: [b2cPolicies.authorityDomain] // You must identify your tenant's domain as a known authority.
   },
