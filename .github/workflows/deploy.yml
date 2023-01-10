@@ -32,6 +32,19 @@ jobs:
           npm run test --if-present
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          INLINE_RUNTIME_CHUNK: ${{secrets.INLINE_RUNTIME_CHUNK}}
+          GENERATE_SOURCEMAP: ${{secrets.GENERATE_SOURCEMAP}}
+          REACT_APP_VARIANT: ${{secrets.REACT_APP_VARIANT}}
+          PUBLIC_URL: ${{secrets.PUBLIC_URL}}
+          REACT_APP_GOOGLE_ANALYTICS_ID: ${{secrets.REACT_APP_GOOGLE_ANALYTICS_ID}}
+          REACT_APP_GOOGLE_ADS_CLIENT: ${{secrets.REACT_APP_GOOGLE_ADS_CLIENT}}
+          REACT_APP_GOOGLE_ADS_SLOT: ${{secrets.REACT_APP_GOOGLE_ADS_SLOT}}
+          #Chrome Extension
+          REACT_APP_CHROME_EXTENSION_ID: ${{secrets.REACT_APP_CHROME_EXTENSION_ID}}
+          #Edge Extension
+          REACT_APP_EDGE_EXTENSION_ID: ${{secrets.REACT_APP_EDGE_EXTENSION_ID}}
+          #i18n
+          REACT_APP_I18N: https://raw.githubusercontent.com/Dhruv-Techapps/acf-i18n/main/locales
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         with:
