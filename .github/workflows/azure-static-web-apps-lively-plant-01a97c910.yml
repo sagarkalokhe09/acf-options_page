@@ -33,10 +33,12 @@ jobs:
           ###### End of Repository/Build Configurations ######
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          #React
           INLINE_RUNTIME_CHUNK: ${{secrets.INLINE_RUNTIME_CHUNK}}
           GENERATE_SOURCEMAP: ${{secrets.GENERATE_SOURCEMAP}}
           REACT_APP_VARIANT: ${{secrets.REACT_APP_VARIANT}}
           PUBLIC_URL: ${{secrets.PUBLIC_URL}}
+          #Google
           REACT_APP_GOOGLE_ANALYTICS_ID: ${{secrets.REACT_APP_GOOGLE_ANALYTICS_ID}}
           REACT_APP_GOOGLE_ADS_CLIENT: ${{secrets.REACT_APP_GOOGLE_ADS_CLIENT}}
           REACT_APP_GOOGLE_ADS_SLOT: ${{secrets.REACT_APP_GOOGLE_ADS_SLOT}}
@@ -46,6 +48,8 @@ jobs:
           REACT_APP_EDGE_EXTENSION_ID: ${{secrets.REACT_APP_EDGE_EXTENSION_ID}}
           #i18n
           REACT_APP_I18N: https://raw.githubusercontent.com/Dhruv-Techapps/acf-i18n/main/locales
+          #Azure
+          AZURE_APP_CLIENT_ID: ${{secrets.AZURE_APP_CLIENT_ID}}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
