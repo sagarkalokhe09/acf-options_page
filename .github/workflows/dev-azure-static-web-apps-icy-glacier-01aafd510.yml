@@ -34,10 +34,6 @@ jobs:
           GENERATE_SOURCEMAP: ${{vars.GENERATE_SOURCEMAP}}
           REACT_APP_VARIANT: ${{vars.REACT_APP_VARIANT}}
           PUBLIC_URL: ${{vars.PUBLIC_URL}}
-          #Google
-          REACT_APP_GOOGLE_ANALYTICS_ID: ${{vars.REACT_APP_GOOGLE_ANALYTICS_ID}}
-          REACT_APP_GOOGLE_ADS_CLIENT: ${{secrets.REACT_APP_GOOGLE_ADS_CLIENT}}
-          REACT_APP_GOOGLE_ADS_SLOT: ${{vars.REACT_APP_GOOGLE_ADS_SLOT}}
           #Chrome Extension
           REACT_APP_CHROME_EXTENSION_ID: ${{vars.REACT_APP_CHROME_EXTENSION_ID}}
           #Edge Extension
@@ -46,3 +42,11 @@ jobs:
           REACT_APP_I18N: ${{vars.REACT_APP_I18N}}
           #Azure
           REACT_APP_AZURE_APP_CLIENT_ID: ${{secrets.REACT_APP_AZURE_APP_CLIENT_ID}}
+          #Google Analytics
+          REACT_APP_GOOGLE_ANALYTICS_ID: ${{vars.REACT_APP_GOOGLE_ANALYTICS_ID}}
+          #Google Adsense
+          REACT_APP_GOOGLE_ADS_SLOT: ${{vars.REACT_APP_GOOGLE_ADS_SLOT}}
+          REACT_APP_GOOGLE_ADS_CLIENT: ${{secrets.REACT_APP_GOOGLE_ADS_CLIENT}}
+          #Carbon Ads
+          REACT_APP_CARBON_ADS_CODE: ${{vars.REACT_APP_CARBON_ADS_CODE}}
+          REACT_APP_CARBON_ADS_PLACEMENT: ${{vars.REACT_APP_CARBON_ADS_PLACEMENT}}
