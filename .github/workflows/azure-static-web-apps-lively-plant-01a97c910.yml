@@ -1,4 +1,4 @@
-name: Azure Static Web Apps CI/CD
+name: [Beta] Azure Static Web Apps CI/CD
 
 on:
   workflow_dispatch:
@@ -8,8 +8,8 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     environment: 
-      name: Development
-      url: https://dev.getautoclicker.com/
+      name: Beta
+      url: https://beta.getautoclicker.com/
     name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v3
