@@ -1,4 +1,4 @@
-name: [Beta] Azure Static Web Apps CI/CD
+name: Beta Azure Static Web Apps CI/CD
 
 on:
   workflow_dispatch:
