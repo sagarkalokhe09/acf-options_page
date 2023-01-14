@@ -7,6 +7,9 @@ jobs:
   build_and_deploy_job:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
+    environment: 
+      name: Development
+      url: https://dev.getautoclicker.com/
     name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v3
@@ -27,31 +30,19 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
           #React
-          INLINE_RUNTIME_CHUNK: ${{secrets.INLINE_RUNTIME_CHUNK}}
-          GENERATE_SOURCEMAP: ${{secrets.GENERATE_SOURCEMAP}}
-          REACT_APP_VARIANT: ${{secrets.REACT_APP_VARIANT}}
-          PUBLIC_URL: ${{secrets.PUBLIC_URL}}
+          INLINE_RUNTIME_CHUNK: ${{vars.INLINE_RUNTIME_CHUNK}}
+          GENERATE_SOURCEMAP: ${{vars.GENERATE_SOURCEMAP}}
+          REACT_APP_VARIANT: ${{vars.REACT_APP_VARIANT}}
+          PUBLIC_URL: ${{vars.PUBLIC_URL}}
           #Google
-          REACT_APP_GOOGLE_ANALYTICS_ID: ${{secrets.REACT_APP_GOOGLE_ANALYTICS_ID}}
+          REACT_APP_GOOGLE_ANALYTICS_ID: ${{vars.REACT_APP_GOOGLE_ANALYTICS_ID}}
           REACT_APP_GOOGLE_ADS_CLIENT: ${{secrets.REACT_APP_GOOGLE_ADS_CLIENT}}
-          REACT_APP_GOOGLE_ADS_SLOT: ${{secrets.REACT_APP_GOOGLE_ADS_SLOT}}
+          REACT_APP_GOOGLE_ADS_SLOT: ${{vars.REACT_APP_GOOGLE_ADS_SLOT}}
           #Chrome Extension
-          REACT_APP_CHROME_EXTENSION_ID: ${{secrets.REACT_APP_CHROME_EXTENSION_ID}}
+          REACT_APP_CHROME_EXTENSION_ID: ${{vars.REACT_APP_CHROME_EXTENSION_ID}}
           #Edge Extension
-          REACT_APP_EDGE_EXTENSION_ID: ${{secrets.REACT_APP_EDGE_EXTENSION_ID}}
+          REACT_APP_EDGE_EXTENSION_ID: ${{vars.REACT_APP_EDGE_EXTENSION_ID}}
           #i18n
-          REACT_APP_I18N: https://raw.githubusercontent.com/Dhruv-Techapps/acf-i18n/main/locales
+          REACT_APP_I18N: ${{vars.REACT_APP_I18N}}s
           #Azure
           REACT_APP_AZURE_APP_CLIENT_ID: ${{secrets.REACT_APP_AZURE_APP_CLIENT_ID}}
-
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close Pull Request Job
-    steps:
-      - name: Close Pull Request
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_LIVELY_PLANT_01A97C910 }}
-          action: "close"
