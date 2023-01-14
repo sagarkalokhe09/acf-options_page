@@ -43,6 +43,6 @@ jobs:
           #Edge Extension
           REACT_APP_EDGE_EXTENSION_ID: ${{vars.REACT_APP_EDGE_EXTENSION_ID}}
           #i18n
-          REACT_APP_I18N: ${{vars.REACT_APP_I18N}}s
+          REACT_APP_I18N: ${{vars.REACT_APP_I18N}}
           #Azure
           REACT_APP_AZURE_APP_CLIENT_ID: ${{secrets.REACT_APP_AZURE_APP_CLIENT_ID}}
