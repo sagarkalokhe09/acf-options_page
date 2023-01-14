@@ -9,10 +9,11 @@ import Config from './config'
 import Batch from './batch'
 import Action from './action'
 import { Format, GTAG, ThreeDots, getConfigName } from '../../util'
-import { DropdownToggle, ErrorAlert, CarbonAds } from '../../components'
+import { DropdownToggle, ErrorAlert, GoogleAds } from '../../components'
 import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ConfirmModal, ReorderConfigsModal, RemoveConfigsModal, ActionConditionModal } from '../../modal'
 import { ThemeContext, ModeContext } from '../../_providers'
 import { download } from '../../_helpers'
+import { Ads } from '../../components/ads.components'
 
 function Configs({ toastRef, blogRef }) {
   const { theme } = useContext(ThemeContext)
@@ -249,7 +250,7 @@ function Configs({ toastRef, blogRef }) {
                     configSettingsRef={configSettingsRef}
                   />
                   {mode === 'pro' && <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />}
-                  {process.env.REACT_APP_VARIANT !== 'LOCAL' && <CarbonAds code='CEAI5KJ7' placement='getautoclickercom' />}
+                  <Ads />
                   <Action
                     actions={config.actions}
                     configEnable={config.enable}

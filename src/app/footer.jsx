@@ -27,7 +27,7 @@ function Footer({ version }) {
                 <span className={`${process.env.REACT_APP_VARIANT} ms-2`}>{process.env.REACT_APP_VARIANT}</span>
               </h6>
               <div className='text-muted'>
-                <small>© 2017 - 2022</small>
+                <small>© 2017 - 2023</small>
                 <small className='ms-2'>v{version}</small>
               </div>
             </div>

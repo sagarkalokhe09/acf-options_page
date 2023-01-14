@@ -24,22 +24,13 @@
   },
   "scripts": {
     "start": "env-cmd react-scripts start",
-    "dev": "env-cmd -f .env.dev react-scripts start",
-    "beta": "env-cmd -f .env.beta react-scripts start",
-    "stable": "env-cmd -f .env.stable react-scripts start",
     "build": "react-scripts build",
-    "build:dev": "env-cmd -f .env.dev react-scripts build",
-    "build:beta": "env-cmd -f .env.beta react-scripts build",
-    "build:stable": "env-cmd -f .env.stable react-scripts build",
     "lint": "run-s lint:js lint:css",
     "lint:js": "eslint --cache --format codeframe --ext jsx,js,json src --fix",
     "lint:css": "stylelint **/*.scss",
     "sitemap:dev": "node sitemap-generator.js https://dev.getautoclicker.com/",
     "sitemap:beta": "node sitemap-generator.js https://beta.getautoclicker.com/",
     "sitemap:stable": "node sitemap-generator.js https://stable.getautoclicker.com/",
-    "deploy:dev": "npm run sitemap:dev && npm run build:dev && aws s3 sync build/. s3://dev.getautoclicker.com/ --delete ",
-    "deploy:beta": "npm run sitemap:beta && npm run build:beta && aws s3 sync build/. s3://beta.getautoclicker.com/ --delete ",
-    "deploy:stable": "npm run sitemap:stable && npm run build:stable && aws s3 sync build/. s3://stable.getautoclicker.com/ --delete ",
     "prepare": "husky install"
   },
   "eslintConfig": {

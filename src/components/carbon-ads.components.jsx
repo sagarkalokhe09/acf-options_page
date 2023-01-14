@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 export function CarbonAds({ code, placement }) {
   const reference = useRef()
-
   useEffect(() => {
     reference.current.innerHTML = ''
     const s = document.createElement('script')
@@ -14,7 +13,12 @@ export function CarbonAds({ code, placement }) {
   return <div ref={reference} />
 }
 
+CarbonAds.defaultProps = {
+  code: process.env.REACT_APP_CARBON_ADS_CODE,
+  placement: process.env.REACT_APP_CARBON_ADS_PLACEMENT
+}
+
 CarbonAds.propTypes = {
-  code: PropTypes.string.isRequired,
-  placement: PropTypes.string.isRequired
+  code: PropTypes.string,
+  placement: PropTypes.string
 }
