@@ -1,13 +1,14 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
+import { CHROME_WEB_STORE, EDGE_WEB_STORE } from '../constants'
 import { BROWSER } from '../_helpers'
 
 export function ExtensionNotFound() {
   const { t } = useTranslation()
 
   const downloadClick = () => {
-    const webStore = process.env[`REACT_APP_${BROWSER}_WEB_STORE`]
+    const webStore = BROWSER === 'EDGE' ? EDGE_WEB_STORE : CHROME_WEB_STORE
     const extensionId = process.env[`REACT_APP_${BROWSER}_EXTENSION_ID`]
     window.open(`${webStore}${extensionId}`)
   }
