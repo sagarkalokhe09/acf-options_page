@@ -1,0 +1,52 @@
+name: BETA Azure Static Web Apps CI/CD
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    environment: 
+      name: Beta
+      url: https://beta.getautoclicker.com/
+    name: Build and Deploy Job
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_DESERT_017A3DF10 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "/" # App source code path
+          api_location: "" # Api source code path - optional
+          output_location: "build" # Built app content directory - optional
+          skip_api_build: true
+          ###### End of Repository/Build Configurations ######
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          #React
+          INLINE_RUNTIME_CHUNK: ${{vars.INLINE_RUNTIME_CHUNK}}
+          GENERATE_SOURCEMAP: ${{vars.GENERATE_SOURCEMAP}}
+          REACT_APP_VARIANT: ${{vars.REACT_APP_VARIANT}}
+          PUBLIC_URL: ${{vars.PUBLIC_URL}}
+          #Chrome Extension
+          REACT_APP_CHROME_EXTENSION_ID: ${{vars.REACT_APP_CHROME_EXTENSION_ID}}
+          #Edge Extension
+          REACT_APP_EDGE_EXTENSION_ID: ${{vars.REACT_APP_EDGE_EXTENSION_ID}}
+          #i18n
+          REACT_APP_I18N: ${{vars.REACT_APP_I18N}}
+          #Azure
+          REACT_APP_AZURE_APP_CLIENT_ID: ${{secrets.REACT_APP_AZURE_APP_CLIENT_ID}}
+          #Google Analytics
+          REACT_APP_GOOGLE_ANALYTICS_ID: ${{vars.REACT_APP_GOOGLE_ANALYTICS_ID}}
+          #Google Adsense
+          REACT_APP_GOOGLE_ADS_SLOT: ${{vars.REACT_APP_GOOGLE_ADS_SLOT}}
+          REACT_APP_GOOGLE_ADS_CLIENT: ${{secrets.REACT_APP_GOOGLE_ADS_CLIENT}}
+          #Carbon Ads
+          REACT_APP_CARBON_ADS_CODE: ${{vars.REACT_APP_CARBON_ADS_CODE}}
+          REACT_APP_CARBON_ADS_PLACEMENT: ${{vars.REACT_APP_CARBON_ADS_PLACEMENT}}
