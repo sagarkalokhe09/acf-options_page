@@ -8,23 +8,31 @@ import { APP_LINK, APP_NAME, SOCIAL_LINKS } from '../constants'
 function Footer({ version }) {
   const { t } = useTranslation()
 
+  let imageURL = 'https://getautoclicker.com/favicons/favicon48.png'
+  if (/(DEV|BETA)/.test(process.env.REACT_APP_VARIANT)) {
+    imageURL = `https://getautoclicker.com/favicons/${process.env.REACT_APP_VARIANT}/icon48.png`
+  }
+
   return (
     <footer className='pt-4 mt-md-5 pt-md-5 border-top'>
       <Container>
         <Row>
           <Col md xs={12} className='mb-3'>
             <img
-              src='https://getautoclicker.com/favicons/favicon48.png'
+              src={imageURL}
               width='48'
               height='48'
               className='d-inline-block align-top me-2'
               alt='Auto click Auto Fill logo'
               title='Auto click Auto Fill logo'
+              onError={e => {
+                e.currentTarget.src = 'https://getautoclicker.com/favicons/favicon48.png'
+              }}
             />
             <div className='d-inline-flex flex-column'>
               <h6 className='text-secondary mb-0'>
                 {APP_NAME}
-                <span className={`${process.env.REACT_APP_VARIANT} ms-2`}>{process.env.REACT_APP_VARIANT}</span>
+                <span className={`${process.env.REACT_APP_VARIANT} ms-2`}>[{process.env.REACT_APP_VARIANT}]</span>
               </h6>
               <div className='text-muted'>
                 <small>© 2017 - 2023</small>

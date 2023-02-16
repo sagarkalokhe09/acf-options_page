@@ -55,13 +55,20 @@ function Header({ confirmRef, error }) {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'))
   }
 
+  let imageURL = 'https://getautoclicker.com/favicons/favicon32.png'
+  let appName = APP_NAME
+  if (/(DEV|BETA)/.test(process.env.REACT_APP_VARIANT)) {
+    imageURL = `https://getautoclicker.com/favicons/${process.env.REACT_APP_VARIANT}/icon32.png`
+    appName += ` [${process.env.REACT_APP_VARIANT}]`
+  }
+
   return (
     <header>
       <nav className={`border-bottom navbar navbar-expand-lg navbar-${theme} py-0 bg-${theme}`}>
         <Container fluid className='px-5 justify-content-center justify-content-md-between'>
           <Navbar.Brand>
             <img
-              src='https://getautoclicker.com/favicons/favicon32.png'
+              src={imageURL}
               width='32'
               height='32'
               className='d-inline-block align-top me-2'
@@ -71,7 +78,7 @@ function Header({ confirmRef, error }) {
                 e.currentTarget.src = 'https://getautoclicker.com/favicons/favicon32.png'
               }}
             />
-            <h1 className='h4 d-inline-flex ms-2 my-0 fw-normal'>{APP_NAME}</h1>
+            <h1 className='h4 d-inline-flex ms-2 my-0 fw-normal'>{appName}</h1>
           </Navbar.Brand>
           <Navbar className='p-0'>
             <Nav className='me-auto' />

@@ -35,7 +35,14 @@ function App() {
           setError(_error.message)
         }
       })
-    window.document.title = APP_NAME
+  }, [])
+
+  useEffect(() => {
+    if (/(DEV|BETA)/.test(process.env.REACT_APP_VARIANT)) {
+      window.document.title = `${APP_NAME} [${process.env.REACT_APP_VARIANT}]`
+    } else {
+      window.document.title = APP_NAME
+    }
   }, [])
 
   const REGEX_RANGE_STRING = '{6,12}'
