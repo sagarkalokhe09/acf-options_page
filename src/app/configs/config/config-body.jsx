@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Card, Col, Form, FormControl, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { numberWithExponential } from '../../../util'
-import { ThemeContext, ModeContext } from '../../../_providers'
+import { ThemeContext } from '../../../_providers'
 import { updateForm } from '../../../util/element'
 import { APP_LINK } from '../../../constants'
 
@@ -11,7 +11,6 @@ const FORM_ID = 'config-body'
 
 function ConfigBody({ config, onUpdate }) {
   const { theme } = useContext(ThemeContext)
-  const { mode } = useContext(ModeContext)
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -31,23 +30,21 @@ function ConfigBody({ config, onUpdate }) {
               <Form.Control.Feedback type='invalid'>{t('error.url')}</Form.Control.Feedback>
             </Form.Group>
           </Col>
-          <Col md={mode === 'pro' ? '6' : '12'} sm='12'>
+          <Col md='6' sm='12'>
             <Form.Group controlId='config-name'>
               <FormControl name='name' autoComplete='off' defaultValue={config.name} onBlur={onUpdate} placeholder='getautoclicker.com' />
               <Form.Label>{t('configuration.name')}</Form.Label>
             </Form.Group>
           </Col>
-          {mode === 'pro' && (
-            <Col md='6' sm='12'>
-              <Form.Group controlId='config-init-wait'>
-                <FormControl name='initWait' pattern='INTERVAL' defaultValue={config.initWait} onBlur={onUpdate} autoComplete='off' list='interval' placeholder='0' />
-                <Form.Label>
-                  {t('configuration.initWait')}&nbsp;<small className='text-muted'>({t('common.sec')})</small>
-                </Form.Label>
-                <Form.Control.Feedback type='invalid'>{t('error.initWait')}</Form.Control.Feedback>
-              </Form.Group>
-            </Col>
-          )}
+          <Col md='6' sm='12'>
+            <Form.Group controlId='config-init-wait'>
+              <FormControl name='initWait' pattern='INTERVAL' defaultValue={config.initWait} onBlur={onUpdate} autoComplete='off' list='interval' placeholder='0' />
+              <Form.Label>
+                {t('configuration.initWait')}&nbsp;<small className='text-muted'>({t('common.sec')})</small>
+              </Form.Label>
+              <Form.Control.Feedback type='invalid'>{t('error.initWait')}</Form.Control.Feedback>
+            </Form.Group>
+          </Col>
         </Row>
       </Card.Body>
     </Form>

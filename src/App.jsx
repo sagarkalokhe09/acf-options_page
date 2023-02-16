@@ -7,7 +7,7 @@ import Header from './app/header'
 import Footer from './app/footer'
 import Configs from './app/configs/configs'
 import { ToastHandler, ErrorAlert, ExtensionNotFound } from './components'
-import { BlogModal } from './modal'
+import { BlogModal, ConfirmModal } from './modal'
 import { ModeProvider, ThemeProvider } from './_providers'
 import { GTAG } from './util'
 import { APP_NAME } from './constants'
@@ -18,6 +18,7 @@ function App() {
   const toastRef = useRef()
   // const adsBlockerRef = useRef()
   const blogRef = useRef()
+  const confirmRef = useRef()
   const [manifest, setManifest] = useState({})
   const [error, setError] = useState()
 
@@ -46,7 +47,7 @@ function App() {
         <ModeProvider>
           <div>
             <Suspense fallback='loading'>
-              <Header error={error} />
+              <Header error={error} confirmRef={confirmRef} />
               {error ? (
                 <Container className='d-flex align-items-center justify-content-center' style={{ width: '100vh', height: 'calc(100vh - 330px)' }}>
                   <Row>
@@ -54,11 +55,11 @@ function App() {
                   </Row>
                 </Container>
               ) : (
-                <Configs toastRef={toastRef} blogRef={blogRef} />
+                <Configs toastRef={toastRef} blogRef={blogRef} confirmRef={confirmRef} />
               )}
               <Footer version={manifest.version || ''} />
               <ToastHandler ref={toastRef} />
-              {/* <AdsBlockerModal ref={adsBlockerRef} /> */}
+              <ConfirmModal ref={confirmRef} />
               <BlogModal ref={blogRef} />
             </Suspense>
             <datalist id='retry'>

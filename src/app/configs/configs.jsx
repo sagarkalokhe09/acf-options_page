@@ -10,12 +10,12 @@ import Batch from './batch'
 import Action from './action'
 import { Format, GTAG, ThreeDots, getConfigName } from '../../util'
 import { DropdownToggle, ErrorAlert } from '../../components'
-import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ConfirmModal, ReorderConfigsModal, RemoveConfigsModal, ActionConditionModal } from '../../modal'
+import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ReorderConfigsModal, RemoveConfigsModal, ActionConditionModal } from '../../modal'
 import { ThemeContext, ModeContext } from '../../_providers'
 import { download } from '../../_helpers'
 import { Ads } from '../../components/ads.components'
 
-function Configs({ toastRef, blogRef }) {
+function Configs({ toastRef, blogRef, confirmRef }) {
   const { theme } = useContext(ThemeContext)
   const { mode } = useContext(ModeContext)
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
@@ -31,7 +31,7 @@ function Configs({ toastRef, blogRef }) {
   const configSettingsRef = useRef()
   const reorderConfigsRef = useRef()
   const removeConfigsRef = useRef()
-  const confirmRef = useRef()
+
   const importFiled = createRef()
 
   const { t, i18n } = useTranslation()
@@ -263,7 +263,7 @@ function Configs({ toastRef, blogRef }) {
                   />
                 </Container>
                 <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
-                <ConfirmModal ref={confirmRef} />
+
                 <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />
                 <ActionConditionModal ref={actionConditionRef} configIndex={selected} setConfigs={setConfigs} />
                 <ConfigSettingsModal ref={configSettingsRef} config={config} configIndex={selected} setConfigs={setConfigs} />
@@ -279,6 +279,7 @@ function Configs({ toastRef, blogRef }) {
 }
 Configs.propTypes = {
   toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired,
-  blogRef: PropTypes.shape({ current: PropTypes.shape({ showBlog: PropTypes.func.isRequired }) }).isRequired
+  blogRef: PropTypes.shape({ current: PropTypes.shape({ showBlog: PropTypes.func.isRequired }) }).isRequired,
+  confirmRef: PropTypes.shape({ current: PropTypes.shape({ confirm: PropTypes.func.isRequired }) }).isRequired
 }
 export default Configs

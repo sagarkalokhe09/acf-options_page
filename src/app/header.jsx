@@ -9,16 +9,20 @@ import { SettingsModal } from '../modal'
 import { ThemeContext } from '../_providers/ThemeProvider'
 import { APP_LANGUAGES, APP_NAME, SOCIAL_LINKS } from '../constants'
 import { loginRequest } from '../authConfig'
+import { BackupDropdown } from '../components/backup.components'
 
-function Header({ error }) {
+function Header({ confirmRef, error }) {
   const { theme, setTheme } = useContext(ThemeContext)
+
   const [showSettings, setShowSettings] = useState(false)
   const [languages, setLanguages] = useState([])
   const { t, i18n } = useTranslation()
   const { instance, accounts } = useMsal()
+
   useEffect(() => {
     setLanguages(APP_LANGUAGES)
   }, [])
+
   const handleClose = () => {
     setShowSettings(false)
     GTAG.event({ category: 'Settings', action: 'Click', label: 'Close' })
@@ -78,23 +82,25 @@ function Header({ error }) {
               <Nav.Link onClick={toggleTheme} className='px-4 py-3'>
                 {theme !== 'light' ? <Sun width='24' height='24' title={t('header.theme.dark')} /> : <Moon width='24' height='24' title={t('header.theme.light')} />}
               </Nav.Link>
+
               {!error.message && (
                 <>
                   <Nav.Link onClick={openSettings} className='px-4 py-3'>
                     <GearFill width='24' height='24' title={t('header.settings')} />
                   </Nav.Link>
+                  <BackupDropdown confirmRef={confirmRef} />
                   {accounts.length !== 0 ? (
-                    <NavDropdown title={accounts[0].name} id='user-nav-dropdown' className='px-4 py-2'>
+                    <NavDropdown title={accounts[0].name} id='user-nav-dropdown' className='px-2 py-2 fw-bolder'>
                       <NavDropdown.Item href='#logout' title='logout' onClick={logout}>
                         {t('header.logout')}
                       </NavDropdown.Item>
                     </NavDropdown>
                   ) : (
-                    <Nav.Link onClick={login} className='px-4 py-3 fw-bolder'>
+                    <Nav.Link onClick={login} className='px-2 py-3 fw-bolder'>
                       {t('header.login')}
                     </Nav.Link>
                   )}
-                  <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase px-4 py-2 fw-bolder'>
+                  <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase px-2 py-2 fw-bolder'>
                     {languages.map((language, index) => (
                       <NavDropdown.Item key={index} title={language} onClick={() => changeLanguage(language)} className='text-secondary'>
                         {t(`language.${language}`)}
@@ -115,6 +121,7 @@ Header.defaultProps = {
   error: {}
 }
 Header.propTypes = {
+  confirmRef: PropTypes.shape({ current: PropTypes.shape({ confirm: PropTypes.func.isRequired }) }).isRequired,
   error: PropTypes.shape({ message: PropTypes.string })
 }
 export default Header

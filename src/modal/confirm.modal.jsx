@@ -25,7 +25,7 @@ const ConfirmModal = forwardRef((props, ref) => {
   return (
     <Modal show={show} centered backdrop='static' keyboard={false}>
       <Modal.Body className='p-4 text-center'>
-        <h4 className='my-3 fw-normal'>{confirm.current.title || 'Confirm'}</h4>
+        <h4 className={`my-3 fw-normal ${confirm.current.headerClass}`}>{confirm.current.title || 'Confirm'}</h4>
         {confirm.current.message}
       </Modal.Body>
       <Modal.Footer className='flex-nowrap p-0'>

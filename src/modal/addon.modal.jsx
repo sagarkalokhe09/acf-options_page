@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
 import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap'
@@ -8,13 +8,11 @@ import { GTAG } from '../util'
 import { ValueExtractorPopover } from '../popover'
 import { AddonRecheck } from './addon/recheck'
 import { getElementProps, updateForm } from '../util/element'
-import { ModeContext } from '../_providers'
 
 const FORM_ID = 'addon'
 
 const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const { t } = useTranslation()
-  const { mode } = useContext(ModeContext)
   const [show, setShow] = useState(false)
   const [addon, setAddon] = useState(defaultAddon)
   const [message, setMessage] = useState()
@@ -121,16 +119,14 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                     <Form.Control.Feedback type='invalid'>{t('error.value')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-                {mode === 'pro' && (
-                  <Col md sm={12}>
-                    <Form.Group controlId='addon-value-extractor'>
-                      <Form.Control type='text' placeholder='Value Extractor' defaultValue={addon.valueExtractor} name='valueExtractor' list='valueExtractor' onBlur={onUpdate} />
-                      <Form.Label>{t('modal.addon.valueExtractor')}</Form.Label>
-                      <ValueExtractorPopover />
-                      <Form.Control.Feedback type='invalid'>{t('error.valueExtractor')}</Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                )}
+                <Col md sm={12}>
+                  <Form.Group controlId='addon-value-extractor'>
+                    <Form.Control type='text' placeholder='Value Extractor' defaultValue={addon.valueExtractor} name='valueExtractor' list='valueExtractor' onBlur={onUpdate} />
+                    <Form.Label>{t('modal.addon.valueExtractor')}</Form.Label>
+                    <ValueExtractorPopover />
+                    <Form.Control.Feedback type='invalid'>{t('error.valueExtractor')}</Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
               </Row>
               <div hidden={!(addon.elementFinder && addon.condition && addon.value)}>
                 <hr />
