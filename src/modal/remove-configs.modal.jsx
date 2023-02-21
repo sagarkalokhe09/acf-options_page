@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { ElementUtil } from '@dhruv-techapps/core-common'
 import { LOCAL_STORAGE_KEY, defaultConfig } from '@dhruv-techapps/acf-common'
 import { ErrorAlert } from '../components'
-import { GTAG } from '../util'
 
 const RemoveConfigsModal = forwardRef((_, ref) => {
   const [configs, setConfigs] = useState([])
@@ -26,7 +25,6 @@ const RemoveConfigsModal = forwardRef((_, ref) => {
         window.location.reload()
       })
       .catch(setError)
-    GTAG.event({ category: 'Remove-Configurations', action: 'Click', label: 'Save' })
   }
 
   useImperativeHandle(ref, () => ({
@@ -44,14 +42,12 @@ const RemoveConfigsModal = forwardRef((_, ref) => {
           )
         })
         .catch(setError)
-      GTAG.modalview({ title: 'Remove Configurations', url: window.location.href, path: '/configurations/remove' })
       setShow(true)
     }
   }))
 
   const handleClose = () => {
     setShow(false)
-    GTAG.event({ category: 'Remove Configurations', action: 'Click', label: 'Close' })
   }
 
   const remove = e => {
@@ -70,7 +66,7 @@ const RemoveConfigsModal = forwardRef((_, ref) => {
 
   return (
     <Modal show={show} size='lg' onHide={handleClose} scrollable>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit} id='remove-configs'>
         <Modal.Header>
           <Modal.Title as='h6'>{t('configuration.removeConfigs')}</Modal.Title>
         </Modal.Header>
@@ -106,7 +102,7 @@ const RemoveConfigsModal = forwardRef((_, ref) => {
           <Button type='button' variant='outline-primary px-5' onClick={handleClose}>
             {t('common.close')}
           </Button>
-          <Button type='submit' variant='danger px-5' className='ml-3'>
+          <Button type='submit' variant='danger px-5' className='ml-3' id='remove-configs-button'>
             {t('configuration.removeConfigs')}
           </Button>
         </Modal.Footer>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Button, Col, Form, Modal, Row, Table } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { ACTION_CONDITION_OPR, ACTION_RUNNING, defaultActionCondition } from '@dhruv-techapps/acf-common'
-import { GTAG } from '../util'
+
 import { getElementProps, updateForm } from '../util/element'
 import { ActionAndStatus } from './action-condition/action-and-status'
 import { Plus } from '../util/svg'
@@ -45,7 +45,6 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
 
   const handleClose = () => {
     setShow(false)
-    GTAG.event({ category: 'Action-Condition', action: 'Click', label: 'Close' })
   }
 
   useEffect(() => {
@@ -88,7 +87,6 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
       actions.current = _actions.filter((_, _actionIndex) => _actionIndex < index)
       actionIndex.current = index
       setShow(true)
-      GTAG.modalview({ title: 'ActionCondition', url: window.location.href, path: '/actionCondition' })
     }
   }))
 

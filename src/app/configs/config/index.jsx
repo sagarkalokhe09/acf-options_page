@@ -8,7 +8,7 @@ import { Badge, Card, Col, Dropdown, Form, Row } from 'react-bootstrap'
 import ConfigBody from './config-body'
 import Action from '../action'
 import Batch from '../batch'
-import { Format, GTAG, ThreeDots, numberWithExponential } from '../../../util'
+import { Format, ThreeDots, numberWithExponential } from '../../../util'
 import { DropdownToggle } from '../../../components'
 import { ThemeContext } from '../../../_providers/ThemeProvider'
 import { getElementProps } from '../../../util/element'
@@ -43,7 +43,6 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
     url = url[2] || 'default'
     const name = config.name || url || `configuration-${configIndex}`
     download(name, config)
-    GTAG.event({ category: 'Action', action: 'Click', label: 'Export' })
   }
 
   const importConfig = ({ currentTarget: { files } }) => {
@@ -58,7 +57,6 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
           toastRef.current.push({
             body: t('error.json')
           })
-          GTAG.exception({ description: 'selected Json is not valid', fatal: false })
         } else {
           importedConfig = Format.configuration(importedConfig)
           const importedIndex = configs.findIndex(_config => _config.url === importedConfig.url)
@@ -76,7 +74,6 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
                 window.location.reload()
               }
             })
-            GTAG.event({ category: 'Action', action: 'Click', label: 'Import' })
           })
         }
       } catch (error) {
@@ -84,7 +81,6 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
           body: JSON.stringify(error)
         })
         Logger.colorError(error)
-        GTAG.exception({ description: error, fatal: true })
       }
     }
     fr.readAsText(files.item(0))
@@ -92,7 +88,6 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
   }
 
   const showSettings = () => {
-    GTAG.event({ category: 'Config', action: 'Click', label: 'Show Settings' })
     configSettingsRef.current.showSettings(config)
   }
 
@@ -110,7 +105,6 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
     toastRef.current.push({
       body: t('toast.configuration.remove.body', { name })
     })
-    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Remove Confirmation' })
   }
 
   const removeConfigConfirm = () => {
@@ -121,7 +115,6 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
       headerClass: 'text-danger',
       confirmFunc: removeConfig
     })
-    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Remove' })
   }
 
   const duplicateConfig = () => {
@@ -131,7 +124,6 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
     toastRef.current.push({
       body: t('toast.configuration.add.body', { name: configCopy.name })
     })
-    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Add' })
   }
 
   return (

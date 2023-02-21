@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
 import { LOAD_TYPES, START_TYPES, defaultConfig } from '@dhruv-techapps/acf-common'
 import { Trans, useTranslation } from 'react-i18next'
-import { GTAG } from '../util'
+
 import { HotkeyPopover } from '../popover'
 import { getElementProps } from '../util/element'
 import { StartTimePopover } from '../popover/start-time.popover'
@@ -16,7 +16,6 @@ const ConfigSettingsModal = forwardRef(({ config, configIndex, setConfigs }, ref
 
   useImperativeHandle(ref, () => ({
     showSettings() {
-      GTAG.modalview({ title: 'Config Settings', url: window.location.href, path: '/settings/config' })
       setShow(true)
       setDev(localStorage.getItem('DEV'))
     }
@@ -24,7 +23,6 @@ const ConfigSettingsModal = forwardRef(({ config, configIndex, setConfigs }, ref
 
   const handleClose = () => {
     setShow(false)
-    GTAG.event({ category: 'Config-Settings', Config: 'Click', label: 'Close' })
   }
 
   const onKeyDown = e => {

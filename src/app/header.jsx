@@ -4,7 +4,7 @@ import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { useMsal } from '@azure/msal-react'
 import { Logger } from '@dhruv-techapps/core-common'
-import { GTAG, GearFill, Moon, Sun, ChatFill } from '../util'
+import { GearFill, Moon, Sun, ChatFill } from '../util'
 import { SettingsModal } from '../modal'
 import { ThemeContext } from '../_providers/ThemeProvider'
 import { APP_LANGUAGES, APP_NAME, SOCIAL_LINKS } from '../constants'
@@ -25,16 +25,13 @@ function Header({ confirmRef, error }) {
 
   const handleClose = () => {
     setShowSettings(false)
-    GTAG.event({ category: 'Settings', action: 'Click', label: 'Close' })
   }
 
   const openSettings = () => {
     setShowSettings(true)
-    GTAG.event({ category: 'Settings', action: 'Click', label: 'Open' })
   }
 
   const login = () => {
-    GTAG.event({ category: 'Settings', action: 'Click', label: 'Login' })
     instance.loginRedirect(loginRequest).catch(e => {
       Logger.log(e)
     })
@@ -84,7 +81,7 @@ function Header({ confirmRef, error }) {
             <Nav className='me-auto' />
             <Nav>
               <Nav.Link target='_blank' href={SOCIAL_LINKS.GOOGLE_GROUP} className='px-4 py-3'>
-                <ChatFill width='24' height='24' title={t('header.theme.dark')} />
+                <ChatFill width='24' height='24' title={t('header.google-group')} />
               </Nav.Link>
               <Nav.Link onClick={toggleTheme} className='px-4 py-3'>
                 {theme !== 'light' ? <Sun width='24' height='24' title={t('header.theme.dark')} /> : <Moon width='24' height='24' title={t('header.theme.light')} />}

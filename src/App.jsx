@@ -9,7 +9,6 @@ import Configs from './app/configs/configs'
 import { ToastHandler, ErrorAlert, ExtensionNotFound } from './components'
 import { BlogModal, ConfirmModal } from './modal'
 import { ModeProvider, ThemeProvider } from './_providers'
-import { GTAG } from './util'
 import { APP_NAME } from './constants'
 
 const EXTENSION_NOT_FOUND = 'extension_not_found'
@@ -29,7 +28,6 @@ function App() {
       })
       .catch(_error => {
         if (_error.message === 'Could not establish connection. Receiving end does not exist.' || _error.message === "Cannot read properties of undefined (reading 'sendMessage')") {
-          GTAG.exception({ description: _error.message, fatal: true })
           setError({ message: EXTENSION_NOT_FOUND })
         } else {
           setError(_error.message)
@@ -175,10 +173,13 @@ function App() {
               <option value='@id'>To get id attribute of element</option>
               <option value='@class'>To get class attribute of element</option>
               <option value='@data-attr'>To get data attribute of element</option>
-              <option value='/^(\d+)$/'>extract 1 or more number 299</option>
-              <option value='/^(\d+.\d*)$/'>extract decimal number 29.99</option>
-              <option value='/^(\d{2})$/'>extract only first two number 29</option>
-              <option value='/^(\d{2}-\d{2}-\d{4})$/'>extract in following format 28-02-2021</option>
+              <option value='\d'>extract 1 number</option>
+              <option value='\d+'>extract 1 or more number</option>
+              <option value='^\d+'>extract 1 or more number from starting of string only</option>
+              <option value='\d+$'>extract 1 or more number from ending of string only</option>
+              <option value='\d+(\.\d)*'>extract decimal number 29.99</option>
+              <option value='\d{2}'>extract only first two number 29</option>
+              <option value='\d{2}-\d{2}-\d{4}'>extract in following format 28-02-2021</option>
             </datalist>
           </div>
         </ModeProvider>

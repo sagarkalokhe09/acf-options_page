@@ -1,13 +1,12 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { Button, Image, Modal, Nav, Tab } from 'react-bootstrap'
-import { GTAG, PatchQuestionFill } from '../util'
+import { PatchQuestionFill } from '../util'
 
 const AdsBlockerModal = forwardRef((_, ref) => {
   const [show, setShow] = useState(false)
 
   useImperativeHandle(ref, () => ({
     show() {
-      GTAG.modalview({ title: 'Ads Blocker', url: window.location.href, path: '/adsBlocker' })
       setShow(true)
     }
   }))
@@ -22,7 +21,6 @@ const AdsBlockerModal = forwardRef((_, ref) => {
   }
 
   const refreshClick = () => {
-    GTAG.event({ category: 'Ads-Blocker', Config: 'Click', label: 'Refresh' })
     window.location.reload()
   }
 

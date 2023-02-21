@@ -7,10 +7,11 @@
     "@azure/msal-browser": "^2.32.1",
     "@azure/msal-react": "^1.5.1",
     "@dhruv-techapps/acf-common": "^5.0.2",
-    "@dhruv-techapps/core-common": "^5.0.11",
+    "@dhruv-techapps/core-common": "^5.0.12",
     "@dhruv-techapps/core-services": "^5.0.8",
     "bootstrap-icons": "^1.8.0",
     "i18next": "^20.6.1",
+    "i18next-browser-languagedetector": "^7.0.1",
     "i18next-http-backend": "^1.3.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
@@ -30,8 +31,7 @@
     "lint:css": "stylelint **/*.scss",
     "sitemap:dev": "node sitemap-generator.js https://dev.getautoclicker.com/",
     "sitemap:beta": "node sitemap-generator.js https://beta.getautoclicker.com/",
-    "sitemap:stable": "node sitemap-generator.js https://stable.getautoclicker.com/",
-    "prepare": "husky install"
+    "sitemap:stable": "node sitemap-generator.js https://stable.getautoclicker.com/"
   },
   "eslintConfig": {
     "extends": "react-app"

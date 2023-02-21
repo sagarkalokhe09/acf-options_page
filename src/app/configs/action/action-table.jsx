@@ -5,7 +5,7 @@ import { Dropdown, Form, Table } from 'react-bootstrap'
 import { defaultAction } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
 import { EditableCell } from './editable-cell'
-import { CaretDown, CaretUp, GTAG, REGEX_INTERVAL, REGEX_NUM, ThreeDots, numberWithExponential } from '../../../util'
+import { CaretDown, CaretUp, REGEX_INTERVAL, REGEX_NUM, ThreeDots, numberWithExponential } from '../../../util'
 import { ConfirmModal } from '../../../modal'
 import { ElementFinderPopover, ValuePopover } from '../../../popover'
 import { DropdownToggle } from '../../../components'
@@ -104,7 +104,6 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
     } else {
       setError(t('error.elementFinder'))
     }
-    GTAG.event({ category: 'Action', action: 'Click', label: 'Save' })
   }
 
   useImperativeHandle(ref, () => ({
@@ -143,7 +142,6 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
   const removeAction = rowIndex => {
     setData(prevActions => prevActions.filter((_, index) => index !== rowIndex))
     didUpdateRef.current = true
-    GTAG.event({ category: 'Action', action: 'Click', label: 'Remove' })
   }
 
   const removeActionConfirm = rowIndex => {
@@ -154,7 +152,6 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
       headerClass: 'text-danger',
       confirmFunc: removeAction.bind(null, Number(rowIndex))
     })
-    GTAG.event({ category: 'Action', action: 'Click', label: 'Remove Confirmation' })
   }
 
   const tableInstance = useTable({ columns, data, defaultColumn, initialState, updateAction })
@@ -170,17 +167,14 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
   }, [hiddenColumns, setHiddenColumns])
 
   const showAddon = row => {
-    GTAG.event({ category: 'Action', action: 'Click', label: 'Show Addon' })
     addonRef.current.showAddon(row.id, row.original.addon)
   }
 
   const showCondition = row => {
-    GTAG.event({ category: 'Action', action: 'Click', label: 'Show Condition' })
     actionConditionRef.current.showCondition(row.id, actions, row.original.statement)
   }
 
   const showSettings = row => {
-    GTAG.event({ category: 'Action', action: 'Click', label: 'Show Settings' })
     actionSettingsRef.current.showSettings(row.id, row.original.settings)
   }
 
@@ -200,7 +194,6 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
     if (e.currentTarget.getAttribute('disabled') === null) {
       setData(prevActions => [...arrayMove(prevActions, +rowId, rowId - 1)])
       didUpdateRef.current = true
-      GTAG.event({ category: 'Action', action: 'Move', label: 'Up' })
     }
   }
 
@@ -208,7 +201,6 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
     if (e.currentTarget.getAttribute('disabled') === null) {
       setData(prevActions => [...arrayMove(prevActions, +rowId, +rowId + 1)])
       didUpdateRef.current = true
-      GTAG.event({ category: 'Action', action: 'Move', label: 'Down' })
     }
   }
 

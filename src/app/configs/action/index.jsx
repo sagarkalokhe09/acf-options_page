@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { LocalStorage } from '../../../_helpers'
 import ActionTable from './action-table'
 import { DropdownToggle } from '../../../components'
-import { FunnelFill, GTAG, numberWithExponential } from '../../../util'
+import { FunnelFill, numberWithExponential } from '../../../util'
 import { ThemeContext } from '../../../_providers/ThemeProvider'
 
 const HIDDEN_COLUMN_KEY = 'hiddenColumns'
@@ -24,12 +24,10 @@ function Action(props) {
     const column = e.currentTarget.getAttribute('data-column')
     const columnIndex = hiddenColumns.indexOf(column)
     setHiddenColumns(prevHiddenColumns => (columnIndex !== -1 ? prevHiddenColumns.filter((_, prevColumnIndex) => prevColumnIndex !== columnIndex) : [...prevHiddenColumns, column]))
-    GTAG.event({ category: 'Action', action: 'Change', label: column, value: columnIndex !== -1 ? 1 : 0 })
   }
 
   const addAction = () => {
     actionTableRef.current.addAction()
-    GTAG.event({ category: 'Action', action: 'Click', label: 'Add' })
   }
 
   useEffect(() => {

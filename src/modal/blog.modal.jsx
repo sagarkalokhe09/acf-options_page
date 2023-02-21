@@ -1,7 +1,6 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import { GTAG } from '../util'
 
 const BlogModal = forwardRef((_, ref) => {
   const { t } = useTranslation()
@@ -21,7 +20,6 @@ const BlogModal = forwardRef((_, ref) => {
         div.innerHTML = html
         setData(div.querySelector('main.content').innerHTML)
         setShow(true)
-        GTAG.modalview({ title: 'Show Blog', url: window.location.href, path: '/blog' })
       }
     }
   }))

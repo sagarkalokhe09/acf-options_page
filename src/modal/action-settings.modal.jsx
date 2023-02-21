@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap'
 import { defaultActionSetting, RETRY_OPTIONS } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
-import { GTAG } from '../util'
+
 import { getElementProps, updateForm } from '../util/element'
 
 const FORM_ID = 'action-settings'
@@ -27,7 +27,6 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
 
   const handleClose = () => {
     setShow(false)
-    GTAG.event({ category: 'Action-Settings', action: 'Click', label: 'Close' })
   }
 
   useEffect(() => {
@@ -68,7 +67,6 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
       actionIndex.current = index
       setSettings({ ..._settings })
       setShow(true)
-      GTAG.modalview({ title: 'Action Settings', url: window.location.href, path: '/settings/action' })
     }
   }))
 

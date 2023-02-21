@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import Config from './config'
 import Batch from './batch'
 import Action from './action'
-import { Format, GTAG, ThreeDots, getConfigName } from '../../util'
+import { Format, ThreeDots, getConfigName } from '../../util'
 import { DropdownToggle, ErrorAlert } from '../../components'
 import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ReorderConfigsModal, RemoveConfigsModal, ActionConditionModal } from '../../modal'
 import { ThemeContext, ModeContext } from '../../_providers'
@@ -117,12 +117,10 @@ function Configs({ toastRef, blogRef, confirmRef }) {
     toastRef.current.push({
       body: t('toast.configuration.add.body', { name })
     })
-    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Add' })
   }
 
   const exportAll = () => {
     download('All Configurations', configs)
-    GTAG.event({ category: 'Configuration', action: 'Click', label: 'Export All' })
   }
 
   const importAll = e => {
@@ -138,17 +136,14 @@ function Configs({ toastRef, blogRef, confirmRef }) {
         if (Array.isArray(result)) {
           setConfigs(Format.configurations(result))
           setSelected(0)
-          GTAG.event({ category: 'Configuration', action: 'Click', label: 'Import All' })
         } else {
           toastRef.current.push({
             body: t('error.json')
           })
-          GTAG.exception({ description: 'selected Json is not valid', fatal: false })
         }
         setLoading(false)
       } catch (_error) {
         Logger.colorError(_error)
-        GTAG.exception({ description: _error, fatal: true })
       }
     }
     fr.readAsText(files.item(0))

@@ -1,13 +1,14 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
-import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap'
+import { Button, Card, Col, Form, InputGroup, Modal, Row } from 'react-bootstrap'
 import { ADDON_CONDITIONS, defaultAddon } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
-import { GTAG } from '../util'
+
 import { ValueExtractorPopover } from '../popover'
 import { AddonRecheck } from './addon/recheck'
 import { getElementProps, updateForm } from '../util/element'
+import { AddonValueExtractorFlags } from './addon/value-extractor-flags'
 
 const FORM_ID = 'addon'
 
@@ -15,6 +16,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const { t } = useTranslation()
   const [show, setShow] = useState(false)
   const [addon, setAddon] = useState(defaultAddon)
+
   const [message, setMessage] = useState()
   const actionIndex = useRef(-1)
   const updateRef = useRef(false)
@@ -29,7 +31,6 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
 
   const handleClose = () => {
     setShow(false)
-    GTAG.event({ category: 'Addon', action: 'Click', label: 'Close' })
   }
 
   useEffect(() => {
@@ -69,9 +70,12 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
       setAddon({ ..._addon })
       actionIndex.current = index
       setShow(true)
-      GTAG.modalview({ title: 'Addon', url: window.location.href, path: '/addon' })
     }
   }))
+
+  const onFlagsUpdate = valueExtractorFlags => {
+    setAddon(_addon => ({ ..._addon, valueExtractorFlags }))
+  }
 
   return (
     <Modal show={show} size='lg' onHide={handleClose}>
@@ -120,10 +124,13 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                   </Form.Group>
                 </Col>
                 <Col md sm={12}>
-                  <Form.Group controlId='addon-value-extractor'>
-                    <Form.Control type='text' placeholder='Value Extractor' defaultValue={addon.valueExtractor} name='valueExtractor' list='valueExtractor' onBlur={onUpdate} />
+                  <Form.Group controlId='addon-value-extractor' className='addon-value-extractor'>
+                    <InputGroup>
+                      <Form.Control type='text' placeholder='Value Extractor' defaultValue={addon.valueExtractor} name='valueExtractor' list='valueExtractor' onBlur={onUpdate} />
+                      <AddonValueExtractorFlags valueExtractor={addon.valueExtractor} valueExtractorFlags={addon.valueExtractorFlags} onUpdate={onFlagsUpdate} />
+                    </InputGroup>
                     <Form.Label>{t('modal.addon.valueExtractor')}</Form.Label>
-                    <ValueExtractorPopover />
+                    {!addon.valueExtractor && <ValueExtractorPopover />}
                     <Form.Control.Feedback type='invalid'>{t('error.valueExtractor')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>

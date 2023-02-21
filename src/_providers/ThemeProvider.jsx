@@ -11,6 +11,7 @@ function ThemeProvider({ children }) {
 
   useEffect(() => {
     document.body.className = ''
+    document.body.setAttribute('theme', theme)
     if (theme === 'dark') {
       document.body.classList.add(`bg-dark`)
     } else {
