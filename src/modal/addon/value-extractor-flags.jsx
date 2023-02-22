@@ -51,7 +51,6 @@ const FLAGS = [
 ]
 
 function AddonValueExtractorFlags({ valueExtractor, valueExtractorFlags, onUpdate }) {
-  console.log(valueExtractorFlags)
   const flags = valueExtractorFlags.split('').reduce((a, flag) => ({ ...a, [flag]: true }), {})
 
   const title = label => {
