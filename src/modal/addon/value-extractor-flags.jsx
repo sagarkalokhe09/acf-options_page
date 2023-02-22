@@ -56,7 +56,7 @@ function AddonValueExtractorFlags({ valueExtractor, valueExtractorFlags, onUpdat
 
   const title = label => {
     const flagTitle = Object.entries(flags)
-      .filter(([_, value]) => value)
+      .filter(flag => flag[1])
       .reduce((a, [flag]) => a + flag, '')
     return flagTitle || label
   }
