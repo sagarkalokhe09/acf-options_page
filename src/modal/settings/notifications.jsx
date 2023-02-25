@@ -5,7 +5,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { useMsal } from '@azure/msal-react'
 import { VolumeMute, VolumeUp } from '../../util'
 import { getElementProps } from '../../util/element'
-import { dataLayer } from '../../util/data-layer'
+import { dataLayerInput } from '../../util/data-layer'
 
 function SettingNotifications({ notifications, setSettings }) {
   const { t } = useTranslation()
