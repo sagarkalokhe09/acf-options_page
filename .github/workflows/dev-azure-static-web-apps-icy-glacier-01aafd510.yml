@@ -2,6 +2,12 @@ name: DEV Azure Static Web Apps CI/CD
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment of release'
+        type: environment
+        default: Development
+        required: true
   pull_request:
 
 jobs:
@@ -9,8 +15,8 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     environment: 
-      name: Development
-      url: https://dev.getautoclicker.com/
+      name: ${{inputs.environment}}
+      url: ${{vars.PUBLIC_URL}}
     name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v3
@@ -18,7 +24,7 @@ jobs:
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ICY_GLACIER_01AAFD510 }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
@@ -51,3 +57,8 @@ jobs:
           #Carbon Ads
           REACT_APP_CARBON_ADS_CODE: ${{vars.REACT_APP_CARBON_ADS_CODE}}
           REACT_APP_CARBON_ADS_PLACEMENT: ${{vars.REACT_APP_CARBON_ADS_PLACEMENT}}
+      - name: Set ${{vars.VARIANT}} Tag
+        uses: rickstaa/action-create-tag@v1
+        with:
+          force_push_tag: true
+          tag: "${{vars.VARIANT}}"
