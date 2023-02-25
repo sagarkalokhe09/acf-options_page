@@ -61,4 +61,4 @@ jobs:
         uses: rickstaa/action-create-tag@v1
         with:
           force_push_tag: true
-          tag: "${{vars.VARIANT}}"
+          tag: "${{vars.REACT_APP_VARIANT}}"
