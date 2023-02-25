@@ -18,17 +18,7 @@ function Footer({ version }) {
       <Container>
         <Row>
           <Col md xs={12} className='mb-3'>
-            <img
-              src={imageURL}
-              width='48'
-              height='48'
-              className='d-inline-block align-top me-2'
-              alt='Auto click Auto Fill logo'
-              title='Auto click Auto Fill logo'
-              onError={e => {
-                e.currentTarget.src = 'https://getautoclicker.com/favicons/favicon48.png'
-              }}
-            />
+            <img src={imageURL} width='48' height='48' className='d-inline-block align-top me-2' alt='Auto click Auto Fill logo' title='Auto click Auto Fill logo' />
             <div className='d-inline-flex flex-column'>
               <h6 className='text-secondary mb-0'>
                 {APP_NAME}

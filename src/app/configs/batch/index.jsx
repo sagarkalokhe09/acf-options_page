@@ -1,14 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { Card, Col, Form, Row } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import BatchBody from './batch-body'
 import { numberWithExponential } from '../../../util'
-import { ThemeContext } from '../../../_providers/ThemeProvider'
 import { getElementProps } from '../../../util/element'
+import { dataLayerInput } from '../../../util/data-layer'
 
 function Batch({ batch, configIndex, setConfigs }) {
-  const { theme } = useContext(ThemeContext)
   const [message, setMessage] = useState()
   const { t } = useTranslation()
 
@@ -24,13 +23,14 @@ function Batch({ batch, configIndex, setConfigs }) {
           return config
         })
       )
+      dataLayerInput(update, 'batch')
       setMessage(t('batch.saveMessage'))
       setTimeout(setMessage, 1500)
     }
   }
 
   return (
-    <Card className='mb-3' bg={theme} text={theme === 'light' ? 'dark' : 'white'}>
+    <Card className='mb-3'>
       <Card.Header as='h6'>
         <Row>
           <Col>

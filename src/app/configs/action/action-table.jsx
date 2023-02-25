@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTable } from 'react-table'
 import { Dropdown, Form, Table } from 'react-bootstrap'
@@ -9,12 +9,10 @@ import { CaretDown, CaretUp, REGEX_INTERVAL, REGEX_NUM, ThreeDots, numberWithExp
 import { ConfirmModal } from '../../../modal'
 import { ElementFinderPopover, ValuePopover } from '../../../popover'
 import { DropdownToggle } from '../../../components'
-import { ThemeContext } from '../../../_providers/ThemeProvider'
 
 const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, actionSettingsRef, actionConditionRef, setMessage, setError }, ref) => {
   const { t } = useTranslation()
   const [data, setData] = useState(actions)
-  const { theme } = useContext(ThemeContext)
 
   const confirmRef = useRef()
   const didMountRef = useRef(true)
@@ -193,6 +191,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
   const moveUp = (e, rowId) => {
     if (e.currentTarget.getAttribute('disabled') === null) {
       setData(prevActions => [...arrayMove(prevActions, +rowId, rowId - 1)])
+      window.dataLayer.push({ event: 'move-up', section: 'action' })
       didUpdateRef.current = true
     }
   }
@@ -200,13 +199,14 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
   const moveDown = (e, rowId) => {
     if (e.currentTarget.getAttribute('disabled') === null) {
       setData(prevActions => [...arrayMove(prevActions, +rowId, +rowId + 1)])
+      window.dataLayer.push({ event: 'move-down', section: 'action' })
       didUpdateRef.current = true
     }
   }
 
   return (
     <Form>
-      <Table {...getTableProps()} id='actions' bordered hover variant={theme} className='mb-0'>
+      <Table {...getTableProps()} id='actions' bordered hover className='mb-0'>
         <thead>
           {headerGroups.map((headerGroup, headerGroupIndex) => (
             <tr {...headerGroup.getHeaderGroupProps()} key={headerGroupIndex}>
@@ -240,11 +240,11 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
                 ))}
                 <td align='center'>
                   {actions[row.id] && (
-                    <Dropdown>
-                      <Dropdown.Toggle as={DropdownToggle} id='dropdown-basic' ariaLabel='Action more option'>
+                    <Dropdown id='acton-dropdown-wrapper'>
+                      <Dropdown.Toggle as={DropdownToggle} id='action-dropdown' ariaLabel='Action more option'>
                         <ThreeDots width='24' height='24' />
                       </Dropdown.Toggle>
-                      <Dropdown.Menu variant={theme}>
+                      <Dropdown.Menu>
                         <Dropdown.Item onClick={() => showAddon(row)}>{t('action.addon')}</Dropdown.Item>
                         {index !== 0 && <Dropdown.Item onClick={() => showCondition(row)}>{t('modal.actionCondition.title')}</Dropdown.Item>}
                         <Dropdown.Item onClick={() => showSettings(row)}>{t('action.settings')}</Dropdown.Item>

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { ElementUtil } from '@dhruv-techapps/core-common'
 import { LOCAL_STORAGE_KEY, defaultConfig } from '@dhruv-techapps/acf-common'
 import { ErrorAlert } from '../components'
+import { dataLayerModel } from '../util/data-layer'
 
 const RemoveConfigsModal = forwardRef((_, ref) => {
   const [configs, setConfigs] = useState([])
@@ -47,6 +48,7 @@ const RemoveConfigsModal = forwardRef((_, ref) => {
   }))
 
   const handleClose = () => {
+    dataLayerModel('remove-configs', 'close')
     setShow(false)
   }
 
@@ -65,7 +67,7 @@ const RemoveConfigsModal = forwardRef((_, ref) => {
   const checkedConfigLength = () => configs.filter(config => config.checked).length + 1
 
   return (
-    <Modal show={show} size='lg' onHide={handleClose} scrollable>
+    <Modal show={show} size='lg' onHide={handleClose} scrollable onShow={() => dataLayerModel('remove-configs', 'open')}>
       <Form onSubmit={onSubmit} id='remove-configs'>
         <Modal.Header>
           <Modal.Title as='h6'>{t('configuration.removeConfigs')}</Modal.Title>

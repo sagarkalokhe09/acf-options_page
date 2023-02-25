@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
 import { Button, Col, Form, Modal, Row, Table } from 'react-bootstrap'
@@ -8,14 +8,13 @@ import { ACTION_CONDITION_OPR, ACTION_RUNNING, defaultActionCondition } from '@d
 import { getElementProps, updateForm } from '../util/element'
 import { ActionAndStatus } from './action-condition/action-and-status'
 import { Plus } from '../util/svg'
-import { ThemeContext } from '../_providers'
+import { dataLayerInput, dataLayerModel } from '../util/data-layer'
 
 const FORM_ID = 'actionCondition'
 
 const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const { t } = useTranslation()
   const [show, setShow] = useState(false)
-  const { theme } = useContext(ThemeContext)
   const [conditions, setConditions] = useState([{ ...defaultActionCondition }])
   const [then, setThen] = useState()
   const [message, setMessage] = useState()
@@ -35,6 +34,7 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
           return _condition
         })
       )
+      dataLayerInput(update, 'action-condition')
     }
   }
 
@@ -44,6 +44,7 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   }
 
   const handleClose = () => {
+    dataLayerModel('action-condition', 'close')
     setShow(false)
   }
 
@@ -95,14 +96,14 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   }
 
   return (
-    <Modal show={show} size='lg' onHide={handleClose}>
+    <Modal show={show} size='lg' onHide={handleClose} onShow={() => dataLayerModel('action-condition', 'open')}>
       <Modal.Header closeButton>
         <Modal.Title as='h6'>{t('modal.actionCondition.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p className='text-muted'>{t('modal.actionCondition.info')}</p>
         <h4 className='text-center mb-3'>IF</h4>
-        <Table role='table' className='mb-0' variant={theme}>
+        <Table role='table' className='mb-0'>
           <thead>
             <tr>
               <th>OPR</th>

@@ -1,4 +1,4 @@
-import React, { createRef, useContext, useState } from 'react'
+import React, { createRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Logger } from '@dhruv-techapps/core-common'
 import { StorageService } from '@dhruv-techapps/core-services'
@@ -10,14 +10,13 @@ import Action from '../action'
 import Batch from '../batch'
 import { Format, ThreeDots, numberWithExponential } from '../../../util'
 import { DropdownToggle } from '../../../components'
-import { ThemeContext } from '../../../_providers/ThemeProvider'
 import { getElementProps } from '../../../util/element'
 import { download } from '../../../_helpers'
+import { dataLayerInput } from '../../../util/data-layer'
 
 function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef, confirmRef, setSelected }) {
   const config = configs[configIndex]
   const configsLength = configs.length
-  const { theme } = useContext(ThemeContext)
   const { t } = useTranslation()
   const importFiled = createRef()
   const [message, setMessage] = useState()
@@ -33,6 +32,7 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
           return prevConfig
         })
       )
+      dataLayerInput(update, 'configuration')
       setMessage(t('configuration.saveMessage'))
       setTimeout(setMessage, 1500)
     }
@@ -127,7 +127,7 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
   }
 
   return (
-    <Card bg={theme} text={theme === 'dark' && 'white'} className='mb-3'>
+    <Card className='mb-3'>
       <Card.Header as='h6'>
         <Row>
           <Col className='d-flex align-items-center'>
@@ -145,11 +145,11 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
             <Form>
               <Form.Check type='switch' className='m-0' name='enable' id='config-enable' label={t('configuration.enable')} checked={config.enable} onChange={onUpdate} />
             </Form>
-            <Dropdown>
+            <Dropdown id='config-dropdown-wrapper'>
               <Dropdown.Toggle as={DropdownToggle} id='config-dropdown' className='py-0 pe-0' ariaLabel='Configuration more option'>
                 <ThreeDots width='24' height='24' />
               </Dropdown.Toggle>
-              <Dropdown.Menu variant={theme}>
+              <Dropdown.Menu>
                 <Dropdown.Item onClick={exportConfig}>{t('configuration.export')}</Dropdown.Item>
                 <Dropdown.Item onClick={() => importFiled.current.click()}>{t('configuration.import')}</Dropdown.Item>
                 <Dropdown.Divider />

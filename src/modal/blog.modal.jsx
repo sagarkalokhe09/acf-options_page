@@ -1,6 +1,7 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
+import { dataLayerModel } from '../util/data-layer'
 
 const BlogModal = forwardRef((_, ref) => {
   const { t } = useTranslation()
@@ -25,11 +26,12 @@ const BlogModal = forwardRef((_, ref) => {
   }))
 
   const handleClose = () => {
+    dataLayerModel('blog', 'close')
     setShow(false)
   }
 
   return (
-    <Modal show={show} size='lg' onHide={handleClose} scrollable>
+    <Modal show={show} size='lg' onHide={handleClose} scrollable onShow={() => dataLayerModel('blog', 'open')}>
       <Modal.Header>
         <Modal.Title as='h6'>Version {version}</Modal.Title>
       </Modal.Header>

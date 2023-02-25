@@ -1,16 +1,14 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Card, Col, Form, FormControl, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { numberWithExponential } from '../../../util'
-import { ThemeContext } from '../../../_providers'
 import { updateForm } from '../../../util/element'
 import { APP_LINK } from '../../../constants'
 
 const FORM_ID = 'config-body'
 
 function ConfigBody({ config, onUpdate }) {
-  const { theme } = useContext(ThemeContext)
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -19,7 +17,7 @@ function ConfigBody({ config, onUpdate }) {
 
   return (
     <Form id={FORM_ID}>
-      <Card.Body bg={theme.toLowerCase()} text={theme.toLowerCase() === 'light' ? 'dark' : 'white'}>
+      <Card.Body>
         <Row>
           <Col md='12' sm='12' className='mb-3'>
             <Form.Group controlId='config-url'>

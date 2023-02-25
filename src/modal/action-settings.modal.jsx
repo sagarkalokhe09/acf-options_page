@@ -6,6 +6,7 @@ import { defaultActionSetting, RETRY_OPTIONS } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
 
 import { getElementProps, updateForm } from '../util/element'
+import { dataLayerInput, dataLayerModel } from '../util/data-layer'
 
 const FORM_ID = 'action-settings'
 
@@ -21,11 +22,13 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
     const update = getElementProps(e)
     if (update) {
       updateRef.current = true
+      dataLayerInput(update, 'action-settings')
       setSettings(_settings => ({ ..._settings, ...update }))
     }
   }
 
   const handleClose = () => {
+    dataLayerModel('action-settings', 'close')
     setShow(false)
   }
 
@@ -71,7 +74,7 @@ const ActionSettingsModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   }))
 
   return (
-    <Modal show={show} size='lg' onHide={handleClose}>
+    <Modal show={show} size='lg' onHide={handleClose} onShow={() => dataLayerModel('action-settings', 'open')}>
       <Form id={FORM_ID}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.actionSettings.title')}</Modal.Title>

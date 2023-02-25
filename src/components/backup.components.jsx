@@ -4,6 +4,7 @@ import { NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { Service, StorageService } from '@dhruv-techapps/core-services'
 import { AUTO_BACKUP, defaultSettings, LOCAL_STORAGE_KEY, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common'
+import { CloudArrowUpFill } from '../util'
 
 export function BackupDropdown({ confirmRef }) {
   const [settings, setSettings] = useState(defaultSettings)
@@ -43,7 +44,7 @@ export function BackupDropdown({ confirmRef }) {
   } = settings
 
   return (
-    <NavDropdown title={t('header.backup.backup')} id='backup' className='px-2 py-2 fw-bolder'>
+    <NavDropdown title={<CloudArrowUpFill width='24' height='24' title={t('header.backup.backup')} style={{ color: 'var(--bs-blue)' }} />} id='backup' align='end' className='px-2 py-2 fw-bolder'>
       {lastBackup && (
         <>
           <NavDropdown.Header>{t('header.backup.last-backup')}</NavDropdown.Header>

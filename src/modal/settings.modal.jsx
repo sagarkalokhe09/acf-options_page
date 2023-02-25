@@ -9,6 +9,7 @@ import { ModeContext } from '../_providers'
 import { getElementProps } from '../util/element'
 import { SettingNotifications } from './settings/notifications'
 import { SettingRetry } from './settings/retry'
+import { dataLayerInput, dataLayerModel } from '../util/data-layer'
 
 function SettingsModal({ show, handleClose }) {
   const { t } = useTranslation()
@@ -40,6 +41,7 @@ function SettingsModal({ show, handleClose }) {
   const onUpdate = e => {
     const update = getElementProps(e)
     if (update) {
+      dataLayerInput(update, 'settings')
       setSettings(_settings => ({ ..._settings, ...update }))
     }
   }
@@ -51,11 +53,12 @@ function SettingsModal({ show, handleClose }) {
   }, [settings])
 
   const toggleMode = () => {
+    dataLayerInput({ mode: mode === 'light' ? 'pro' : 'light' }, 'settings')
     setMode(prevMode => (prevMode === 'light' ? 'pro' : 'light'))
   }
 
   return (
-    <Modal show={show} onHide={handleClose} size='lg'>
+    <Modal show={show} onHide={handleClose} size='lg' onShow={() => dataLayerModel('settings', 'open')}>
       <Form>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.settings.title')}</Modal.Title>

@@ -11,12 +11,11 @@ import Action from './action'
 import { Format, ThreeDots, getConfigName } from '../../util'
 import { DropdownToggle, ErrorAlert } from '../../components'
 import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ReorderConfigsModal, RemoveConfigsModal, ActionConditionModal } from '../../modal'
-import { ThemeContext, ModeContext } from '../../_providers'
+import { ModeContext } from '../../_providers'
 import { download } from '../../_helpers'
 import { Ads } from '../../components/ads.components'
 
 function Configs({ toastRef, blogRef, confirmRef }) {
-  const { theme } = useContext(ThemeContext)
   const { mode } = useContext(ModeContext)
   const [configs, setConfigs] = useState([{ ...defaultConfig }])
   const [scroll, setScroll] = useState(false)
@@ -107,7 +106,9 @@ function Configs({ toastRef, blogRef, confirmRef }) {
   }, [configs])
 
   const onChange = e => {
-    setSelected(ElementUtil.getValue(e.currentTarget))
+    const value = ElementUtil.getValue(e.currentTarget)
+    window.dataLayer.push({ event: 'select', conversionName: 'configurations', section: 'configurations' })
+    setSelected(value)
   }
 
   const addConfig = () => {
@@ -160,8 +161,8 @@ function Configs({ toastRef, blogRef, confirmRef }) {
         </div>
       ) : (
         <>
-          {i18n.language !== 'en' && (
-            <div className='bg-light text-muted text-center my-3'>
+          {!i18n.language.includes('en') && (
+            <div className='text-muted text-center my-3'>
               {t('common.translate')}{' '}
               <a href='https://github.com/Dhruv-Techapps/acf-i18n/discussions/4' target='_blank' rel='noopener noreferrer'>
                 {t('common.clickHere')}
@@ -178,13 +179,13 @@ function Configs({ toastRef, blogRef, confirmRef }) {
             </Container>
           ) : (
             <>
-              <div id='configs' className={`${scroll ? 'shadow' : ' mb-4 mt-3'} sticky-top`}>
+              <div id='configs' className={`${scroll ? 'shadow bg-body-tertiary' : ' mb-4 mt-3'} sticky-top`}>
                 <Container>
                   <Row className={`rounded-pill ${!scroll && 'border'}`}>
                     <Col>
                       <Form>
                         <Form.Group controlId='selected' className='mb-0'>
-                          <Form.Select onChange={onChange} value={selected} className='ps-4 border-0' data-type='number'>
+                          <Form.Select onChange={onChange} value={selected} id='configuration-list' className='ps-4 border-0' data-type='number'>
                             {configs.map((_config, index) => (
                               <option key={index} value={index} className={!_config.enable ? 'bg-secondary' : ''} style={{ '--bs-bg-opacity': `.25` }}>
                                 ({_config.name || getConfigName(_config.url, index)}) {_config.url}
@@ -195,14 +196,14 @@ function Configs({ toastRef, blogRef, confirmRef }) {
                       </Form>
                     </Col>
                     <Col xs='auto' className='d-flex align-items-center'>
-                      <Button type='button' variant='outline-primary' onClick={addConfig} className='border-top-0 border-bottom-0 border'>
+                      <Button type='button' variant='outline-primary' onClick={addConfig} id='add-configuration' className='border-top-0 border-bottom-0 border'>
                         {t('configuration.add')}
                       </Button>
-                      <Dropdown>
+                      <Dropdown id='configurations-dropdown-wrapper'>
                         <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown' ariaLabel='Configurations more option'>
                           <ThreeDots width='24' height='24' />
                         </Dropdown.Toggle>
-                        <Dropdown.Menu variant={theme}>
+                        <Dropdown.Menu>
                           <Dropdown.Item onClick={exportAll}>{t('configuration.exportAll')}</Dropdown.Item>
                           <Dropdown.Item onClick={() => importFiled.current.click()}>{t('configuration.importAll')}</Dropdown.Item>
                           <Dropdown.Divider />

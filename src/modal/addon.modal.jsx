@@ -9,6 +9,7 @@ import { ValueExtractorPopover } from '../popover'
 import { AddonRecheck } from './addon/recheck'
 import { getElementProps, updateForm } from '../util/element'
 import { AddonValueExtractorFlags } from './addon/value-extractor-flags'
+import { dataLayerInput, dataLayerModel } from '../util/data-layer'
 
 const FORM_ID = 'addon'
 
@@ -25,11 +26,13 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
     const update = getElementProps(e)
     if (update) {
       updateRef.current = true
+      dataLayerInput(update, 'addon')
       setAddon(_addon => ({ ..._addon, ...update }))
     }
   }
 
   const handleClose = () => {
+    dataLayerModel('addon-modal', 'close')
     setShow(false)
   }
 
@@ -78,7 +81,7 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   }
 
   return (
-    <Modal show={show} size='lg' onHide={handleClose}>
+    <Modal show={show} size='lg' onHide={handleClose} onShow={() => dataLayerModel('addon-modal', 'open')}>
       <Form id={FORM_ID}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.addon.title')}</Modal.Title>

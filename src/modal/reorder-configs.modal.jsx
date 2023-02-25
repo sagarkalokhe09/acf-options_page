@@ -5,6 +5,7 @@ import { StorageService } from '@dhruv-techapps/core-services'
 import { useTranslation } from 'react-i18next'
 import { LOCAL_STORAGE_KEY, defaultConfig } from '@dhruv-techapps/acf-common'
 import { ErrorAlert } from '../components'
+import { dataLayerModel } from '../util/data-layer'
 
 const ReorderConfigsModal = forwardRef((_, ref) => {
   const [configs, setConfigs] = useState([])
@@ -41,6 +42,7 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
   }))
 
   const handleClose = () => {
+    dataLayerModel('reorder-configs', 'close')
     setShow(false)
   }
 
@@ -49,7 +51,7 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
   }
 
   return (
-    <Modal show={show} size='lg' onHide={handleClose} scrollable>
+    <Modal show={show} size='lg' onHide={handleClose} scrollable onShow={() => dataLayerModel('reorder-configs', 'open')}>
       <Form onSubmit={onSubmit} id='reorder-configs'>
         <Modal.Header>
           <Modal.Title as='h6'>{t('modal.reorder.title')}</Modal.Title>

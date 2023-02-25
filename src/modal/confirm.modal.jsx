@@ -1,6 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
+import { dataLayerModel } from '../util/data-layer'
 
 const ConfirmModal = forwardRef((props, ref) => {
   const { t } = useTranslation()
@@ -23,7 +24,7 @@ const ConfirmModal = forwardRef((props, ref) => {
   }
 
   return (
-    <Modal show={show} centered backdrop='static' keyboard={false}>
+    <Modal show={show} centered backdrop='static' keyboard={false} onShow={() => dataLayerModel('confirm', 'open')} onHide={() => dataLayerModel('confirm', 'close')}>
       <Modal.Body className='p-4 text-center'>
         <h4 className={`my-3 fw-normal ${confirm.current.headerClass}`}>{confirm.current.title || 'Confirm'}</h4>
         {confirm.current.message}

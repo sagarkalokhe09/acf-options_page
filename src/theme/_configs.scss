@@ -1,6 +1,5 @@
 #configs {
-  background-color: var(--bs-white);
-
+  
   select,
   button {
     height: 54px;
@@ -30,10 +29,8 @@
   }
 
   &.shadow {
-    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
-
+    color: var(--bs-body-color);
+    background-color: var(--bs-form-control-bg) !important;
     .row {
       border: none;
     }

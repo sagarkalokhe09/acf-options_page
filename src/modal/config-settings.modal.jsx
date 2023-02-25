@@ -7,6 +7,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { HotkeyPopover } from '../popover'
 import { getElementProps } from '../util/element'
 import { StartTimePopover } from '../popover/start-time.popover'
+import { dataLayerInput, dataLayerModel } from '../util/data-layer'
 
 const ConfigSettingsModal = forwardRef(({ config, configIndex, setConfigs }, ref) => {
   const { t } = useTranslation()
@@ -22,6 +23,7 @@ const ConfigSettingsModal = forwardRef(({ config, configIndex, setConfigs }, ref
   }))
 
   const handleClose = () => {
+    dataLayerModel('config-settings', 'close')
     setShow(false)
   }
 
@@ -56,13 +58,14 @@ const ConfigSettingsModal = forwardRef(({ config, configIndex, setConfigs }, ref
           return _config
         })
       )
+      dataLayerInput(update, 'config-settings')
       setMessage(t('modal.configSettings.saveMessage'))
       setTimeout(setMessage, 1500)
     }
   }
 
   return (
-    <Modal show={show} size='lg' onHide={handleClose}>
+    <Modal show={show} size='lg' onHide={handleClose} onShow={() => dataLayerModel('config-settings', 'open')}>
       <Form>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.configSettings.title')}</Modal.Title>
