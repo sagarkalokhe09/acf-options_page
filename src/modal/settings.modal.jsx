@@ -1,5 +1,4 @@
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
 import { StorageService } from '@dhruv-techapps/core-services'
 import { LOCAL_STORAGE_KEY, defaultSettings } from '@dhruv-techapps/acf-common'
 import { Card, Col, Form, Modal, Row } from 'react-bootstrap'
