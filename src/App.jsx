@@ -15,9 +15,9 @@ const EXTENSION_NOT_FOUND = 'extension_not_found'
 
 function App() {
   const toastRef = useRef()
-  // const adsBlockerRef = useRef()
   const blogRef = useRef()
   const confirmRef = useRef()
+  const [loading, setLoading] = useState(true)
   const [manifest, setManifest] = useState({})
   const [error, setError] = useState()
 
@@ -33,6 +33,7 @@ function App() {
           setError(_error.message)
         }
       })
+      .finally(() => setLoading(false))
   }, [])
 
   useEffect(() => {
@@ -46,6 +47,16 @@ function App() {
   const REGEX_RANGE_STRING = '{6,12}'
   const REGEX_STRING = '{6}'
 
+  if (loading) {
+    return (
+      <div className='d-flex justify-content-center align-items-center' style={{ height: '100vh', color: '#712cf9' }}>
+        <div className='spinner-border' role='status'>
+          <span className='visually-hidden'>Loading...</span>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <Router>
       <ThemeProvider>
@@ -54,7 +65,7 @@ function App() {
             <Suspense fallback='loading'>
               <Header error={error} confirmRef={confirmRef} />
               {error ? (
-                <Container className='d-flex align-items-center justify-content-center' style={{ width: '100vh', height: 'calc(100vh - 330px)' }}>
+                <Container className='d-flex align-items-center justify-content-center pt-5' style={{ minHeight: 'calc(100vh - 330px)' }}>
                   <Row>
                     <Col xs={12}>{error.message === EXTENSION_NOT_FOUND ? <ExtensionNotFound /> : <ErrorAlert message={error} />}</Col>
                   </Row>

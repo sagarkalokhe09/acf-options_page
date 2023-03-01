@@ -8,17 +8,22 @@ import { CloudArrowUpFill } from '../util'
 
 export function BackupDropdown({ confirmRef }) {
   const [settings, setSettings] = useState(defaultSettings)
+  const [loading, setLoading] = useState(true)
 
   const { t } = useTranslation()
 
   useEffect(() => {
-    StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.SETTINGS).then(result => {
-      setSettings(result.settings || defaultSettings)
-    })
+    StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.SETTINGS)
+      .then(result => {
+        setSettings(result.settings || defaultSettings)
+      })
+      .finally(() => setLoading(false))
   }, [])
 
   useEffect(() => {
-    StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.SETTINGS]: settings })
+    if (!loading) {
+      StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.SETTINGS]: settings })
+    }
   }, [settings])
 
   const backup = autoBackup => {
@@ -42,6 +47,10 @@ export function BackupDropdown({ confirmRef }) {
   const {
     backup: { autoBackup, lastBackup }
   } = settings
+
+  if (loading) {
+    return null
+  }
 
   return (
     <NavDropdown title={<CloudArrowUpFill width='24' height='24' title={t('header.backup.backup')} style={{ color: 'var(--bs-blue)' }} />} id='backup' align='end' className='px-2 py-2 fw-bolder'>

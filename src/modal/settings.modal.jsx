@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { StorageService } from '@dhruv-techapps/core-services'
 import { LOCAL_STORAGE_KEY, defaultSettings } from '@dhruv-techapps/acf-common'
@@ -10,14 +10,27 @@ import { getElementProps } from '../util/element'
 import { SettingNotifications } from './settings/notifications'
 import { SettingRetry } from './settings/retry'
 import { dataLayerInput, dataLayerModel } from '../util/data-layer'
+import { SettingMessage } from './settings/message'
 
-function SettingsModal({ show, handleClose }) {
+const SettingsModal = forwardRef((_, ref) => {
   const { t } = useTranslation()
+  const [show, setShow] = useState(false)
   const { mode, setMode } = useContext(ModeContext)
   const [settings, setSettings] = useState(defaultSettings)
   const [loading, setLoading] = useState(true)
   const [apiError, setApiError] = useState()
-  const [message, setMessage] = useState()
+  const messageRef = useRef()
+
+  const handleClose = () => {
+    dataLayerModel(LOCAL_STORAGE_KEY.SETTINGS, 'close')
+    setShow(false)
+  }
+
+  useImperativeHandle(ref, () => ({
+    showSettings() {
+      setShow(true)
+    }
+  }))
 
   useEffect(() => {
     StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.SETTINGS)
@@ -31,17 +44,15 @@ function SettingsModal({ show, handleClose }) {
   const save = data => {
     StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.SETTINGS]: data })
       .then(() => {
-        setMessage(t('modal.settings.saveMessage'))
-        setTimeout(setMessage, 1500)
+        messageRef.current.showMessage(t('modal.settings.saveMessage'))
       })
       .catch(setApiError)
-      .finally(() => setLoading(false))
   }
 
   const onUpdate = e => {
     const update = getElementProps(e)
     if (update) {
-      dataLayerInput(update, 'settings')
+      dataLayerInput(update, LOCAL_STORAGE_KEY.SETTINGS)
       setSettings(_settings => ({ ..._settings, ...update }))
     }
   }
@@ -53,12 +64,12 @@ function SettingsModal({ show, handleClose }) {
   }, [settings])
 
   const toggleMode = () => {
-    dataLayerInput({ mode: mode === 'light' ? 'pro' : 'light' }, 'settings')
+    dataLayerInput({ mode: mode === 'light' ? 'pro' : 'light' }, LOCAL_STORAGE_KEY.SETTINGS)
     setMode(prevMode => (prevMode === 'light' ? 'pro' : 'light'))
   }
 
   return (
-    <Modal show={show} onHide={handleClose} size='lg' onShow={() => dataLayerModel('settings', 'open')}>
+    <Modal show={show} onHide={handleClose} size='lg' onShow={() => dataLayerModel(LOCAL_STORAGE_KEY.SETTINGS, 'open')}>
       <Form>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.settings.title')}</Modal.Title>
@@ -92,19 +103,12 @@ function SettingsModal({ show, handleClose }) {
             </>
           )}
         </Modal.Body>
-        {message && (
-          <Modal.Footer>
-            <span className='text-success'>{message}</span>
-          </Modal.Footer>
-        )}
+        <SettingMessage ref={messageRef} />
       </Form>
     </Modal>
   )
-}
+})
 
-SettingsModal.propTypes = {
-  show: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired
-}
+SettingsModal.displayName = 'SettingsModal'
 const memo = SettingsModal
 export { memo as SettingsModal }

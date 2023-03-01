@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
@@ -7,27 +7,11 @@ import { SettingsModal } from '../modal'
 import { ThemeContext } from '../_providers/ThemeProvider'
 import { APP_LANGUAGES, APP_NAME, SOCIAL_LINKS } from '../constants'
 import { BackupDropdown } from '../components/backup.components'
-import { dataLayerModel } from '../util/data-layer'
 
 function Header({ confirmRef, error }) {
   const { theme, setTheme } = useContext(ThemeContext)
-
-  const [showSettings, setShowSettings] = useState(false)
-  const [languages, setLanguages] = useState([])
+  const settingsRef = useRef()
   const { t, i18n } = useTranslation()
-
-  useEffect(() => {
-    setLanguages(APP_LANGUAGES)
-  }, [])
-
-  const handleClose = () => {
-    dataLayerModel('settings', 'close')
-    setShowSettings(false)
-  }
-
-  const openSettings = () => {
-    setShowSettings(true)
-  }
 
   /* const login = () => {
     instance.loginRedirect(loginRequest).catch(e => {
@@ -79,7 +63,7 @@ function Header({ confirmRef, error }) {
 
               {!error.message && (
                 <>
-                  <Nav.Link onClick={openSettings} className='px-4 py-3'>
+                  <Nav.Link onClick={() => settingsRef.current.showSettings()} className='px-4 py-3'>
                     <GearFill width='24' height='24' title={t('header.settings')} />
                   </Nav.Link>
                   <BackupDropdown confirmRef={confirmRef} />
@@ -95,7 +79,7 @@ function Header({ confirmRef, error }) {
                     </Nav.Link>
                   ) */}
                   <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase px-2 py-2 fw-bolder'>
-                    {languages.map((language, index) => (
+                    {APP_LANGUAGES.map((language, index) => (
                       <NavDropdown.Item key={index} title={language} onClick={() => changeLanguage(language)} className='text-secondary'>
                         {t(`language.${language}`)}
                       </NavDropdown.Item>
@@ -103,7 +87,7 @@ function Header({ confirmRef, error }) {
                   </NavDropdown>
                 </>
               )}
-              <SettingsModal show={showSettings} handleClose={handleClose} />
+              <SettingsModal ref={settingsRef} />
             </Nav>
           </Navbar>
         </Container>
