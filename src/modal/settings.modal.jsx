@@ -97,7 +97,7 @@ const SettingsModal = forwardRef((_, ref) => {
                   </Row>
                 </Card.Body>
               </Card>
-              <SettingNotifications notifications={settings.notifications} setSettings={setSettings} />
+              <SettingNotifications notifications={settings.notifications || {}} setSettings={setSettings} />
               <SettingRetry settings={settings} onUpdate={onUpdate} />
             </>
           )}
