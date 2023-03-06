@@ -6,7 +6,7 @@
   "dependencies": {
     "@azure/msal-browser": "^2.32.1",
     "@azure/msal-react": "^1.5.1",
-    "@dhruv-techapps/acf-common": "^5.0.2",
+    "@dhruv-techapps/acf-common": "^5.0.5",
     "@dhruv-techapps/core-common": "^5.0.12",
     "@dhruv-techapps/core-services": "^5.0.8",
     "bootstrap-icons": "^1.8.0",

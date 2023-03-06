@@ -1,15 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Card, Col, Form, Row } from 'react-bootstrap'
-import { Trans, useTranslation } from 'react-i18next'
-import { useMsal } from '@azure/msal-react'
+import { useTranslation } from 'react-i18next'
 import { VolumeMute, VolumeUp } from '../../util'
 import { getElementProps } from '../../util/element'
 import { dataLayerInput } from '../../util/data-layer'
+import { SettingDiscord } from './discord'
 
 function SettingNotifications({ notifications, setSettings }) {
   const { t } = useTranslation()
-  const { accounts } = useMsal()
 
   const onUpdate = e => {
     const update = getElementProps(e)
@@ -42,16 +41,7 @@ function SettingNotifications({ notifications, setSettings }) {
                 </span>
               }
             />
-            <Form.Check type='switch' disabled={accounts.length === 0} onChange={onUpdate} checked={notifications.discord} name='discord' label={t('modal.settings.notification.discord.title')} />
-            <Form.Text>
-              <Trans i18nKey='modal.settings.notification.discord.hint'>
-                You need to login and join our
-                <a className='text-muted' target='_blank' rel='noopener noreferrer' href='https://discord.gg/hArVQns'>
-                  Discord server
-                </a>
-                in order to receive notification on Discord
-              </Trans>
-            </Form.Text>
+            <SettingDiscord onChange={onUpdate} checked={notifications.discord} label={t('modal.settings.notification.discord.title')} />
           </Col>
         </Row>
       </Card.Body>
