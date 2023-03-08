@@ -16,7 +16,7 @@ export function GoogleAds({ client, slot, className, setLoaded }) {
   return (
     <Row>
       <Col xs={12} className='text-center'>
-        <ins className={`${className} adsbygoogle`} style={{ display: 'inline-block', width: '728px', height: '90px' }} data-ad-client={client} data-ad-slot={slot} />
+        <ins className={`${className} adsbygoogle`} style={{ display: 'block' }} data-ad-client={client} data-ad-slot={slot} data-ad-format='auto' data-full-width-responsive='true' />
       </Col>
     </Row>
   )
