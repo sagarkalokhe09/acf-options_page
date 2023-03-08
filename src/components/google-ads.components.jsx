@@ -2,15 +2,10 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Col, Row } from 'react-bootstrap'
 
-export function GoogleAds({ client, slot, className, setLoaded }) {
+export function GoogleAds({ client, slot, className }) {
   useEffect(() => {
     // eslint-disable-next-line no-extra-semi
     ;(window.adsbygoogle = window.adsbygoogle || []).push({})
-    setTimeout(() => {
-      if (!window.adsLoaded) {
-        setLoaded(false)
-      }
-    }, 1000)
   }, [])
 
   return (
@@ -29,6 +24,5 @@ GoogleAds.defaultProps = {
 GoogleAds.propTypes = {
   client: PropTypes.string,
   slot: PropTypes.string,
-  className: PropTypes.string,
-  setLoaded: PropTypes.func.isRequired
+  className: PropTypes.string
 }
