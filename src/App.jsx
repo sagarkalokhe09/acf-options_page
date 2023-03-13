@@ -179,6 +179,11 @@ function App() {
               <option value='Attr::remove::prop'>Attr::remove::prop</option>
               <option value='Class::add::className'>Class::add::className</option>
               <option value='Class::remove::className'>Class::remove::className</option>
+              <option value='KeyboardEvents::'>KeyboardEvents::</option>
+              <option value='KeyboardEvents::Enter'>KeyboardEvents::Enter</option>
+              <option value='KeyboardEvents::Shift+Enter'>KeyboardEvents::Shift+Enter</option>
+              <option value='KeyboardEvents::Shift+Alt+Enter'>KeyboardEvents::Shift+Alt+Enter</option>
+              <option value='KeyboardEvents::Tab'>KeyboardEvents::Tab</option>
             </datalist>
             <datalist id='valueExtractor'>
               <option value='@id'>To get id attribute of element</option>
