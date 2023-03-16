@@ -157,6 +157,21 @@ const ConfigSettingsModal = forwardRef(({ config, configIndex, setConfigs }, ref
             <Card.Body>
               <Row>
                 <Col md='12' sm='12'>
+                  <Form.Group controlId='config-google-sheets-id'>
+                    <FormControl name='spreadsheetId' defaultValue={config.spreadsheetId} autoComplete='off' onBlur={onUpdate} placeholder='Google Sheets ID' />
+                    <Form.Label>Google Sheets ID</Form.Label>
+                    <Form.Text className='text-muted'>
+                      https://docs.google.com/spreadsheets/d/<code>1J2OcSNJsnYQCcQmA4K9Fhtv8yqvg0NouB--H4B0jsZA</code>/
+                    </Form.Text>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+          <Card className='mb-2'>
+            <Card.Body>
+              <Row>
+                <Col md='12' sm='12'>
                   {dev ? (
                     <Form.Group controlId='config-start-time'>
                       <FormControl name='startTime' pattern='START_TIME' autoComplete='off' defaultValue={config.startTime} onBlur={onUpdate} placeholder='HH:mm:ss:fff' list='start-time' />
@@ -198,7 +213,8 @@ ConfigSettingsModal.propTypes = {
     startType: PropTypes.string,
     hotkey: PropTypes.string,
     loadType: PropTypes.string,
-    startTime: PropTypes.string
+    startTime: PropTypes.string,
+    spreadsheetId: PropTypes.string
   }).isRequired,
   setConfigs: PropTypes.func.isRequired
 }

@@ -6,7 +6,6 @@ import { GearFill, Moon, Sun, ChatFill } from '../util'
 import { SettingsModal } from '../modal'
 import { ThemeContext } from '../_providers/ThemeProvider'
 import { APP_LANGUAGES, APP_NAME, SOCIAL_LINKS } from '../constants'
-import { BackupDropdown } from '../components/backup.components'
 
 function Header({ confirmRef, error }) {
   const { theme, setTheme } = useContext(ThemeContext)
@@ -66,7 +65,6 @@ function Header({ confirmRef, error }) {
                   <Nav.Link onClick={() => settingsRef.current.showSettings()} className='px-4 py-3'>
                     <GearFill width='24' height='24' title={t('header.settings')} />
                   </Nav.Link>
-                  <BackupDropdown confirmRef={confirmRef} />
                   {/* accounts.length !== 0 ? (
                     <NavDropdown title={accounts[0].name} id='user-nav-dropdown' className='px-2 py-2 fw-bolder'>
                       <NavDropdown.Item href='#logout' title='logout' onClick={logout}>
@@ -79,15 +77,15 @@ function Header({ confirmRef, error }) {
                     </Nav.Link>
                   ) */}
                   <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase px-2 py-2 fw-bolder'>
-                    {APP_LANGUAGES.map((language, index) => (
-                      <NavDropdown.Item key={index} title={language} onClick={() => changeLanguage(language)} className='text-secondary'>
+                    {APP_LANGUAGES.map(language => (
+                      <NavDropdown.Item key={language} title={language} onClick={() => changeLanguage(language)} className='text-secondary'>
                         {t(`language.${language}`)}
                       </NavDropdown.Item>
                     ))}
                   </NavDropdown>
                 </>
               )}
-              <SettingsModal ref={settingsRef} />
+              <SettingsModal ref={settingsRef} confirmRef={confirmRef} />
             </Nav>
           </Navbar>
         </Container>

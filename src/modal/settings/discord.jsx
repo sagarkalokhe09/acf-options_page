@@ -38,28 +38,35 @@ function SettingDiscord({ onChange, label, checked }) {
 
   if (discord) {
     return (
-      <div>
-        <div className='d-flex align-items-center'>
-          <Image
-            alt={discord.displayName}
-            className='me-2'
-            title={discord.displayName}
-            src={`https://cdn.discordapp.com/avatars/${discord.id}/${discord.avatar}.png`}
-            roundedCircle
-            width='30'
-            height='30'
-          />
-          {discord.username}
-          <Button variant='link' onClick={remove}>
-            (remove)
-          </Button>
+      <div className='w-100'>
+        <div className='d-flex justify-content-between align-items-center'>
+          <Form.Label className='ms-2 mt-2 me-auto' htmlFor='discord'>
+            <div className='fw-bold mb-2'>{label}</div>
+            <Image
+              alt={discord.displayName}
+              className='me-2'
+              title={discord.displayName}
+              src={`https://cdn.discordapp.com/avatars/${discord.id}/${discord.avatar}.png`}
+              roundedCircle
+              width='30'
+              height='30'
+            />
+            {discord.username}
+            <Button variant='link' onClick={remove}>
+              (remove)
+            </Button>
+          </Form.Label>
+          <Form.Check type='switch' id='discord' onChange={onChange} checked={checked} name='discord' />
         </div>
-        <Form.Check type='switch' onChange={onChange} checked={checked} name='discord' label={label} />
       </div>
     )
   }
 
-  return <Button onClick={connect}>Connect with discord</Button>
+  return (
+    <Button variant='link' onClick={connect}>
+      Connect with discord
+    </Button>
+  )
 }
 
 SettingDiscord.displayName = 'SettingDiscord'

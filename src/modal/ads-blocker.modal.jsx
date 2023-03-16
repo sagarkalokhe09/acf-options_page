@@ -69,15 +69,9 @@ const AdsBlockerModal = forwardRef((_, ref) => {
                   <img src='https://www.gstatic.com/fundingchoices/whitelist/blockers/chrome/ab_icon-1.svg' alt='AdBlock' width='20px' className='mx-1' /> in the browser extension area on the upper
                   right-hand corner. (You may see a small number covering part of the icon.)
                 </li>
+                <li>Select Don&apos;t run on pages on this site.</li>
                 <li>
-                  Select <Button variant='link'>More pause options.</Button>
-                </li>
-                <li>
-                  In the &quot;Don’t run AdBlock on...&quot; dialog box, select{' '}
-                  <Button variant='danger' size='sm'>
-                    Exclude
-                  </Button>
-                  . The AdBlock icon changes to a “thumbs up” image.
+                  In the &quot;Don&apos;t run AdBlock on...&quot; dialog box, select <b>Exclude</b>. The AdBlock icon changes to a “thumbs up” image.
                 </li>
               </ol>
             </Tab.Pane>
@@ -139,8 +133,8 @@ const AdsBlockerModal = forwardRef((_, ref) => {
         <Button variant='outline-secondary' className='px-3 me-3' size='md' onClick={closeClick}>
           Close
         </Button>
-        <Button variant='outline-primary' className='px-3' size='md' onClick={refreshClick}>
-          Refresh
+        <Button variant='primary' className='px-3' size='md' onClick={refreshClick}>
+          Refresh Page
         </Button>
       </Modal.Footer>
     </Modal>

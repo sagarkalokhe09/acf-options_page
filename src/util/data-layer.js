@@ -1,8 +1,8 @@
 export function dataLayerInput(input, section) {
   const event = { event: 'input', section }
-  ;[event.conversionName] = Object.keys(input)
-  event.conversionValue = input[event.conversionName]
-
+  const key = Object.keys(input)[0]
+  event.conversionName = key
+  event.conversionValue = input[key]
   window.dataLayer.push(event)
 }
 

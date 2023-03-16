@@ -7,7 +7,7 @@ import Header from './app/header'
 import Footer from './app/footer'
 import Configs from './app/configs/configs'
 import { ToastHandler, ErrorAlert, ExtensionNotFound } from './components'
-import { BlogModal, ConfirmModal } from './modal'
+import { AdsBlockerModal, BlogModal, ConfirmModal } from './modal'
 import { ModeProvider, ThemeProvider } from './_providers'
 import { APP_NAME } from './constants'
 
@@ -17,6 +17,7 @@ function App() {
   const toastRef = useRef()
   const blogRef = useRef()
   const confirmRef = useRef()
+  const adsBlockerModal = useRef()
   const [loading, setLoading] = useState(true)
   const [manifest, setManifest] = useState({})
   const [error, setError] = useState()
@@ -43,6 +44,14 @@ function App() {
       window.document.title = APP_NAME
     }
   }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!window.adsLoaded) {
+        adsBlockerModal.current.show()
+      }
+    }, 1000)
+  })
 
   const REGEX_RANGE_STRING = '{6,12}'
   const REGEX_STRING = '{6}'
@@ -77,6 +86,7 @@ function App() {
               <ToastHandler ref={toastRef} />
               <ConfirmModal ref={confirmRef} />
               <BlogModal ref={blogRef} />
+              <AdsBlockerModal ref={adsBlockerModal} />
             </Suspense>
             <datalist id='retry'>
               <option value='-2'>&infin; Infinity</option>
@@ -176,6 +186,7 @@ function App() {
               <option value='KeyEvents::Example Text'>KeyEvents::Example Text</option>
               <option value='KeyEvents::{"value":"Example text","delay":3}'>KeyEvents::&lcub;&quot;value&quot;:&quot;Example text&quot;,&quot;delay&quot;:3&rcub;</option>
               <option value='example<batchRepeat>@gmail.com'>example&lt;batchRepeat&gt;@gmail.com</option>
+              <option value='example<batchCount>@gmail.com'>example&lt;batchCount&gt;@gmail.com</option>
               <option value='LocationCommand::reload'>LocationCommand::reload</option>
               <option value='LocationCommand::href::url'>LocationCommand::href::url</option>
               <option value='LocationCommand::replace::url'>LocationCommand::replace::url</option>
