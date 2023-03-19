@@ -3,19 +3,21 @@ import { Service, StorageService } from '@dhruv-techapps/core-services'
 import { Button, Form, Image } from 'react-bootstrap'
 import { LOCAL_STORAGE_KEY, RESPONSE_CODE, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common'
 import PropTypes from 'prop-types'
+import { Logger } from '@dhruv-techapps/core-common'
 
 function SettingDiscord({ onChange, label, checked }) {
   const [discord, setDiscord] = useState()
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.DISCORD)
-      .then(({ discord: result }) => {
-        if (result) {
-          setDiscord(result)
-        }
-      })
-      .finally(() => setLoading(false))
+    if (chrome.runtime) {
+      StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.DISCORD)
+        .then(({ discord: result }) => {
+          if (result) {
+            setDiscord(result)
+          }
+        })
+        .catch(Logger.error)
+    }
   }, [])
 
   const connect = async () => {
@@ -30,10 +32,6 @@ function SettingDiscord({ onChange, label, checked }) {
     if (response === RESPONSE_CODE.REMOVED) {
       setDiscord()
     }
-  }
-
-  if (loading) {
-    return null
   }
 
   if (discord) {

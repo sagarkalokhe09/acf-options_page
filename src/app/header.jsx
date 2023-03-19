@@ -2,28 +2,15 @@ import React, { useContext, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import { GearFill, Moon, Sun, ChatFill } from '../util'
+import { GearFill, Moon, Sun } from '../util'
 import { SettingsModal } from '../modal'
 import { ThemeContext } from '../_providers/ThemeProvider'
-import { APP_LANGUAGES, APP_NAME, SOCIAL_LINKS } from '../constants'
+import { APP_LANGUAGES, APP_NAME } from '../constants'
 
 function Header({ confirmRef, error }) {
   const { theme, setTheme } = useContext(ThemeContext)
   const settingsRef = useRef()
   const { t, i18n } = useTranslation()
-
-  /* const login = () => {
-    instance.loginRedirect(loginRequest).catch(e => {
-      Logger.log(e)
-    })
-  }
-
-  const logout = () => {
-    instance.logoutPopup({
-      postLogoutRedirectUri: '/',
-      mainWindowRedirectUri: '/'
-    })
-  } */
 
   const changeLanguage = lng => {
     window.dataLayer.push({ event: 'language', conversionValue: lng })
@@ -53,9 +40,6 @@ function Header({ confirmRef, error }) {
           <Navbar className='p-0'>
             <Nav className='me-auto' />
             <Nav>
-              <Nav.Link target='_blank' href={SOCIAL_LINKS.GOOGLE_GROUP} className='px-4 py-3'>
-                <ChatFill width='24' height='24' title={t('header.google-group')} />
-              </Nav.Link>
               <Nav.Link onClick={toggleTheme} className='px-4 py-3'>
                 {theme !== 'light' ? <Sun width='24' height='24' title={t('header.theme.dark')} /> : <Moon width='24' height='24' title={t('header.theme.light')} />}
               </Nav.Link>
@@ -65,17 +49,6 @@ function Header({ confirmRef, error }) {
                   <Nav.Link onClick={() => settingsRef.current.showSettings()} className='px-4 py-3'>
                     <GearFill width='24' height='24' title={t('header.settings')} />
                   </Nav.Link>
-                  {/* accounts.length !== 0 ? (
-                    <NavDropdown title={accounts[0].name} id='user-nav-dropdown' className='px-2 py-2 fw-bolder'>
-                      <NavDropdown.Item href='#logout' title='logout' onClick={logout}>
-                        {t('header.logout')}
-                      </NavDropdown.Item>
-                    </NavDropdown>
-                  ) : (
-                    <Nav.Link onClick={login} className='px-2 py-3 fw-bolder'>
-                      {t('header.login')}
-                    </Nav.Link>
-                  ) */}
                   <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase px-2 py-2 fw-bolder'>
                     {APP_LANGUAGES.map(language => (
                       <NavDropdown.Item key={language} title={language} onClick={() => changeLanguage(language)} className='text-secondary'>

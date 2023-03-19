@@ -57,7 +57,8 @@ const ReorderConfigsModal = forwardRef((_, ref) => {
           <Modal.Title as='h6'>{t('modal.reorder.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ overflow: 'auto', height: 'calc(100vh - 200px)' }}>
-          {error ? <ErrorAlert message={error} /> : <p className='text-muted'>{t('modal.reorder.hint')}</p>}
+          <ErrorAlert error={error} />
+          <p className='text-muted'>{t('modal.reorder.hint')}</p>
           <div className='list-group'>
             <Reorder reorderId='configurations' draggedClassName='active' placeholderClassName='list-group' onReorder={onReorder}>
               {configs.map((config, index) => (

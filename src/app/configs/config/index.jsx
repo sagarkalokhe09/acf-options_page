@@ -93,7 +93,6 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
 
   const removeConfig = () => {
     const { name } = config
-    // setLoading(true)
     setConfigs(_configs => _configs.filter((_, index) => index !== configIndex))
     setSelected(prevSelected => {
       if (configsLength === 2) {
@@ -101,7 +100,6 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
       }
       return prevSelected === 0 ? prevSelected : prevSelected - 1
     })
-    // setLoading(false)
     toastRef.current.push({
       body: t('toast.configuration.remove.body', { name })
     })

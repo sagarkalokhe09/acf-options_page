@@ -5,8 +5,8 @@
   "homepage": "./",
   "dependencies": {
     "@dhruv-techapps/acf-common": "^5.0.8",
-    "@dhruv-techapps/core-common": "^5.0.12",
-    "@dhruv-techapps/core-services": "^5.0.8",
+    "@dhruv-techapps/core-common": "^5.0.14",
+    "@dhruv-techapps/core-services": "^5.0.10",
     "bootstrap-icons": "^1.8.0",
     "i18next": "^20.6.1",
     "i18next-browser-languagedetector": "^7.0.1",

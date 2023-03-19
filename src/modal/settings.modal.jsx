@@ -4,7 +4,6 @@ import { StorageService } from '@dhruv-techapps/core-services'
 import { LOCAL_STORAGE_KEY, defaultSettings } from '@dhruv-techapps/acf-common'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import { ErrorAlert } from '../components/error-alert.components'
 import { ModeContext } from '../_providers'
 import { getElementProps } from '../util/element'
 import { SettingNotifications } from './settings/notifications'
@@ -14,6 +13,7 @@ import { SettingMessage } from './settings/message'
 import { ArrowRepeat, BellFill, ChevronLeft, ChevronRight, CloudArrowUpFill } from '../util'
 import { SettingsBackup } from './settings/backup'
 import { SettingGoogleSheets } from './settings/google-sheets'
+import { ErrorAlert, Loading } from '../components'
 
 const SETTINGS_PAGE = {
   NOTIFICATION: 'Notification',
@@ -27,7 +27,7 @@ const SettingsModal = forwardRef(({ confirmRef }, ref) => {
   const { mode, setMode } = useContext(ModeContext)
   const [settings, setSettings] = useState(defaultSettings)
   const [loading, setLoading] = useState(true)
-  const [apiError, setApiError] = useState()
+  const [error, setError] = useState()
   const [page, setPage] = useState()
   const messageRef = useRef()
 
@@ -43,12 +43,14 @@ const SettingsModal = forwardRef(({ confirmRef }, ref) => {
   }))
 
   useEffect(() => {
-    StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.SETTINGS)
-      .then(result => {
-        setSettings(result.settings || defaultSettings)
-      })
-      .catch(setApiError)
-      .finally(() => setLoading(false))
+    if (chrome.runtime) {
+      StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.SETTINGS)
+        .then(result => {
+          setSettings(result.settings || defaultSettings)
+        })
+        .catch(setError)
+        .finally(() => setLoading(false))
+    }
   }, [])
 
   const save = data => {
@@ -56,7 +58,7 @@ const SettingsModal = forwardRef(({ confirmRef }, ref) => {
       .then(() => {
         messageRef.current.showMessage(t('modal.settings.saveMessage'))
       })
-      .catch(setApiError)
+      .catch(setError)
   }
 
   const onUpdate = e => {
@@ -93,14 +95,10 @@ const SettingsModal = forwardRef(({ confirmRef }, ref) => {
         </Modal.Header>
         <Modal.Body>
           {loading ? (
-            <div className='text-center m-5'>
-              <div className='spinner-border' role='status'>
-                <span className='visually-hidden'>Loading...</span>
-              </div>
-            </div>
+            <Loading />
           ) : (
             <>
-              {apiError && <ErrorAlert message={apiError} />}
+              <ErrorAlert error={error} />
               {!page && (
                 <ol className='list-group'>
                   <li className='list-group-item d-flex justify-content-between align-items-center'>
@@ -150,7 +148,7 @@ const SettingsModal = forwardRef(({ confirmRef }, ref) => {
               )}
               {page === SETTINGS_PAGE.NOTIFICATION && <SettingNotifications notifications={settings.notifications || {}} setSettings={setSettings} />}
               {page === SETTINGS_PAGE.RETRY && <SettingRetry settings={settings} onUpdate={onUpdate} />}
-              {page === SETTINGS_PAGE.BACKUP && <SettingsBackup settings={settings} onUpdate={onUpdate} confirmRef={confirmRef} />}
+              {page === SETTINGS_PAGE.BACKUP && <SettingsBackup settings={settings} setSettings={setSettings} confirmRef={confirmRef} />}
             </>
           )}
         </Modal.Body>

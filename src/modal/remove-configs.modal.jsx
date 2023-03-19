@@ -29,7 +29,7 @@ const RemoveConfigsModal = forwardRef((_, ref) => {
   }
 
   useImperativeHandle(ref, () => ({
-    showReorder() {
+    showRemove() {
       StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.CONFIGS)
         .then(result => {
           setConfigs(
@@ -73,7 +73,8 @@ const RemoveConfigsModal = forwardRef((_, ref) => {
           <Modal.Title as='h6'>{t('configuration.removeConfigs')}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ overflow: 'auto', height: 'calc(100vh - 200px)' }}>
-          {error ? <ErrorAlert message={error} /> : <p className='text-muted'>This action cant be reverted.</p>}
+          <ErrorAlert error={error} />
+          <p className='text-muted'>This action cant be reverted.</p>
           <ListGroup>
             {configs.map((config, index) => (
               <ListGroup.Item key={index}>

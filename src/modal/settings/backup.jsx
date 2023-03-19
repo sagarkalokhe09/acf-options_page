@@ -1,30 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { ListGroup, NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import { Service, StorageService } from '@dhruv-techapps/core-services'
-import { AUTO_BACKUP, defaultSettings, GOOGLE_SCOPES_KEY, LOCAL_STORAGE_KEY, RESPONSE_CODE, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common'
+import { Service } from '@dhruv-techapps/core-services'
+import { AUTO_BACKUP, GOOGLE_SCOPES_KEY, RESPONSE_CODE, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common'
 import { CloudArrowUpFill } from '../../util'
 
-export function SettingsBackup({ confirmRef }) {
-  const [settings, setSettings] = useState(defaultSettings)
-  const [loading, setLoading] = useState(true)
-
+export function SettingsBackup({ settings, setSettings, confirmRef }) {
   const { t } = useTranslation()
-
-  useEffect(() => {
-    StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.SETTINGS)
-      .then(result => {
-        setSettings(result.settings || defaultSettings)
-      })
-      .finally(() => setLoading(false))
-  }, [])
-
-  useEffect(() => {
-    if (!loading) {
-      StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.SETTINGS]: settings })
-    }
-  }, [settings])
 
   const onBackup = async autoBackup => {
     if (autoBackup) {
@@ -47,15 +30,7 @@ export function SettingsBackup({ confirmRef }) {
     })
   }
 
-  let { backup } = settings
-
-  if (loading) {
-    return null
-  }
-
-  if (!backup) {
-    backup = {}
-  }
+  const { backup = {} } = settings
 
   return (
     <>
@@ -110,8 +85,18 @@ export function SettingsBackup({ confirmRef }) {
     </>
   )
 }
-SettingsBackup.defaultProps = {}
-
+SettingsBackup.defaultProps = {
+  settings: {
+    backup: {}
+  }
+}
 SettingsBackup.propTypes = {
+  settings: PropTypes.shape({
+    backup: PropTypes.shape({
+      lastBackup: PropTypes.string,
+      autoBackup: PropTypes.string
+    })
+  }),
+  setSettings: PropTypes.func.isRequired,
   confirmRef: PropTypes.shape({ current: PropTypes.shape({ confirm: PropTypes.func.isRequired }) }).isRequired
 }

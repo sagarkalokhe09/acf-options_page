@@ -2,20 +2,22 @@ import React, { useEffect, useState } from 'react'
 import { Service, StorageService } from '@dhruv-techapps/core-services'
 import { Button, Form, Image } from 'react-bootstrap'
 import { LOCAL_STORAGE_KEY, RESPONSE_CODE, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common'
+import { Logger } from '@dhruv-techapps/core-common'
 import { FileSpreadsheet } from '../../util'
 
 function SettingGoogleSheets() {
   const [google, setGoogle] = useState()
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.GOOGLE)
-      .then(({ google: result }) => {
-        if (result) {
-          setGoogle(result)
-        }
-      })
-      .finally(() => setLoading(false))
+    if (chrome.runtime) {
+      StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.GOOGLE)
+        .then(({ google: result }) => {
+          if (result) {
+            setGoogle(result)
+          }
+        })
+        .catch(Logger.error)
+    }
   }, [])
 
   const connect = async () => {
@@ -30,10 +32,6 @@ function SettingGoogleSheets() {
     if (response !== RESPONSE_CODE.ERROR) {
       setGoogle()
     }
-  }
-
-  if (loading) {
-    return null
   }
 
   if (google) {

@@ -1,9 +1,16 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Button, Image, Modal, Nav, Tab } from 'react-bootstrap'
 import { PatchQuestionFill } from '../util'
 
-const AdsBlockerModal = forwardRef((_, ref) => {
+const AdsBlockerModal = forwardRef(({ version }, ref) => {
   const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    if (chrome.runtime && version && !window.adsLoaded) {
+      setShow(true)
+    }
+  }, [chrome.runtime, version, window.adsLoaded])
 
   useImperativeHandle(ref, () => ({
     show() {
@@ -141,4 +148,11 @@ const AdsBlockerModal = forwardRef((_, ref) => {
   )
 })
 AdsBlockerModal.displayName = 'AdsBlockerModal'
+
+AdsBlockerModal.defaultProps = {
+  version: ''
+}
+AdsBlockerModal.propTypes = {
+  version: PropTypes.string
+}
 export { AdsBlockerModal }

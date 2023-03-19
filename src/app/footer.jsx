@@ -1,8 +1,8 @@
 import React from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
 import PropTypes from 'prop-types'
+import { Col, Container, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import { Discord, Instagram, Twitter, Github } from '../util'
+import { Discord, Instagram, Twitter, Github, Youtube, ChatFill } from '../util'
 import { APP_LINK, APP_NAME, SOCIAL_LINKS } from '../constants'
 
 function Footer({ version }) {
@@ -14,7 +14,7 @@ function Footer({ version }) {
   }
 
   return (
-    <footer className='pt-4 mt-md-5 pt-md-5 border-top'>
+    <footer className='pt-4  mt-3 mt-md-5 pt-md-5 border-top'>
       <Container>
         <Row>
           <Col md xs={12} className='mb-3'>
@@ -65,6 +65,7 @@ function Footer({ version }) {
             <ul className='list-unstyled text-small'>
               <li>
                 <a className='text-decoration-none' target='_blank' rel='noopener noreferrer' title='chat' href={SOCIAL_LINKS.GOOGLE_GROUP}>
+                  <ChatFill className='me-2' />
                   {t('footer.chat')}
                 </a>
               </li>
@@ -78,6 +79,12 @@ function Footer({ version }) {
           <Col md xs={4}>
             <h5 className='text-secondary'>{t('footer.social')}</h5>
             <ul className='list-unstyled text-small'>
+              <li>
+                <a className='text-decoration-none' target='_blank' rel='noopener noreferrer' title='youtube' href={SOCIAL_LINKS.YOUTUBE}>
+                  <Youtube className='me-2' />
+                  {t('footer.youtube')}
+                </a>
+              </li>
               <li>
                 <a className='text-decoration-none' target='_blank' rel='noopener noreferrer' title='instagram' href={SOCIAL_LINKS.INSTAGRAM}>
                   <Instagram className='me-2' />
@@ -109,7 +116,10 @@ function Footer({ version }) {
     </footer>
   )
 }
+Footer.defaultProps = {
+  version: ''
+}
 Footer.propTypes = {
-  version: PropTypes.string.isRequired
+  version: PropTypes.string
 }
 export default Footer

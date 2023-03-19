@@ -12,12 +12,23 @@ export const APP_LINK = {
 export const APP_LANGUAGES = ['en', 'kr', 'fr']
 // Social
 export const SOCIAL_LINKS = {
-  INSTAGRAM: 'https://www.instagram.com/dhruv.techapps/',
+  YOUTUBE: 'https://www.youtube.com/@autoclickerautofill/',
+  INSTAGRAM: 'https://www.instagram.com/dharmeshhemaram/',
   DISCORD: 'https://discord.gg/ubMBeX3',
   GOOGLE_GROUP: 'https://groups.google.com/g/auto-clicker-autofill',
-  TWITTER: 'https://twitter.com/DhruvTechApps',
+  TWITTER: 'https://twitter.com/dharmeshhemaram',
   GITHUB: 'https://github.com/Dhruv-Techapps/auto-click-auto-fill'
 }
+
+export const SPONSORS = [
+  {
+    link: 'https://www.youtube.com/@sarojskitchen',
+    title: "Saroj's Kitchen",
+    image: 'https://yt3.googleusercontent.com/ytc/AL5GRJXXSNx_TgWygPPxifjLMWl6De3YVmGwHAjOfhztgVA=s176-c-k-c0x00ffffff-no-rj'
+  }
+]
+
+export const NO_EXTENSION_ERROR = ['Could not establish connection. Receiving end does not exist.', "Cannot read properties of undefined (reading 'sendMessage')"]
 // Web store links
 export const EDGE_WEB_STORE = 'https://microsoftedge.microsoft.com/addons/detail/'
 export const CHROME_WEB_STORE = 'https://chrome.google.com/webstore/detail/'
