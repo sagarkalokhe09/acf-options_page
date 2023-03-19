@@ -7,9 +7,11 @@ const AdsBlockerModal = forwardRef(({ version }, ref) => {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    if (chrome.runtime && version && !window.adsLoaded) {
-      setShow(true)
-    }
+    setTimeout(() => {
+      if (chrome.runtime && version && !window.adsLoaded) {
+        setShow(true)
+      }
+    }, 2000)
   }, [chrome.runtime, version, window.adsLoaded])
 
   useImperativeHandle(ref, () => ({
