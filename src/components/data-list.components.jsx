@@ -105,7 +105,6 @@ export function DataList() {
         <option value='KeyEvents::Example Text'>KeyEvents::Example Text</option>
         <option value='KeyEvents::{"value":"Example text","delay":3}'>KeyEvents::&lcub;&quot;value&quot;:&quot;Example text&quot;,&quot;delay&quot;:3&rcub;</option>
         <option value='example<batchRepeat>@gmail.com'>example&lt;batchRepeat&gt;@gmail.com</option>
-        <option value='example<batchCount>@gmail.com'>example&lt;batchCount&gt;@gmail.com</option>
         <option value='LocationCommand::reload'>LocationCommand::reload</option>
         <option value='LocationCommand::href::url'>LocationCommand::href::url</option>
         <option value='LocationCommand::replace::url'>LocationCommand::replace::url</option>
@@ -124,6 +123,12 @@ export function DataList() {
         <option value='KeyboardEvents::Shift+Enter'>KeyboardEvents::Shift+Enter</option>
         <option value='KeyboardEvents::Shift+Alt+Enter'>KeyboardEvents::Shift+Alt+Enter</option>
         <option value='KeyboardEvents::Tab'>KeyboardEvents::Tab</option>
+        <option value='GoogleSheets::Sheet1!A1'>GoogleSheets::Sheet1!A1</option>
+        <option value='GoogleSheets::Sheet1!B1'>GoogleSheets::Sheet1!B1</option>
+        <option value='GoogleSheets::Sheet1!A2'>GoogleSheets::Sheet1!A2</option>
+        <option value='GoogleSheets::Sheet1!Z99'>GoogleSheets::Sheet1!Z99</option>
+        <option value='GoogleSheets::Sheet1!A<batchRepeat>'>GoogleSheets::Sheet1!A&lt;batchRepeat&gt;</option>
+        <option value='GoogleSheets::Sheet1!A<sessionCount>'>GoogleSheets::Sheet1!A&lt;sessionCount&gt;</option>
       </datalist>
       <datalist id='valueExtractor'>
         <option value='@id'>To get id attribute of element</option>
