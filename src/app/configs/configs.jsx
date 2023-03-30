@@ -148,9 +148,12 @@ function Configs({ toastRef, blogRef, confirmRef }) {
     return false
   }
 
+  if (loading) {
+    return <Loading />
+  }
+
   return (
     <div>
-      {loading && <Loading />}
       {!i18n.language.includes('en') && (
         <div className='text-muted text-center my-3'>
           {t('common.translate')}{' '}
