@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Service, StorageService } from '@dhruv-techapps/core-services'
 import { Button, Form, Image } from 'react-bootstrap'
 import { LOCAL_STORAGE_KEY, RESPONSE_CODE, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common'
 import { Logger } from '@dhruv-techapps/core-common'
-import { FileSpreadsheet } from '../../util'
+import { ThemeContext } from '../../_providers'
+
+import GoogleSignInLight from '../../assets/btn_google_signin_light_normal_web.png'
+import GoogleSignInDark from '../../assets/btn_google_signin_dark_normal_web.png'
 
 function SettingGoogleSheets() {
+  const { theme } = useContext(ThemeContext)
   const [google, setGoogle] = useState()
 
   useEffect(() => {
@@ -38,8 +42,8 @@ function SettingGoogleSheets() {
     return (
       <div className='w-100'>
         <div className='d-flex justify-content-between align-items-center'>
-          <Form.Label className='ms-2 mt-2 me-auto' htmlFor='discord'>
-            <div className='fw-bold mb-2'>Google Sheets</div>
+          <Form.Label className='mx-3' htmlFor='discord'>
+            <b className='text-muted d-block mb-2'>Google Sheets</b>
             <Image alt={google.name} className='me-2' title={google.name} src={google.picture} roundedCircle width='30' height='30' />
             {google.name}
             <Button variant='link' onClick={remove}>
@@ -52,12 +56,12 @@ function SettingGoogleSheets() {
   }
 
   return (
-    <Button variant='link' onClick={connect} className='btn btn-link text-muted d-flex justify-content-between w-100'>
-      <div>
-        <FileSpreadsheet width='24' height='24' className='me-2' />
-        Connect with Google Sheets
-      </div>
-    </Button>
+    <div className='d-flex flex-column align-items-start'>
+      <b className='mx-3 text-muted'>Connect with Google Sheets</b>
+      <Button variant='link' onClick={connect}>
+        <img src={theme === 'light' ? GoogleSignInLight : GoogleSignInDark} alt='Logo' />
+      </Button>
+    </div>
   )
 }
 
