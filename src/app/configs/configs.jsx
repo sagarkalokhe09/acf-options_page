@@ -222,7 +222,7 @@ function Configs({ toastRef, blogRef, confirmRef }) {
         <Container>
           <Config configs={configs} configIndex={selected} confirmRef={confirmRef} setSelected={setSelected} toastRef={toastRef} setConfigs={setConfigs} configSettingsRef={configSettingsRef} />
           {mode === 'pro' && <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />}
-          <Ads />
+          <Ads configIndex={selected} />
           <Action
             actions={config.actions}
             configEnable={config.enable}

@@ -1,4 +1,10 @@
-@media (min-width: 1640px) {
+.sponsors {
+  a {
+    display: block;
+  }
+}
+
+@media (min-width: 1870px) {
   main {
     position: relative;
   }
@@ -7,5 +13,8 @@
     position: absolute;
     bottom: 0;
     width: auto;
+    .d-flex{
+      flex-direction: column !important;
+    }
   }
 }

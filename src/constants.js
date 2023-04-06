@@ -1,3 +1,5 @@
+import useChatGpt from './assets/usechatgpt.png'
+
 // Application name
 export const APP_NAME = 'Auto Clicker - AutoFill'
 // Application Links
@@ -22,9 +24,15 @@ export const SOCIAL_LINKS = {
 
 export const SPONSORS = [
   {
+    id: 'saroj-kitchen',
     link: 'https://www.youtube.com/@sarojskitchen',
     title: "Saroj's Kitchen",
     image: 'https://yt3.googleusercontent.com/ytc/AL5GRJXXSNx_TgWygPPxifjLMWl6De3YVmGwHAjOfhztgVA=s176-c-k-c0x00ffffff-no-rj'
+  },
+  {
+    id: 'usechatgpt',
+    link: 'https://www.usechatgpt.ai/install?ref=autoclicker',
+    image: useChatGpt
   }
 ]
 
