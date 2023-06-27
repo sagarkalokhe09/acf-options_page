@@ -17,9 +17,11 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
   const [show, setShow] = useState(false)
   const [conditions, setConditions] = useState([{ ...defaultActionCondition }])
   const [then, setThen] = useState()
+  const [goto, setGoto] = useState()
   const [message, setMessage] = useState()
   const actionIndex = useRef(-1)
   const actions = useRef([])
+  const allActions = useRef([])
   const updateRef = useRef(false)
 
   const onUpdate = (e, index) => {
@@ -43,6 +45,11 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
     setThen(_then)
   }
 
+  const onUpdateGoto = e => {
+    updateRef.current = true
+    setGoto(e.currentTarget.value)
+  }
+
   const handleClose = () => {
     dataLayerModel('action-condition', 'close')
     setShow(false)
@@ -57,7 +64,7 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
             if (!config.actions[actionIndex.current]) {
               config.actions[actionIndex.current] = {}
             }
-            config.actions[actionIndex.current].statement = { conditions: [...conditions.map(_condition => ({ ..._condition }))], then }
+            config.actions[actionIndex.current].statement = { conditions: [...conditions.map(_condition => ({ ..._condition }))], then, goto }
             return { ...config }
           }
           return config
@@ -66,7 +73,7 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
       setMessage(t('modal.actionCondition.saveMessage'))
       setTimeout(setMessage, 1500)
     }
-  }, [conditions, then])
+  }, [conditions, then, goto])
 
   useEffect(() => {
     if (actionIndex.current !== -1) {
@@ -78,6 +85,7 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
     updateRef.current = true
     setConditions([{ ...defaultActionCondition }])
     setThen()
+    setGoto()
     handleClose()
   }
 
@@ -88,6 +96,8 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
       actions.current = _actions.filter((_, _actionIndex) => _actionIndex < index)
       actionIndex.current = index
       setShow(true)
+      allActions.current = _actions
+      setGoto(statement.goto)
     }
   }))
 
@@ -125,7 +135,7 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
         <h4 className='text-center mt-3'>THEN</h4>
         <Form id={FORM_ID}>
           <Row className='mt-3'>
-            <Col xs={12} className='d-flex justify-content-around'>
+            <Col>
               <Form.Check
                 type='radio'
                 checked={then === ACTION_RUNNING.SKIP}
@@ -134,6 +144,8 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                 name='then'
                 label={t('modal.actionCondition.skip')}
               />
+            </Col>
+            <Col>
               <Form.Check
                 type='radio'
                 checked={then === ACTION_RUNNING.PROCEED}
@@ -143,8 +155,31 @@ const ActionConditionModal = forwardRef(({ configIndex, setConfigs }, ref) => {
                 label={t('modal.actionCondition.proceed')}
               />
             </Col>
+            <Col>
+              <Form.Check
+                type='radio'
+                checked={then === ACTION_RUNNING.GOTO}
+                value={ACTION_RUNNING.GOTO}
+                onChange={() => onUpdateThen(ACTION_RUNNING.GOTO)}
+                name='then'
+                label={t('modal.actionCondition.goto')}
+              />
+            </Col>
           </Row>
         </Form>
+        {then === ACTION_RUNNING.GOTO && (
+          <Row>
+            <Col xs={{ span: 4, offset: 8 }}>
+              <Form.Select value={goto} onChange={e => onUpdateGoto(e)} name='goto' required>
+                {allActions.current.map((_action, index) => (
+                  <option key={index} value={index} disabled={index === Number(actionIndex.current)}>
+                    {index + 1} . {_action.name || _action.elementFinder}
+                  </option>
+                ))}
+              </Form.Select>
+            </Col>
+          </Row>
+        )}
       </Modal.Body>
       <Modal.Footer className='justify-content-between'>
         <Button variant='outline-primary px-5' onClick={onReset}>

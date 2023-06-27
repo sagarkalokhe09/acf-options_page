@@ -51,7 +51,7 @@ function ActionAndStatus({ actions, condition: { actionIndex, status, operator }
         )}
       </td>
       <td>
-        <Form.Select value={actionIndex} onChange={e => onUpdate(e, conditionIndex)} name='actionIndex' required className='flex-grow-1 me-1'>
+        <Form.Select value={actionIndex} onChange={e => onUpdate(e)} name='actionIndex' required className='flex-grow-1 me-1'>
           <option value=''>~~ SELECT ACTION ~~</option>
           {actions.map((_action, index) => (
             <option key={index} value={index}>
@@ -61,7 +61,7 @@ function ActionAndStatus({ actions, condition: { actionIndex, status, operator }
         </Form.Select>
       </td>
       <td>
-        <Form.Select value={status} onChange={e => onUpdate(e, conditionIndex)} name='status' required style={{ flexShrink: 2 }}>
+        <Form.Select value={status} onChange={e => onUpdate(e)} name='status' required style={{ flexShrink: 2 }}>
           {Object.entries(ACTION_STATUS).map((_status, index) => (
             <option key={index} value={_status[1]}>
               {_status[0]}
